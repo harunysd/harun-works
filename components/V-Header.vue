@@ -3,7 +3,7 @@ const { gsap } = useGsap();
 const emitter = useEmitter();
 const prefersReducedMotion = useReducedMotion();
 
-const subtitleText = 'Urban Planner';
+const subtitleText = 'Şehir Plancısı';
 
 const header = ref(null);
 

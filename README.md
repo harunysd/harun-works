@@ -1,6 +1,6 @@
 # HARUN WORKS
 
-Portfolio website for Harun Yasir Sarıdaş ([https://harun.works](https://harun.works)) - Urban Planner.
+Portfolio website for Harun Yasir Sarıdaş ([https://harun.works](https://harun.works)) - Şehir Plancısı.
 
 ## License
 

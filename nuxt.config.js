@@ -14,7 +14,7 @@ export default defineNuxtConfig({
         { property: 'name', name: 'name', content: 'Harun Yasir Sarıdaş' },
         { charset: 'utf-8' },
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
-        { 'http-equiv': 'Reply-to', content: 'contact@harun.works' },
+        { 'http-equiv': 'Reply-to', content: 'iletisim@harun.works' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'robots', content: 'all' },
