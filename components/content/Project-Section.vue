@@ -76,7 +76,8 @@ const typeClasses = computed(() => {
   &--text {
     max-width: 55ch;
 
-    margin-bottom: 4rem;
+    padding-bottom: 4rem;
+    margin-bottom: 0;
   }
 
   &--2-col {
@@ -97,6 +98,7 @@ const typeClasses = computed(() => {
 
     padding: 0;
     margin: 0;
+    background-color: #030303;
   }
 }
 </style>

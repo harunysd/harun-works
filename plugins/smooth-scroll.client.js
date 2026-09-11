@@ -70,6 +70,22 @@ function makeLocomotiveScrollAdaptor(locomotiveScroll) {
         ? scroll.y
         : window.scrollY,
     update: () => locomotiveScroll.update(),
+    reset: () => {
+      if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+        if (locomotiveScroll.scroll?.instance) {
+          locomotiveScroll.scroll.instance.scroll.y = 0;
+          locomotiveScroll.scroll.instance.scroll.x = 0;
+          locomotiveScroll.scroll.instance.delta.y = 0;
+          locomotiveScroll.scroll.instance.delta.x = 0;
+        }
+        locomotiveScroll.scrollTo(0, { duration: 0, disableLerp: true });
+        if (locomotiveScroll.el) {
+          locomotiveScroll.el.style.transform = '';
+        }
+      } else {
+        window.scrollTo(0, 0);
+      }
+    },
     enable: () =>
       window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT
         ? locomotiveScroll.start()
@@ -81,20 +97,26 @@ function makeLocomotiveScrollAdaptor(locomotiveScroll) {
     scrollTo: (
       selectorOrNumber,
       durationInSeconds = SCROLL_TO_DURATION_IN_SECONDS,
-    ) =>
-      // prettier-ignore
-      window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT
-        ? locomotiveScroll.scrollTo(selectorOrNumber, {
+    ) => {
+      if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+        locomotiveScroll.scrollTo(selectorOrNumber, {
           duration: durationInSeconds * 1000,
-          // https://easings.net/#easeOutExpo
           easing: [0.645, 0.045, 0.355, 1.0],
-          disableLerp: durationInSeconds * 1000 <= 100
-        })
-        : gsap.to(window, {
-          scrollTo: { y: selectorOrNumber, autoKill: true },
-          duration: durationInSeconds,
-          ease: 'power3.inOut',
-        }),
+          disableLerp: durationInSeconds * 1000 <= 100,
+        });
+        if (selectorOrNumber === 0 && durationInSeconds === 0) {
+          if (locomotiveScroll.scroll?.instance) {
+            locomotiveScroll.scroll.instance.scroll.y = 0;
+            locomotiveScroll.scroll.instance.delta.y = 0;
+          }
+          if (locomotiveScroll.el) {
+            locomotiveScroll.el.style.transform = '';
+          }
+        }
+      } else {
+        window.scrollTo(0, typeof selectorOrNumber === 'number' ? selectorOrNumber : 0);
+      }
+    },
   };
 }
 

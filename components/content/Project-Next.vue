@@ -103,17 +103,18 @@ if (process.server) {
     content: '';
 
     position: absolute;
-    top: -1px;
+    top: 0;
     left: 0;
     right: 0;
-    height: 120px;
-    z-index: 1;
+    height: 140px;
+    z-index: 2;
     pointer-events: none;
     background: linear-gradient(
       to bottom,
       #030303 0%,
-      rgba(3, 3, 3, 0.9) 40%,
-      rgba(3, 3, 3, 0.5) 70%,
+      #030303 24px,
+      rgba(3, 3, 3, 0.95) 50%,
+      rgba(3, 3, 3, 0.6) 80%,
       transparent 100%
     );
   }

@@ -33,8 +33,9 @@ function leavePageAnim(pageEl, done) {
         // Call done() as soon as overlay fully covers the screen —
         // this lets Vue swap pages immediately without waiting for
         // the (slower) page-slide animation to finish.
-        $smoothScroll.disable();
         $smoothScroll.scrollTo(0, 0);
+        $smoothScroll.reset?.();
+        $smoothScroll.disable();
         done();
       },
     },
@@ -86,8 +87,11 @@ function enterPageAnim(pageEl, done) {
   );
 
   tl.add(() => emitter.emit('overlay:hiding'), '-=0.65');
-  tl.add(() => ScrollTrigger.refresh(), 0.45);
-  tl.add(() => $smoothScroll.enable(), 0.7);
+  tl.add(() => {
+    $smoothScroll.enable();
+    $smoothScroll.update();
+    ScrollTrigger.refresh();
+  }, 0.5);
 
   let hasPlayed = false;
   const playTl = () => {

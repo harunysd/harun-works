@@ -6,25 +6,34 @@ const emitter = useEmitter();
 
 const title = ref(null);
 
+let hasAnimated = false;
 function showTitle() {
+  if (hasAnimated) return;
+  hasAnimated = true;
+
+  const words = title.value?.querySelectorAll('.project-title__line__word') || '.project-title__line__word';
+  const wrappers = title.value?.querySelectorAll('.project-title__line__wrapper') || '.project-title__line__wrapper';
+
   const revealRef = gsap.timeline({
     defaults: { ease: 'expo.out' },
   });
 
-  revealRef.to('.project-title__line__word', {
+  revealRef.to(words, {
     yPercent: -105,
-    stagger: 0.1,
-    duration: 1.25,
+    stagger: 0.08,
+    duration: 1.1,
   });
 
   revealRef.to(
-    '.project-title__line__wrapper',
-    { y: 0, stagger: 0.075, duration: 1 },
+    wrappers,
+    { y: 0, stagger: 0.06, duration: 0.9 },
     0.1,
   );
 }
 
 onMounted(() => {
+  if (!title.value) return;
+
   const text = new SplitType(title.value, {
     types: 'lines, words',
     lineClass: 'project-title__line',
@@ -33,6 +42,7 @@ onMounted(() => {
 
   for (const line of text.lines) {
     const lineParent = line.parentNode;
+    if (!lineParent) continue;
     line.remove();
 
     const wrapper = document.createElement('div');
@@ -41,9 +51,11 @@ onMounted(() => {
     lineParent.appendChild(wrapper);
     wrapper.appendChild(line);
   }
-});
 
-emitter.once('overlay:hiding', showTitle);
+  emitter.once('overlay:hiding', showTitle);
+  // Fallback: guaranteed execution so title is never invisible
+  setTimeout(showTitle, 150);
+});
 </script>
 
 <template>

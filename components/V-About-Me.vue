@@ -172,13 +172,18 @@ onMounted(() => {
 
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 3rem 2rem;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2.5rem clamp(1rem, 2vw, 2.25rem);
 
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 7rem auto 2rem;
     padding-top: 3rem;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    @media screen and (max-width: 1024px) {
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 2.5rem 1.5rem;
+    }
 
     @media (prefers-color-scheme: light) {
       border-top-color: rgba(0, 0, 0, 0.08);

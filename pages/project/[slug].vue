@@ -1,6 +1,7 @@
 <script setup>
 const route = useRoute();
-const { gsap } = useGsap();
+const { $smoothScroll } = useNuxtApp();
+const { gsap, ScrollTrigger } = useGsap();
 const emitter = useEmitter();
 
 const { data: project } = await useAsyncData(
@@ -22,16 +23,36 @@ if (process.server) {
 
 const projectPage = ref(null);
 
-const showBackButton = () =>
+let backButtonShown = false;
+const showBackButton = () => {
+  if (backButtonShown) return;
+  backButtonShown = true;
   gsap.fromTo(
     '.nav__back-link',
     { autoAlpha: 0 },
-    { autoAlpha: 1, delay: 0.7 },
+    { autoAlpha: 1, duration: 0.4 },
   );
+};
 
-useImagesLoaded(projectPage, () => emitter.emit('images:loaded'));
+const updateScroll = () => {
+  nextTick(() => {
+    $smoothScroll?.update?.();
+    ScrollTrigger?.refresh?.();
+  });
+};
+
+useImagesLoaded(projectPage, () => {
+  emitter.emit('images:loaded');
+  updateScroll();
+});
 
 emitter.once('overlay:hiding', showBackButton);
+
+onMounted(() => {
+  updateScroll();
+  setTimeout(updateScroll, 250);
+  setTimeout(showBackButton, 350);
+});
 </script>
 
 <template>
