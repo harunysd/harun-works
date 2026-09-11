@@ -11,7 +11,6 @@ const currentSection = useCurrentSection();
 const prefersReducedMotion = useReducedMotion();
 
 const nav = ref(null);
-const navTitle = ref(null);
 const navList = ref(null);
 const navMenuButton = ref(null);
 const navMenuButtonSVG = ref(null);
@@ -137,11 +136,8 @@ watch(currentSection, (val) => {
 });
 
 onMounted(() => {
-  // Always keep navbar and HYS title permanently visible
+  // Always keep navbar permanently visible
   gsap.set(nav.value, { autoAlpha: 1 });
-  if (navTitle.value) {
-    gsap.set(navTitle.value, { autoAlpha: 1 });
-  }
 
   const animations = [];
 
@@ -169,16 +165,6 @@ onMounted(() => {
 
 <template>
   <nav ref="nav" class="nav" data-scroll-sticky>
-    <p
-      ref="navTitle"
-      tabindex="0"
-      class="nav__title"
-      @click="() => (route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/'))"
-      @keypress.enter.space.prevent="() => (route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/'))"
-    >
-      HYS
-    </p>
-
     <ul v-show="route.name === 'index'" ref="navList" class="nav__list">
       <li
         v-for="(link, key) in links"
@@ -219,7 +205,7 @@ onMounted(() => {
 <style lang="scss">
 .nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
 
   position: fixed;
@@ -238,15 +224,6 @@ onMounted(() => {
 
   transform: translateX(-50%);
 
-  &__title {
-    font-size: var(--step-3);
-
-    margin: 0;
-
-    pointer-events: all;
-    cursor: pointer;
-  }
-
   &__list {
     display: flex;
     justify-content: flex-start;
@@ -256,7 +233,7 @@ onMounted(() => {
     position: relative;
     z-index: 25;
 
-    margin: 0;
+    margin: 0 0 0 auto;
     padding: 0;
 
     list-style-type: none;
