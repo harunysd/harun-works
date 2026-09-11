@@ -39,12 +39,6 @@ function leavePageAnim(pageEl, done) {
     },
     0,
   );
-  tl.fromTo(
-    '.page-overlay__slide__text',
-    { yPercent: 105, autoAlpha: 0.8 },
-    { yPercent: 0, ease: 'expo.out' },
-    0.36,
-  );
 }
 
 function enterPageAnim(pageEl, done) {
@@ -94,13 +88,6 @@ function enterPageAnim(pageEl, done) {
   tl.add(() => ScrollTrigger.refresh(), 0.5125);
   tl.add(() => $smoothScroll.enable(), 0.75);
 
-  tl.fromTo(
-    '.page-overlay__slide__text',
-    { yPercent: 0, autoAlpha: 0.8 },
-    { yPercent: -125, ease: 'expo.out' },
-    0,
-  );
-
   emitter.once('images:loaded', () => tl.play());
 }
 </script>
@@ -109,12 +96,6 @@ function enterPageAnim(pageEl, done) {
   <div class="page-overlay">
     <div class="page-overlay__slide"></div>
     <div class="page-overlay__slide">
-      <div class="page-overlay__slide__text__wrapper">
-        <p class="page-overlay__slide__text">
-          {{ $route.params.slug || 'index' }}
-        </p>
-      </div>
-
       <div
         :class="{
           'page-overlay__slide__loading': true,

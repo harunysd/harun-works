@@ -70,9 +70,8 @@ if (process.server) {
     object-fit: cover;
     object-position: center center;
 
-    filter: blur(12px);
-
-    transform: scale(1.1);
+    opacity: 0.85;
+    transition: opacity 300ms ease;
   }
 
   &__svg {

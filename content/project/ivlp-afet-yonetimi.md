@@ -1,12 +1,12 @@
 ---
-title: 'Uluslararası Afet & Kentsel Arama-Kurtarma'
-description: 'ABD Dışişleri Bakanlığı IVLP programı kapsamında afet yönetimi ve USAR sistemlerine yönelik kurumsal incelemeler.'
+title: 'Uluslararası Arama-Kurtarma Programı (IVLP)'
+description: 'ABD Dışişleri Bakanlığı IVLP programı kapsamında arama-kurtarma ve afet yönetimi incelemeleri.'
 live: 'https://harun.works'
 tags:
   - 'IVLP'
   - 'Arama Kurtarma'
   - 'Afet Yönetimi'
-  - 'Uluslararası Strateji'
+  - 'Kurumsal İnceleme'
 image: '/img/ivlp-banner.jpg'
 previewImage: '/img/ivlp-preview.jpg'
 createdAt: '2025-02-01T00:00:00+03:00'
@@ -14,7 +14,7 @@ createdAt: '2025-02-01T00:00:00+03:00'
 
 ::project-header
 :::project-title
-Uluslararası Afet & Arama Kurtarma
+Uluslararası Arama-Kurtarma (IVLP)
 :::
 
 #live
@@ -23,15 +23,15 @@ Uluslararası Afet & Arama Kurtarma
 
 ::project-main
 :::project-section{type="fwidth"}
-::::project-image{type="fwidth" :src="image" alt="Uluslararası Afet ve Kentsel Arama Kurtarma" preload}
+::::project-image{type="fwidth" :src="image" alt="Uluslararası Arama Kurtarma İncelemeleri" preload}
 :::
 
 :::project-section{type="text"}
-ABD Dışişleri Bakanlığı tarafından yürütülen International Visitor Leadership Program (IVLP) kapsamında ‘Urban Search & Rescue Approaches’ programına katılım sağladım.
+ABD Dışişleri Bakanlığı tarafından yürütülen International Visitor Leadership Program (IVLP) kapsamında ‘Urban Search & Rescue Approaches’ programına katıldım.
 
-Program süresince Washington DC, New York, Denver, San Francisco ve Miami’de afet yönetimi ve kentsel arama-kurtarma (USAR) sistemlerine ilişkin üst düzey kurumsal yapılar yerinde incelendi.
+Program süresince Washington DC, New York, Denver, San Francisco ve Miami’de afet yönetimi ve kentsel arama-kurtarma (USAR) alanındaki kurumsal yapıları yerinde inceleme fırsatı buldum.
 
-IIE, Georgetown University, USAID, American Red Cross, Virginia Task Force 1 (USAR) ve USGS gibi küresel kurumlarla gerçekleştirilen temaslar kapsamında; çok katmanlı afet yönetimi modeli, kurumlar arası koordinasyon mekanizmaları, operasyonel hazırlık kapasitesi ve uluslararası insani yardım süreçleri analiz edildi. Program, büyük ölçekli afetlere yönelik stratejik planlama, müdahale ve iyileştirme süreçlerine ilişkin kapsamlı bir perspektif kazandırdı.
+IIE, Georgetown University, USAID, American Red Cross, Virginia Task Force 1 ve USGS gibi kurumlarla gerçekleştirilen görüşmelerde kurumlar arası koordinasyon ve hazırlık kapasitesi üzerine deneyim edindim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

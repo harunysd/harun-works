@@ -1,12 +1,17 @@
 <script setup>
 const { $smoothScrollBreakPoint } = useNuxtApp();
 const { gsap } = useGsap();
+const isEmailModalOpen = useEmailModal();
 
 const rowsCount = 3;
 const textCount = 4;
 
 const contact = ref(null);
 const contactEmailRow = ref(null);
+
+function openEmailModal() {
+  isEmailModalOpen.value = true;
+}
 
 onMounted(() => {
   const animations = [];
@@ -39,11 +44,14 @@ onMounted(() => {
 
 <template>
   <section ref="contact" class="contact" data-scroll-section>
-    <NuxtLink
+    <button
       ref="contactEmail"
       v-hoverable.mail
-      href="mailto:iletisim@harun.works"
+      type="button"
+      aria-label="E-posta iletişim penceresini aç"
       class="contact__email"
+      @click="openEmailModal"
+      @keypress.enter.space.prevent="openEmailModal"
     >
       <span
         v-for="row in rowsCount"
@@ -61,7 +69,7 @@ onMounted(() => {
           Bana bir <span class="serif">e-posta</span> gönderin<span v-if="textKey !== textCount">&nbsp; - &nbsp;</span>
         </span>
       </span>
-    </NuxtLink>
+    </button>
   </section>
 </template>
 
@@ -82,6 +90,10 @@ onMounted(() => {
 
   &__email {
     display: block;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0;
 
     position: relative;
 

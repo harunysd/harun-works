@@ -66,7 +66,6 @@ useImagesLoaded(indexPage, () => emitter.emit('images:loaded'));
         <VContact />
       </main>
     </div>
-    <VFooter />
 
     <Teleport to="body">
       <VMenu />

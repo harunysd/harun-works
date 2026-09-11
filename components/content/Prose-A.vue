@@ -1,9 +1,18 @@
 <script setup>
 import ArrowLink from '~/assets/img/arrow-outer-link.svg';
 
-defineProps({
+const props = defineProps({
   href: { type: String, required: true, default: '' },
 });
+
+const isEmailModalOpen = useEmailModal();
+
+function handleClick(e) {
+  if (props.href.startsWith('mailto:')) {
+    e.preventDefault();
+    isEmailModalOpen.value = true;
+  }
+}
 </script>
 
 <template>
@@ -11,7 +20,8 @@ defineProps({
     v-hoverable.action
     :href="href"
     class="project-link"
-    target="_blank"
+    :target="href.startsWith('mailto:') ? undefined : '_blank'"
+    @click="handleClick"
   >
     <ContentSlot :use="$slots.default" :unwrap="true" />
     <ArrowLink class="project-link__arrow-svg" />

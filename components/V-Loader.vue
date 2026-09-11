@@ -22,7 +22,7 @@ emitter.on('shader:running', () => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <mask id="hw-loader-mask">
+        <mask id="hys-loader-mask">
           <rect width="512" height="512" fill="white" />
           <text
             x="256"
@@ -31,16 +31,16 @@ emitter.on('shader:running', () => {
             fill="black"
             font-family="'e-Ukraine', system-ui, -apple-system, sans-serif"
             font-weight="800"
-            font-size="150"
-            letter-spacing="6"
-          >HW</text>
+            font-size="120"
+            letter-spacing="4"
+          >HYS</text>
         </mask>
       </defs>
       <rect
         width="512"
         height="512"
         fill="var(--surface-color)"
-        mask="url(#hw-loader-mask)"
+        mask="url(#hys-loader-mask)"
       />
     </svg>
   </div>

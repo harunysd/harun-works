@@ -21,8 +21,8 @@ if (process.server) {
 onMounted(() => {
   if (props.type !== 'fwidth') return;
 
-  const imageScaleInPercent = 150;
-  const speedDivider = 3.5;
+  const imageScaleInPercent = 104;
+  const speedDivider = 12;
 
   gsap.set(imageRef.value, { scale: imageScaleInPercent * 0.01 });
   const animation = gsap.fromTo(
@@ -57,8 +57,6 @@ onMounted(() => {
       :src="src"
       :alt="alt"
       class="project-image project-image--fwidth"
-      width="1400"
-      height="550"
       decoding="async"
       fetchpriority="high"
     />

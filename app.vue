@@ -12,7 +12,7 @@ const currentURL = computed(() =>
 );
 const ogImageUrl = computed(() =>
   projectSlug.value
-    ? `${base}/img/${projectSlug.value}-logo.webp`
+    ? `${base}/img/${projectSlug.value}-preview.jpg`
     : `${base}/logo.png`,
 );
 
@@ -73,4 +73,5 @@ onMounted(() => {
   <VPointer />
   <VLoader />
   <VOverlay ref="overlay" />
+  <VEmailModal />
 </template>

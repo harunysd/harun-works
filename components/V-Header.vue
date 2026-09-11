@@ -65,12 +65,12 @@ onBeforeUnmount(() => {
     <div class="header__container">
       <h1 class="header__container__title">
         <span class="header__container__title__line">
-          <span class="header__container__title__line__content">HARUN</span>
+          <span class="header__container__title__line__content">HARUN YASİR</span>
         </span>
         <span
           class="header__container__title__line header__container__title__line--pl"
         >
-          <span class="header__container__title__line__content">WORKS</span>
+          <span class="header__container__title__line__content">SARIDAŞ</span>
         </span>
       </h1>
 
@@ -187,6 +187,7 @@ onBeforeUnmount(() => {
     transition: color 400ms;
 
     &__title {
+      font-size: clamp(2.4rem, 6.5vw, 5.2rem);
       font-weight: 500;
 
       color: $base-color;
@@ -209,7 +210,7 @@ onBeforeUnmount(() => {
 
         &--pl {
           margin-top: clamp(-0.5rem, -1vw, -0.25rem);
-          padding-left: calc(var(--step-5) * 1.5);
+          padding-left: clamp(2rem, 5vw, 4.5rem);
         }
       }
     }

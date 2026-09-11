@@ -1,12 +1,12 @@
 ---
-title: 'İBB AKOM Afet ve Karar Destek Sistemleri'
-description: 'İBB AKOM komuta merkezinde olay takibi, saha verisi üretimi, ArcGIS Dashboard ve karar destek sistemleri çalışmaları.'
+title: 'İBB AKOM Afet Koordinasyonu'
+description: 'AKOM bünyesinde olay takibi, saha verisi ve operasyonel raporlama çalışmaları.'
 live: 'https://harun.works'
 tags:
   - 'İBB AKOM'
   - 'Afet Yönetimi'
-  - 'ArcGIS & Dashboard'
-  - 'Kriz Koordinasyonu'
+  - 'Saha Verisi'
+  - 'Raporlama'
 image: '/img/akom-banner.jpg'
 previewImage: '/img/akom-preview.jpg'
 createdAt: '2024-03-01T00:00:00+03:00'
@@ -14,7 +14,7 @@ createdAt: '2024-03-01T00:00:00+03:00'
 
 ::project-header
 :::project-title
-İBB AKOM Afet & Karar Destek
+İBB AKOM Afet Koordinasyonu
 :::
 
 #live
@@ -23,15 +23,15 @@ createdAt: '2024-03-01T00:00:00+03:00'
 
 ::project-main
 :::project-section{type="fwidth"}
-::::project-image{type="fwidth" :src="image" alt="İBB AKOM Afet ve Karar Destek Sistemleri" preload}
+::::project-image{type="fwidth" :src="image" alt="İBB AKOM Afet Koordinasyonu" preload}
 :::
 
 :::project-section{type="text"}
-2023 Kahramanmaraş depremleri sonrası İstanbul Büyükşehir Belediyesi AKOM bünyesinde görev alarak; komuta merkezi içinde olay takibi, saha verisi doğrulama, kriz masası ve üst yönetim bilgi notlarının hazırlanması süreçlerini yürüttüm. Sel, yağış, fırtına, kışla mücadele (kar), orman ve kentsel yangınlarda operasyonel raporlama ve koordinasyon çalışmalarında aktif rol aldım.
+2023 Kahramanmaraş depremleri sonrasında İstanbul Büyükşehir Belediyesi AKOM bünyesinde göreve başlayarak; komuta merkezinde olay takibi, saha verisi doğrulama ve birimler arası koordinasyon süreçlerinde yer aldım.
 
-Coğrafi Bilgi Sistemleri (GIS) tarafında; coğrafi veri üretimi ve sayısallaştırma, ArcGIS Portal, Online, Dashboard ve Experience Builder kullanılarak sistemlerin kurgulanması, tarihsel arşivden sorunlu alanların haritalandırılması ve veri altyapılarının karar destek mekanizmalarına entegrasyonu üzerine odaklandım. Ayrıca İSTKA hibeli "Akıllı Acil Durum Müdahale Sistemi" projesinin AKOM komuta merkezinde kullanımı süreçlerine katkı sağladım.
+Sel, fırtına, karla mücadele ve yangın gibi kentsel olaylarda operasyonel raporlama ve saha tespitlerinin kayıt altına alınması çalışmalarında bulundum.
 
-Daire Başkanlığı ve Kurumsal Gelişim Sorumluluğu kapsamında; organizasyonel faaliyet raporları, kurumsal kimlik ve sunum hazırlıkları ile afet eğitim merkezleri çalışmalarına katkı sundum. Halihazırda veri entegrasyonu, kapalı devre yapay zekâ ve karar destek otomasyonları geliştirmeye devam ediyorum.
+Coğrafi verilerin işlenmesi, ArcGIS ortamında haritalama ve kurum içi bilgilendirme dokümanlarının hazırlanması süreçlerine katkı sağladım.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)
