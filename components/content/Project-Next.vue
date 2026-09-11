@@ -5,15 +5,22 @@ const { data: surrounded } = await useAsyncData(
   () => queryContent('project').findSurround(route.fullPath),
 );
 
-const next = computed(() => surrounded.value[1] || surrounded.value[0]);
+const next = computed(() => {
+  if (!surrounded.value) return null;
+  return surrounded.value[1] || surrounded.value[0] || null;
+});
 
 if (process.server) {
   useHead(
     {
-      link: [
-        { rel: 'next', href: next.value._path },
-        { rel: 'prefetch', href: next.value.previewImage },
-      ],
+      link: computed(() =>
+        next.value
+          ? [
+              { rel: 'next', href: next.value._path },
+              { rel: 'prefetch', href: next.value.previewImage },
+            ]
+          : [],
+      ),
     },
     { mode: 'server' },
   );
@@ -21,17 +28,17 @@ if (process.server) {
 </script>
 
 <template>
-  <NuxtLink v-hoverable.link :href="next._path" class="project-next">
+  <NuxtLink v-if="next" v-hoverable.link :href="next._path" class="project-next">
     <img
       :src="next.previewImage"
       :alt="next.title"
       class="project-next__image"
       data-scroll
-      data-scroll-speed="-4"
+      data-scroll-speed="-2"
       data-scroll-position="bottom"
     />
 
-    {{ next.title }}
+    <span class="project-next__title">{{ next.title }}</span>
   </NuxtLink>
 </template>
 
@@ -48,24 +55,33 @@ if (process.server) {
   color: currentColor;
   text-decoration: none;
 
-  min-height: min(23.5rem, 45vh);
+  min-height: min(20rem, 40vh);
 
-  padding: 1rem 4rem;
-  margin-top: 10rem;
+  padding: 1.5rem 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0;
 
+  background-color: #030303;
   overflow: hidden;
   cursor: pointer;
+
+  &__title {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-weight: 500;
+  }
 
   &__image {
     display: block;
 
     position: absolute;
-    top: 0;
+    top: -20%;
     left: 0;
-    z-index: -3;
+    z-index: 0;
 
     width: 100%;
-    height: 100%;
+    height: 140%;
 
     object-fit: cover;
     object-position: center center;
@@ -90,12 +106,14 @@ if (process.server) {
     top: -2px;
     left: 0;
     right: 0;
-    bottom: 0;
-    z-index: -1;
+    height: 90px;
+    z-index: 1;
+    pointer-events: none;
     background: linear-gradient(
       to bottom,
-      var(--surface-color) 0%,
-      #00000000 100%
+      #030303 0%,
+      rgba(3, 3, 3, 0.8) 50%,
+      transparent 100%
     );
   }
 
@@ -107,11 +125,15 @@ if (process.server) {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: -2;
+    z-index: 1;
+    pointer-events: none;
 
-    background-color: var(--surface-color);
+    background-color: rgba(3, 3, 3, 0.55);
+    transition: background-color 300ms ease;
+  }
 
-    opacity: 0.25;
+  &:hover::after {
+    background-color: rgba(3, 3, 3, 0.35);
   }
 }
 </style>

@@ -24,26 +24,38 @@ function waitForImages(wrapper) {
   const images = wrapper.querySelectorAll('img');
 
   return new Promise((resolve) => {
+    if (!images || images.length === 0) {
+      resolve();
+      return;
+    }
+
     let numberOfLoadedImages = 0;
+    const totalImages = images.length;
+    let resolved = false;
 
-    const loadListener = (imageOrLoadEvent) => {
-      if (images.length == ++numberOfLoadedImages) {
+    const done = () => {
+      if (resolved) return;
+      if (++numberOfLoadedImages >= totalImages) {
+        resolved = true;
         resolve();
-
-        const image = imageOrLoadEvent.removeEventListener
-          ? imageOrLoadEvent
-          : imageOrLoadEvent.target;
-
-        image.removeEventListener('load', loadListener, true);
       }
     };
 
     images.forEach((image) => {
-      // In my case lazy images could be just ignored, but if needed you can create
-      // `new Image` with appropriate src and wait for load event on this image
-      if (image.complete || image.getAttribute('loading') === 'lazy')
-        loadListener(image);
-      else image.addEventListener('load', loadListener, true);
+      if (image.complete) {
+        done();
+      } else {
+        image.addEventListener('load', done, { once: true });
+        image.addEventListener('error', done, { once: true });
+      }
     });
+
+    // Safety timeout: never hang on a black transition screen for more than 400ms
+    setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        resolve();
+      }
+    }, 400);
   });
 }

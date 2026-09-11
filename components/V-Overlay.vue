@@ -19,7 +19,7 @@ function leavePageAnim(pageEl, done) {
     },
   });
 
-  tl.to(pageEl, { y: -500, duration: 1.5, ease: 'power4.out' }, 0);
+  tl.to(pageEl, { y: -350, duration: 0.65, ease: 'power4.out' }, 0);
   tl.fromTo(
     '.page-overlay__slide',
     {
@@ -30,8 +30,8 @@ function leavePageAnim(pageEl, done) {
     {
       yPercent: 0,
       scaleY: 1,
-      stagger: { each: 0.085 },
-      duration: 0.75,
+      stagger: { each: 0.07 },
+      duration: 0.65,
       onComplete: () => {
         $smoothScroll.disable();
         $smoothScroll.scrollTo(0, 0);
@@ -45,7 +45,7 @@ function enterPageAnim(pageEl, done) {
   routeChanging.value = true;
 
   const tl = gsap.timeline({
-    delay: 0.15,
+    delay: 0.05,
     defaults: { ease: 'expo.out' },
     paused: true,
     onStart: () => {
@@ -64,8 +64,8 @@ function enterPageAnim(pageEl, done) {
 
   tl.from(
     pageEl,
-    { y: 500, duration: 1, ease: 'power3.out', clearProps: true },
-    0.2,
+    { y: 350, duration: 0.8, ease: 'power3.out', clearProps: true },
+    0.1,
   );
 
   tl.fromTo(
@@ -78,17 +78,30 @@ function enterPageAnim(pageEl, done) {
     {
       yPercent: -75,
       scaleY: 0.5,
-      stagger: { each: 0.085, from: 'end' },
-      duration: 0.75,
+      stagger: { each: 0.07, from: 'end' },
+      duration: 0.65,
     },
-    0.2,
+    0.1,
   );
 
-  tl.add(() => emitter.emit('overlay:hiding'), '-=0.725');
-  tl.add(() => ScrollTrigger.refresh(), 0.5125);
-  tl.add(() => $smoothScroll.enable(), 0.75);
+  tl.add(() => emitter.emit('overlay:hiding'), '-=0.55');
+  tl.add(() => ScrollTrigger.refresh(), 0.4);
+  tl.add(() => {
+    $smoothScroll.enable();
+    $smoothScroll.update();
+  }, 0.5);
 
-  emitter.once('images:loaded', () => tl.play());
+  let hasPlayed = false;
+  const playTl = () => {
+    if (!hasPlayed) {
+      hasPlayed = true;
+      tl.play();
+    }
+  };
+
+  emitter.once('images:loaded', playTl);
+  // Failsafe: play after 200ms so the screen NEVER freezes or hangs
+  setTimeout(playTl, 200);
 }
 </script>
 

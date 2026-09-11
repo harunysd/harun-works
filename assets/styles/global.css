@@ -78,15 +78,10 @@ h5 {
   font-size: var(--step-1);
 }
 
+/* Preserve dark theme consistently across all browser settings */
 @media (prefers-color-scheme: light) {
   :root {
-    --surface-color: #f7f7f7;
-    --ff-color: #030303;
-  }
-
-  ::selection {
-    color: var(--ff-color);
-    background-color: var(--primary-color);
+    color-scheme: dark;
   }
 }
 
