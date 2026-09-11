@@ -1,7 +1,7 @@
 ---
 description: 'This website, as you might already notice, is my portfolio. I am using it to showcase what I learn and what I can do. It was built with the cutting-edge framework Nuxt'
-source: 'https://github.com/logotip4ik/portfolio'
-live: 'https://bogdankostyuk.xyz'
+source: 'https://harun.works'
+live: 'https://harun.works'
 tags:
   - Website
   - SEO
@@ -16,16 +16,16 @@ createdAt: '2022-03-31T00:00:00+03:00'
 
 ::project-header
 :::project-title
-Portfolio Version 3
+Portfolio
 :::
 
 #source
-[source](https://github.com/logotip4ik/portfolio)
+[live](https://harun.works)
 ::
 
 ::project-main
 :::project-section{type="fwidth"}
-::::project-image{type="fwidth" :src="image" alt="My Portfolio Website Logo" preload}
+::::project-image{type="fwidth" :src="image" alt="Portfolio Website Logo" preload}
 :::
 
 :::project-section{type="text"}
@@ -33,12 +33,7 @@ This website, as you might already notice, is my portfolio. I am using it to sho
 
 While building this website, I faced a lot of different and exceptional issues. One was breaking everything after moving one line of code up or down :sweat_smile:. Another was, how to reconcile Nuxt3, GSAP, and Locomotive Scroll in one package, so the route transition looks soft and native. But after trials and errors, something proper was created. Feel free to break everything :joy:.
 
-- [github](https://github.com/logotip4ik)
-- [twitter](https://twitter.com/BogdanKostyuk_)
-- [telegram](https://t.me/bogdankostyuk)
-- [linkedin](https://www.linkedin.com/in/bogdankostyuk)
-- [blog](https://blog.bogdankostyuk.xyz)
-- [email](mailto:contact@bogdankostyuk.xyz)
+- [email](mailto:contact@harun.works)
 
 <br />
 

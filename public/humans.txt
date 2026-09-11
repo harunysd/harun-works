@@ -1,7 +1,6 @@
 /* TEAM */
-	Developer: Bogdan Kostyuk.
-	Telegram: https://t.me/bogdankostyuk.
-	Location: Ukraine, if you wanna know more, write me 😁.
+	Owner: Harun Yasir Sarıdaş.
+	Location: Istanbul, Türkiye.
 
 /* THANKS */
 	Patterns: taken from: https://products.ls.graphics/paaatterns

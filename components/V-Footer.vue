@@ -43,11 +43,11 @@ onMounted(() => {
     >
       <div class="footer__content">
         <p class="footer__content__title">
-          <span class="footer__content__title__line">Bogdan</span>
+          <span class="footer__content__title__line">HARUN</span>
           <span
             class="footer__content__title__line footer__content__title__line--pl"
           >
-            Kostyuk
+            WORKS
           </span>
         </p>
         <ul class="footer__content__social-links">
@@ -63,7 +63,7 @@ onMounted(() => {
         </ul>
 
         <p class="footer__content__copyright">
-          Copyright ©{{ getCurrentYear() }} BK
+          Copyright ©{{ getCurrentYear() }} HARUN WORKS
         </p>
 
         <p class="footer__content__note">
@@ -76,15 +76,7 @@ onMounted(() => {
             height="60"
             alt="love"
           />
-          in
-          <img
-            title="Ukraine"
-            loading="lazy"
-            src="~/assets/img/ukraine-flag.png"
-            width="70"
-            height="70"
-            alt="ukraine"
-          />
+          in Istanbul, Türkiye
         </p>
       </div>
       <button
