@@ -29,7 +29,7 @@ Komuta Merkezi — Afet Yönetimi & Komuta Platformu
 :::project-section{type="text"}
 Afet ve acil durumlarda farklı kaynaklardan gelen karmaşık saha verilerini tek bir arayüzde toplayan modüler bir komuta merkezi platformudur.
 
-Olay takibi, saha ekiplerinin durumu, operasyonel raporlama, coğrafi bilgi sistemleri (CBS) katmanları ve kapalı devre yapay zekâ çözümlerini entegre eden bu sistemi bağımsız olarak tasarladım ve geliştirdim.
+Olay takibi, saha ekiplerinin durumu, operasyonel raporlama, coğrafi bilgi sistemleri (CBS) katmanları ve kapalı devre yapay zekâ çözümlerini entegre eden bu sistemi bağımsız olarak tasarlamakta ve geliştirmekteyim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)
