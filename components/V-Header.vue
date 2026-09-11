@@ -68,9 +68,7 @@ onBeforeUnmount(() => {
         <span class="header__container__title__line">
           <span class="header__container__title__line__content">Harun Yasir</span>
         </span>
-        <span
-          class="header__container__title__line header__container__title__line--pl"
-        >
+        <span class="header__container__title__line">
           <span class="header__container__title__line__content">SARIDAŞ</span>
         </span>
       </h1>
@@ -190,6 +188,7 @@ onBeforeUnmount(() => {
     &__title {
       font-size: min(var(--step-5), 8.8vw);
       font-weight: 500;
+      text-align: center;
 
       color: $base-color;
 
@@ -198,6 +197,7 @@ onBeforeUnmount(() => {
 
       &__line {
         display: block;
+        text-align: center;
 
         line-height: 1.25;
 
@@ -212,7 +212,6 @@ onBeforeUnmount(() => {
 
         &--pl {
           margin-top: clamp(-0.5rem, -1vw, -0.25rem);
-          padding-left: min(calc(var(--step-5) * 1.5), 18vw);
         }
       }
     }
