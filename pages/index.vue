@@ -11,11 +11,14 @@ useHead({
   title: 'Şehir Plancısı',
   meta: [
     { property: 'og:title', name: 'og:title', content: 'Şehir Plancısı' },
-    { name: 'description', content: 'Kusursuzluk detaylarda gizlidir' },
+    {
+      name: 'description',
+      content: 'Şehir Planlama · Afet Yönetimi · CBS · Dijital Sistemler',
+    },
     {
       property: 'og:description',
       name: 'og:description',
-      content: 'Kusursuzluk detaylarda gizlidir',
+      content: 'Şehir Planlama · Afet Yönetimi · CBS · Dijital Sistemler',
     },
   ],
 
@@ -66,6 +69,7 @@ useImagesLoaded(indexPage, () => emitter.emit('images:loaded'));
         <VContact />
       </main>
     </div>
+    <VFooter />
 
     <Teleport to="body">
       <VMenu />

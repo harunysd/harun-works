@@ -6,7 +6,7 @@ const { data: projects } = await useAsyncData('projects', () =>
 
 <template>
   <section class="projects" data-scroll-section>
-    <VH2 class="projects__title">Projeler</VH2>
+    <VH2 class="projects__title">Çalışmalar</VH2>
 
     <ul class="projects__list">
       <VProjectsItem

@@ -10,6 +10,35 @@ const { gsap } = useGsap();
 
 const aboutMeContent = ref(null);
 
+const skillGroups = [
+  {
+    title: 'CBS & Planlama',
+    items: ['ArcGIS', 'Netcad', 'QGIS', 'AutoCAD'],
+  },
+  {
+    title: '3D & Görselleştirme',
+    items: ['SketchUp', 'Lumion', 'Twinmotion'],
+  },
+  {
+    title: 'Tasarım & Medya',
+    items: [
+      'Figma',
+      'Adobe Photoshop',
+      'Adobe Illustrator',
+      'Adobe After Effects',
+    ],
+  },
+  {
+    title: 'Veri & Dijital Sistemler',
+    items: [
+      'Veri & API Entegrasyonları',
+      'Otomasyon',
+      'AI / LLM',
+      'Web & Uygulama Geliştirme',
+    ],
+  },
+];
+
 onMounted(() => {
   const paragraphs = aboutMeContent.value.$el.querySelectorAll('p');
   const target =
@@ -51,6 +80,25 @@ onMounted(() => {
       :value="aboutMeText"
       class="about-me__content"
     />
+
+    <div class="skills-grid">
+      <div
+        v-for="(group, idx) in skillGroups"
+        :key="idx"
+        class="skills-grid__column"
+      >
+        <h3 class="skills-grid__group-title">{{ group.title }}</h3>
+        <ul class="skills-grid__list">
+          <li
+            v-for="(item, itemIdx) in group.items"
+            :key="itemIdx"
+            class="skills-grid__item"
+          >
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -112,6 +160,64 @@ onMounted(() => {
 
     @media (prefers-color-scheme: light) {
       color: lighten($color: #000000, $amount: 25);
+    }
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem 2rem;
+
+    max-width: 1000px;
+    margin: 7rem auto 2rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    @media (prefers-color-scheme: light) {
+      border-top-color: rgba(0, 0, 0, 0.08);
+    }
+
+    &__column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__group-title {
+      font-size: calc(var(--step--1) + 0.1rem);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ff-color);
+      opacity: 0.9;
+      margin: 0 0 1.25rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+
+      @media (prefers-color-scheme: light) {
+        border-bottom-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    &__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    &__item {
+      font-size: var(--step--1);
+      color: var(--ff-color);
+      opacity: 0.65;
+      font-weight: 400;
+      line-height: 1.4;
+      transition: opacity 200ms ease;
+
+      &:hover {
+        opacity: 0.95;
+      }
     }
   }
 }

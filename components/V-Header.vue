@@ -3,7 +3,8 @@ const { gsap } = useGsap();
 const emitter = useEmitter();
 const prefersReducedMotion = useReducedMotion();
 
-const subtitleText = 'Şehir Plancısı';
+const subtitleText =
+  'Şehir Planlama · Afet Yönetimi · CBS · Dijital Sistemler';
 
 const header = ref(null);
 
@@ -65,12 +66,12 @@ onBeforeUnmount(() => {
     <div class="header__container">
       <h1 class="header__container__title">
         <span class="header__container__title__line">
-          <span class="header__container__title__line__content">HARUN YASİR</span>
+          <span class="header__container__title__line__content">HARUN</span>
         </span>
         <span
           class="header__container__title__line header__container__title__line--pl"
         >
-          <span class="header__container__title__line__content">SARIDAŞ</span>
+          <span class="header__container__title__line__content">WORKS</span>
         </span>
       </h1>
 
@@ -187,7 +188,6 @@ onBeforeUnmount(() => {
     transition: color 400ms;
 
     &__title {
-      font-size: clamp(2.4rem, 6.5vw, 5.2rem);
       font-weight: 500;
 
       color: $base-color;
@@ -210,21 +210,23 @@ onBeforeUnmount(() => {
 
         &--pl {
           margin-top: clamp(-0.5rem, -1vw, -0.25rem);
-          padding-left: clamp(2rem, 5vw, 4.5rem);
+          padding-left: calc(var(--step-5) * 1.5);
         }
       }
     }
 
     &__subtitle {
-      font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+      font-size: clamp(0.68rem, 1.15vw, 0.95rem);
       font-weight: 500;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.12em;
       text-align: center;
       text-transform: uppercase;
 
       color: $base-color;
 
-      margin: 0;
+      margin: 0 auto;
+      max-width: 90vw;
+      line-height: 1.6;
 
       &__char {
         opacity: 0;

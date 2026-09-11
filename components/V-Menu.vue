@@ -18,7 +18,7 @@ const navigationalLinks = [
     },
   },
   {
-    label: 'Projeler',
+    label: 'Çalışmalar',
     action: () => {
       $smoothScroll.scrollTo('.projects');
       isShowingMenu.value = false;

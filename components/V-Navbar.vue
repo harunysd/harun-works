@@ -18,7 +18,7 @@ const navMenuButtonSVG = ref(null);
 
 const links = [
   { label: 'Ana Sayfa', action: () => $smoothScroll.scrollTo(0) },
-  { label: 'Projeler', action: () => $smoothScroll.scrollTo('.projects') },
+  { label: 'Çalışmalar', action: () => $smoothScroll.scrollTo('.projects') },
   { label: 'Hakkımda', action: () => $smoothScroll.scrollTo('.about-me') },
   { label: 'İletişim', action: () => $smoothScroll.scrollTo('.contact') },
 ];
