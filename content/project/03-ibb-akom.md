@@ -7,8 +7,8 @@ tags:
   - 'Kriz Yönetimi'
   - 'CBS & Dashboard'
   - 'Operasyon'
-image: '/img/03-akom-banner.jpg'
-previewImage: '/img/03-akom-preview.jpg'
+image: '/img/03-akom-banner.png'
+previewImage: '/img/03-akom-preview.png'
 createdAt: '2026-01-15T00:00:00+03:00'
 ---
 

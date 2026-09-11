@@ -7,8 +7,8 @@ tags:
   - 'Topkapı'
   - 'Yaya Erişimi'
   - 'Afet Toplanma Alanı'
-image: '/img/11-topkapi-banner.jpg'
-previewImage: '/img/11-topkapi-preview.jpg'
+image: '/img/11-topkapi-banner.png'
+previewImage: '/img/11-topkapi-preview.png'
 createdAt: '2019-12-01T00:00:00+03:00'
 ---
 

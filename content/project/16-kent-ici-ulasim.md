@@ -7,8 +7,8 @@ tags:
   - 'Yaya Erişilebilirliği'
   - 'Hizmet Düzeyi'
   - 'Hareketlilik'
-image: '/img/16-ulasim-banner.jpg'
-previewImage: '/img/16-ulasim-preview.jpg'
+image: '/img/16-ulasim-banner.png'
+previewImage: '/img/16-ulasim-preview.png'
 createdAt: '2017-12-01T00:00:00+03:00'
 ---
 

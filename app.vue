@@ -37,9 +37,12 @@ onMounted(() => {
   if (route.name !== 'index') {
     $smoothScroll.disable();
 
-    const pageEl = document.querySelector('div[page-content]');
-
-    overlay.value.enterPageAnim(pageEl, () => null);
+    nextTick(() => {
+      const pageEl = document.querySelector('div[page-content]');
+      if (pageEl && overlay.value?.enterPageAnim) {
+        overlay.value.enterPageAnim(pageEl, () => null);
+      }
+    });
   }
 
   const unregister = on(window, 'resize', setVh);

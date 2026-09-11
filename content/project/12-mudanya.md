@@ -7,8 +7,8 @@ tags:
   - 'Mudanya'
   - 'Gini Katsayısı'
   - 'İstatistik & Veri'
-image: '/img/12-mudanya-banner.jpg'
-previewImage: '/img/12-mudanya-preview.jpg'
+image: '/img/12-mudanya-banner.png'
+previewImage: '/img/12-mudanya-preview.png'
 createdAt: '2019-06-01T00:00:00+03:00'
 ---
 

@@ -7,8 +7,8 @@ tags:
   - 'Kentsel Arama Kurtarma'
   - 'Afet Yönetimi'
   - 'Erken Uyarı & USAR'
-image: '/img/04-ivlp-banner.jpg'
-previewImage: '/img/04-ivlp-preview.jpg'
+image: '/img/04-ivlp-banner.png'
+previewImage: '/img/04-ivlp-preview.png'
 createdAt: '2025-02-01T00:00:00+03:00'
 ---
 

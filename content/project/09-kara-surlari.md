@@ -7,8 +7,8 @@ tags:
   - 'Tarihi Doku'
   - 'Rehabilitasyon'
   - 'Kamusal Alan'
-image: '/img/09-surlar-banner.jpg'
-previewImage: '/img/09-surlar-preview.jpg'
+image: '/img/09-surlar-banner.png'
+previewImage: '/img/09-surlar-preview.png'
 createdAt: '2020-11-01T00:00:00+03:00'
 ---
 

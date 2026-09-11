@@ -7,8 +7,8 @@ tags:
   - 'Yedikule'
   - 'Tarihi Çevre'
   - 'Kentsel Tasarım'
-image: '/img/10-yedikule-banner.jpg'
-previewImage: '/img/10-yedikule-preview.jpg'
+image: '/img/10-yedikule-banner.png'
+previewImage: '/img/10-yedikule-preview.png'
 createdAt: '2020-04-01T00:00:00+03:00'
 ---
 

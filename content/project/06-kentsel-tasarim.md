@@ -7,8 +7,8 @@ tags:
   - '3D Modelleme'
   - 'Millet Bahçeleri'
   - 'Görselleştirme'
-image: '/img/06-tasarim-banner.jpg'
-previewImage: '/img/06-tasarim-preview.jpg'
+image: '/img/06-tasarim-banner.png'
+previewImage: '/img/06-tasarim-preview.png'
 createdAt: '2023-08-01T00:00:00+03:00'
 ---
 
