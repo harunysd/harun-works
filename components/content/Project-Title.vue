@@ -54,7 +54,7 @@ emitter.once('overlay:hiding', showTitle);
 
 <style lang="scss">
 .project-title {
-  font-weight: 200;
+  font-weight: 500;
 
   max-width: 60vw;
 

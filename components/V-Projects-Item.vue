@@ -160,7 +160,7 @@ onMounted(() => {
 
     &__title {
       font-size: calc(var(--step-0) + 0.4rem);
-      font-weight: 200;
+      font-weight: 500;
       letter-spacing: 0.25px;
       color: #cccccc;
 

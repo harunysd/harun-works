@@ -149,7 +149,7 @@ watch(isShowingMenu, (bool) => {
           'menu__back-item__content--active': key === currentSection,
         }"
         tabindex="0"
-        :aria-label="`scroll to ${link.label}`"
+        :aria-label="link.label"
         @click="link.action"
       >
         <p

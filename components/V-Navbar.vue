@@ -212,7 +212,7 @@ onMounted(() => {
     <button
       v-if="route.name === 'index'"
       ref="navMenuButton"
-      aria-label="menu button"
+      aria-label="Menü"
       class="nav__menu-button"
       @click="toggleMenu"
       @keypress.space.enter="toggleMenu"
@@ -222,7 +222,13 @@ onMounted(() => {
       <MenuIconSVG ref="navMenuButtonSVG" />
     </button>
 
-    <NuxtLink v-else v-hoverable.action href="/" class="nav__back-link">
+    <NuxtLink
+      v-else
+      v-hoverable.action
+      href="/"
+      class="nav__back-link"
+      aria-label="Ana Sayfaya Dön"
+    >
       <ArrowLeft />
     </NuxtLink>
   </nav>

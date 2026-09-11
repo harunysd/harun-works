@@ -11,7 +11,11 @@ const { gsap } = useGsap();
 const aboutMeContent = ref(null);
 
 onMounted(() => {
-  const text = new SplitType(aboutMeContent.value.$el.firstChild, {
+  const paragraphs = aboutMeContent.value.$el.querySelectorAll('p');
+  const target =
+    paragraphs.length > 0 ? paragraphs : aboutMeContent.value.$el.firstChild;
+
+  const text = new SplitType(target, {
     types: 'lines',
     lineClass: 'about-me__content__line',
   });
@@ -73,16 +77,20 @@ onMounted(() => {
     position: relative;
 
     font-size: calc(var(--step-2) + 0.125rem);
-    line-height: 1.3;
+    line-height: 1.35;
     color: darken($color: #ffffff, $amount: 25);
     text-align: left;
 
     width: fit-content;
-    max-width: 30ch;
+    max-width: 38ch;
 
     margin: 0 auto;
 
     overflow: hidden;
+
+    p:not(:last-child) {
+      margin-bottom: 2.25rem;
+    }
 
     &__line {
       width: fit-content !important;
