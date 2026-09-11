@@ -17,10 +17,25 @@ const navMenuButton = ref(null);
 const navMenuButtonSVG = ref(null);
 
 const links = [
-  { label: 'Ana Sayfa', action: () => $smoothScroll.scrollTo(0) },
-  { label: 'Çalışmalar', action: () => $smoothScroll.scrollTo('.projects') },
-  { label: 'Hakkımda', action: () => $smoothScroll.scrollTo('.about-me') },
-  { label: 'İletişim', action: () => $smoothScroll.scrollTo('.contact') },
+  {
+    label: 'Ana Sayfa',
+    action: () => (route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/')),
+  },
+  {
+    label: 'Çalışmalar',
+    action: () =>
+      route.name === 'index' ? $smoothScroll.scrollTo('.projects') : navigateTo('/#projects'),
+  },
+  {
+    label: 'Hakkımda',
+    action: () =>
+      route.name === 'index' ? $smoothScroll.scrollTo('.about-me') : navigateTo('/#about-me'),
+  },
+  {
+    label: 'İletişim',
+    action: () =>
+      route.name === 'index' ? $smoothScroll.scrollTo('.contact') : navigateTo('/#contact'),
+  },
 ];
 
 const SVG_SIZE = 20;
@@ -184,13 +199,11 @@ onMounted(() => {
 <template>
   <nav ref="nav" class="nav" data-scroll-sticky>
     <p
-      v-show="route.name === 'index'"
       ref="navTitle"
-      v-hoverable.action
       tabindex="0"
       class="nav__title"
-      @click="() => $smoothScroll.scrollTo(0)"
-      @keypress.enter.space.prevent="() => $smoothScroll.scrollTo(0)"
+      @click="() => (route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/'))"
+      @keypress.enter.space.prevent="() => (route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/'))"
     >
       HYS
     </p>
@@ -199,7 +212,6 @@ onMounted(() => {
       <li
         v-for="(link, key) in links"
         :key="key"
-        v-hoverable.action
         tabindex="0"
         class="nav__list__item"
         @click="link.action"
@@ -224,7 +236,6 @@ onMounted(() => {
 
     <NuxtLink
       v-else
-      v-hoverable.action
       href="/"
       class="nav__back-link"
       aria-label="Ana Sayfaya Dön"
@@ -243,7 +254,7 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 50%;
-  z-index: 9;
+  z-index: 25;
 
   width: 95%;
   max-width: 1400px;
@@ -262,7 +273,7 @@ onMounted(() => {
     margin: 0;
 
     pointer-events: all;
-    cursor: none;
+    cursor: pointer;
   }
 
   &__list {
@@ -272,7 +283,7 @@ onMounted(() => {
     flex-direction: column;
 
     position: relative;
-    z-index: 1;
+    z-index: 25;
 
     margin: 0;
     padding: 0;
@@ -281,18 +292,25 @@ onMounted(() => {
     pointer-events: all;
 
     &__item {
-      font-size: calc(var(--step--2) - 0.05rem);
+      font-size: calc(var(--step--2) + 0.05rem);
 
       opacity: 0;
 
-      cursor: none;
+      cursor: pointer !important;
+      pointer-events: all;
+      user-select: none;
+      padding: 0.35rem 0.75rem;
+      margin: -0.1rem -0.4rem;
+      border-radius: 4px;
+      transition: background-color 0.2s, color 0.2s, opacity 0.2s;
 
-      &:not(:first-of-type) {
-        margin-top: 0.25rem;
+      &:hover {
+        color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.12);
       }
 
-      @media (prefers-reduced-motion: reduce) {
-        cursor: pointer;
+      &:not(:first-of-type) {
+        margin-top: 0.15rem;
       }
     }
 
@@ -307,6 +325,8 @@ onMounted(() => {
 
       width: var(--size);
       height: var(--size);
+
+      pointer-events: none;
 
       opacity: var(--indicator-opacity);
       border-radius: 50%;
@@ -405,7 +425,7 @@ onMounted(() => {
 
     pointer-events: all;
     opacity: 0;
-    cursor: none;
+    cursor: pointer !important;
     transition: background-color 0.75s var(--easing);
 
     svg {

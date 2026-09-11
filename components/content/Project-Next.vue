@@ -54,7 +54,7 @@ if (process.server) {
   margin-top: 10rem;
 
   overflow: hidden;
-  cursor: none;
+  cursor: pointer;
 
   &__image {
     display: block;

@@ -22,8 +22,6 @@ export default defineNuxtPlugin({
       if (!pointerModifiersWhitelist.includes(modifier))
         throw new Error(`not valid modifier: '${modifier}' at ${el}`);
 
-      el.style.pointer = 'none';
-
       const emitter = useEmitter();
 
       unregisterMap[el] ||= [];

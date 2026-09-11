@@ -81,12 +81,12 @@ onMounted(() => {
   if (isTouch || prefersReducedMotion.value) return;
 
   const toPointerX = gsap.quickTo(pointer.value, 'x', {
-    ease: 'expo.out',
-    duration: 0.5,
+    ease: 'power3.out',
+    duration: 0.08,
   });
   const toPointerY = gsap.quickTo(pointer.value, 'y', {
-    ease: 'expo.out',
-    duration: 0.5,
+    ease: 'power3.out',
+    duration: 0.08,
   });
 
   const pointerScaleTl = gsap.to(pointer.value, {
@@ -164,7 +164,7 @@ onMounted(() => {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9;
+  z-index: 5;
 
   width: var(--size);
   height: var(--size);
@@ -175,7 +175,7 @@ onMounted(() => {
 
   mix-blend-mode: exclusion;
 
-  pointer-events: none;
+  pointer-events: none !important;
   transform: translate(-50%, -50%);
 
   transition: opacity 0.2s ease;

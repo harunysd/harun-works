@@ -81,7 +81,7 @@ function hideHoverText() {
 
   margin: 0;
 
-  cursor: none;
+  cursor: pointer;
 
   &__wrapper {
     position: relative;

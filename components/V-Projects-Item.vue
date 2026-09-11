@@ -119,7 +119,7 @@ onMounted(() => {
     grid-template-rows: fit-content fit-content;
     gap: 1rem;
 
-    cursor: none;
+    cursor: pointer;
     text-decoration: none;
 
     @media (prefers-reduced-motion: reduce) {
@@ -196,7 +196,7 @@ onMounted(() => {
     width: var(--size);
     height: var(--size);
 
-    cursor: none;
+    cursor: pointer;
 
     transform: translateY(-100%);
 

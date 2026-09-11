@@ -26,7 +26,7 @@ function scrollDown() {
 
   opacity: 0;
 
-  cursor: none;
+  cursor: pointer;
   transition: color 400ms;
 
   &__circle {

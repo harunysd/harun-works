@@ -93,3 +93,19 @@ h5 {
 .c-scrollbar {
   z-index: 9;
 }
+
+/* Ensure native mouse cursor is always visible and crisp across interactive elements */
+a,
+button,
+[role="button"],
+.nav__list__item,
+.nav__title,
+.nav__back-link,
+.nav__menu-button,
+.project-link,
+.project__wrapper,
+.footer-link,
+.scroll-down {
+  cursor: pointer !important;
+}
+

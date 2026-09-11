@@ -249,7 +249,7 @@ onMounted(() => {
 
     padding: 0 0 1rem;
 
-    cursor: none;
+    cursor: pointer;
     border: none;
     background: var(--black-color);
 

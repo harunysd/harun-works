@@ -101,7 +101,7 @@ onMounted(() => {
     line-height: 1;
     text-decoration: none;
 
-    cursor: none;
+    cursor: pointer;
 
     &__row {
       display: block;
