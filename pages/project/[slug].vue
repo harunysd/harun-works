@@ -8,6 +8,8 @@ const { data: project } = await useAsyncData(
   () => queryContent(`project/${route.params.slug}`).findOne(),
 );
 
+provide('projectData', project);
+
 if (process.server) {
   useHead(
     {

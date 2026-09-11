@@ -66,10 +66,7 @@ const typeClasses = computed(() => {
   }
 
   &--fwidth {
-    height: auto;
-
-    padding: 0;
-    margin-bottom: 10rem;
+    display: none;
   }
 
   &--text {

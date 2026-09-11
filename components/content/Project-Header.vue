@@ -1,84 +1,81 @@
 <script setup>
-const { gsap } = useGsap();
-const emitter = useEmitter();
+const route = useRoute();
 
-const slots = ['live', 'source'];
+const injectedProject = inject('projectData', null);
 
-const revealInfoLinks = () =>
-  gsap.to('.project-header__info__links__item__content', {
-    yPercent: -110,
-    stagger: { from: 'end', each: 0.075 },
-    ease: 'expo.out',
-    duration: 1,
-    delay: 0.285,
-  });
-
-emitter.once('overlay:hiding', revealInfoLinks);
+const project = computed(() => injectedProject?.value || {});
+const imageUrl = computed(
+  () => project.value?.image || project.value?.previewImage || '',
+);
 </script>
 
 <template>
   <header class="project-header" data-scroll-section>
-    <slot class="project-header__title" />
+    <div v-if="imageUrl" class="project-header__bg">
+      <img
+        :src="imageUrl"
+        :alt="project?.title || ''"
+        class="project-header__bg__image"
+      />
+      <div class="project-header__bg__overlay" />
+    </div>
 
-    <div class="project-header__info">
-      <ul class="project-header__info__links">
-        <template v-for="(slot, key) in slots">
-          <li
-            v-if="$slots[slot]"
-            :key="key"
-            :class="[
-              'project-header__info__links__item',
-              `project-header__info__links__item--${slot}`,
-            ]"
-            data-scroll
-            :data-scroll-speed="1.25 + 0.25 * (slots.length - key)"
-          >
-            <span class="project-header__info__links__item__content">
-              <ContentSlot :use="$slots[slot]" :unwrap="true" />
-            </span>
-          </li>
-        </template>
-      </ul>
+    <div class="project-header__content">
+      <slot class="project-header__title" />
     </div>
   </header>
 </template>
 
 <style lang="scss">
 .project-header {
-  min-height: 75vh;
+  position: relative;
+  min-height: 65vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
 
-  padding: 30vh clamp(1rem, 7vw, 10rem) 0;
+  padding: clamp(6rem, 15vh, 12rem) clamp(1rem, 7vw, 10rem) clamp(2.5rem, 6vh, 4.5rem);
+  margin-bottom: 3.5rem;
 
-  &__info {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+  &__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    overflow: hidden;
 
-    margin-top: 2rem;
+    &__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      transform: scale(1.02);
+    }
 
-    &__links {
-      display: grid;
-      justify-content: start;
-      align-content: end;
-      grid-template-rows: 1fr;
-      gap: 0.5rem;
-
-      text-align: right;
-
-      padding: 0;
-      margin-left: auto;
-      list-style-type: none;
-
-      &__item {
-        overflow: hidden;
-
-        &__content {
-          display: inline-block;
-
-          transform: translateY(110%);
-        }
-      }
+    &__overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      // Koyu şeffaf ton: başlığın okunabilirliğini maksimuma çıkarır ve alttaki sayfaya yumuşakça bağlanır
+      background: linear-gradient(
+        180deg,
+        rgba(3, 3, 3, 0.45) 0%,
+        rgba(3, 3, 3, 0.68) 50%,
+        rgba(3, 3, 3, 0.95) 100%
+      );
     }
   }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
 }
 </style>
