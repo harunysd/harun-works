@@ -138,14 +138,15 @@ onMounted(() => {
 
     &__wrapper {
       width: 100%;
-      height: 40vw;
-      min-height: 20rem;
-      max-height: 30rem;
+      height: 22vw;
+      min-height: 11rem;
+      max-height: 16.5rem;
 
       overflow: hidden;
+      border-radius: 8px;
 
-      @supports (aspect-ratio: 1/1) {
-        aspect-ratio: 1/1;
+      @supports (aspect-ratio: 16 / 9) {
+        aspect-ratio: 16 / 9;
 
         height: unset;
         max-height: unset;
