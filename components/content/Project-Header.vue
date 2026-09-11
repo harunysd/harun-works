@@ -29,14 +29,14 @@ const imageUrl = computed(
 <style lang="scss">
 .project-header {
   position: relative;
-  min-height: 65vh;
+  min-height: clamp(320px, 46vh, 500px);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
 
-  padding: clamp(6rem, 15vh, 12rem) clamp(1rem, 7vw, 10rem) clamp(2.5rem, 6vh, 4.5rem);
-  margin-bottom: 3.5rem;
+  padding: clamp(5rem, 9vh, 7rem) clamp(1rem, 7vw, 10rem) clamp(1.5rem, 3vh, 2.25rem);
+  margin-bottom: 1.5rem;
 
   &__bg {
     position: absolute;

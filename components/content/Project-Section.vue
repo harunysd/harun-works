@@ -58,7 +58,11 @@ const typeClasses = computed(() => {
 
   p {
     opacity: 0.925;
-    margin-block: 2.125rem;
+    margin-block: 1.5rem;
+
+    &:first-of-type {
+      margin-top: 0.5rem;
+    }
 
     @media (prefers-color-scheme: light) {
       opacity: 1;
