@@ -204,38 +204,5 @@ onMounted(() => {
       cursor: pointer;
     }
   }
-
-  &::after {
-    content: '';
-
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-
-    opacity: 0;
-    background-color: rgba($color: #030303, $alpha: 0.45);
-    pointer-events: none;
-
-    transition:
-      opacity 400ms,
-      background-color 400ms;
-
-    @media (prefers-color-scheme: light) {
-      background-color: rgba($color: #f7f8f7, $alpha: 0.25);
-    }
-
-    @media (hover: hover) {
-      opacity: 1;
-    }
-  }
-
-  &:is(:focus-within, :hover) {
-    &::after {
-      opacity: 0;
-    }
-  }
 }
 </style>
