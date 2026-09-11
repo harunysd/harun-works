@@ -58,10 +58,6 @@ const { data: projects } = await useAsyncData('projects', () =>
 
     @media screen and (min-width: 850px) {
       margin-block-start: 4rem;
-
-      &__item:nth-child(2) {
-        margin-block-start: 4.5rem;
-      }
     }
   }
 

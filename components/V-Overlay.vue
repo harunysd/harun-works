@@ -14,12 +14,9 @@ function leavePageAnim(pageEl, done) {
 
   const tl = gsap.timeline({
     defaults: { ease: 'expo.out' },
-    onComplete: () => {
-      done();
-    },
   });
 
-  tl.to(pageEl, { y: -500, duration: 1.5, ease: 'power4.out' }, 0);
+  tl.to(pageEl, { y: -300, duration: 1, ease: 'power4.out' }, 0);
   tl.fromTo(
     '.page-overlay__slide',
     {
@@ -33,8 +30,12 @@ function leavePageAnim(pageEl, done) {
       stagger: { each: 0.085 },
       duration: 0.75,
       onComplete: () => {
+        // Call done() as soon as overlay fully covers the screen —
+        // this lets Vue swap pages immediately without waiting for
+        // the (slower) page-slide animation to finish.
         $smoothScroll.disable();
         $smoothScroll.scrollTo(0, 0);
+        done();
       },
     },
     0,
@@ -45,7 +46,7 @@ function enterPageAnim(pageEl, done) {
   routeChanging.value = true;
 
   const tl = gsap.timeline({
-    delay: 0.15,
+    delay: 0.1,
     defaults: { ease: 'expo.out' },
     paused: true,
     onStart: () => {
@@ -64,8 +65,8 @@ function enterPageAnim(pageEl, done) {
 
   tl.from(
     pageEl,
-    { y: 500, duration: 1, ease: 'power3.out', clearProps: true },
-    0.2,
+    { y: 300, duration: 0.9, ease: 'power3.out', clearProps: true },
+    0.15,
   );
 
   tl.fromTo(
@@ -81,12 +82,12 @@ function enterPageAnim(pageEl, done) {
       stagger: { each: 0.085, from: 'end' },
       duration: 0.75,
     },
-    0.2,
+    0.15,
   );
 
-  tl.add(() => emitter.emit('overlay:hiding'), '-=0.725');
-  tl.add(() => ScrollTrigger.refresh(), 0.5125);
-  tl.add(() => $smoothScroll.enable(), 0.75);
+  tl.add(() => emitter.emit('overlay:hiding'), '-=0.65');
+  tl.add(() => ScrollTrigger.refresh(), 0.45);
+  tl.add(() => $smoothScroll.enable(), 0.7);
 
   let hasPlayed = false;
   const playTl = () => {
@@ -97,8 +98,10 @@ function enterPageAnim(pageEl, done) {
   };
 
   emitter.once('images:loaded', playTl);
-  // Failsafe: always play within 500ms regardless of image events
-  setTimeout(playTl, 500);
+  // Short failsafe: images are cached on project-to-project nav,
+  // so images:loaded fires before this listener is registered.
+  // 30ms ensures we never hang more than ~130ms total.
+  setTimeout(playTl, 30);
 }
 </script>
 

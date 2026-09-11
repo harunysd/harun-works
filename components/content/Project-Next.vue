@@ -58,7 +58,7 @@ if (process.server) {
   min-height: min(20rem, 40vh);
 
   padding: 2.5rem 3rem;
-  margin-top: 3.5rem;
+  margin-top: 0;
   margin-bottom: 0;
 
   background-color: #030303;
@@ -103,16 +103,17 @@ if (process.server) {
     content: '';
 
     position: absolute;
-    top: -2px;
+    top: -1px;
     left: 0;
     right: 0;
-    height: 90px;
+    height: 120px;
     z-index: 1;
     pointer-events: none;
     background: linear-gradient(
       to bottom,
       #030303 0%,
-      rgba(3, 3, 3, 0.8) 50%,
+      rgba(3, 3, 3, 0.9) 40%,
+      rgba(3, 3, 3, 0.5) 70%,
       transparent 100%
     );
   }

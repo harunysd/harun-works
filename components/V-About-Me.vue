@@ -34,7 +34,15 @@ const skillGroups = [
       'Veri & API Entegrasyonları',
       'Otomasyon',
       'AI / LLM',
-      'Web & Uygulama Geliştirme',
+    ],
+  },
+  {
+    title: 'Web & Uygulama Geliştirme',
+    items: [
+      'Vue / Nuxt',
+      'React / Next.js',
+      'Node.js',
+      'Python',
     ],
   },
 ];
