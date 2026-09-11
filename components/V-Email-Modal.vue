@@ -158,15 +158,15 @@ onBeforeUnmount(() => {
               <span class="email-modal__item-value">{{ item.value }}</span>
               <button
                 class="email-modal__copy-btn"
-                :class="{ 'email-modal__copy-btn--copied': copiedField === item.value }"
+                :class="{
+                  'email-modal__copy-btn--copied': copiedField === item.value,
+                }"
                 @click="copyEmail(item.value)"
               >
                 <template v-if="copiedField === item.value">
                   Kopyalandı ✓
                 </template>
-                <template v-else>
-                  Kopyala
-                </template>
+                <template v-else> Kopyala </template>
               </button>
             </div>
           </div>
@@ -326,17 +326,21 @@ onBeforeUnmount(() => {
 
   &__item-row {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 0.75rem;
   }
 
   &__item-value {
+    min-width: 0;
+    flex: 1 1 12rem;
+
     font-size: 0.95rem;
     font-weight: 500;
     letter-spacing: 0.2px;
     user-select: all;
-    word-break: break-all;
+    overflow-wrap: anywhere;
     color: #f0f0f0;
 
     @media (prefers-color-scheme: light) {
@@ -377,6 +381,30 @@ onBeforeUnmount(() => {
       &:hover {
         background: #252525;
       }
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    &__backdrop {
+      padding: 0.75rem;
+    }
+
+    &__card {
+      padding: 1.25rem 1rem;
+    }
+
+    &__item-row {
+      align-items: flex-start;
+    }
+
+    &__item-value {
+      flex-basis: 100%;
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    &__copy-btn {
+      width: 100%;
     }
   }
 }

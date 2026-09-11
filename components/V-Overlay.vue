@@ -40,8 +40,35 @@ function leavePageAnim(pageEl, done) {
   );
 }
 
-function enterPageAnim(pageEl, done) {
+function waitForPageContent(pageEl) {
+  return new Promise((resolve) => {
+    const startedAt = performance.now();
+    const maxWait = 1800;
+
+    const check = () => {
+      const hasPageContent = pageEl?.querySelector(
+        '.project-header, .smooth-scroll-fix, [data-error-page]',
+      );
+
+      if (hasPageContent || performance.now() - startedAt >= maxWait) {
+        resolve();
+        return;
+      }
+
+      requestAnimationFrame(check);
+    };
+
+    check();
+  });
+}
+
+async function enterPageAnim(pageEl, done) {
   routeChanging.value = true;
+
+  // Keep the outgoing page covered while async page data/components mount.
+  // Vue calls the enter hook as soon as the transition wrapper exists, which
+  // can be a few frames before Nuxt has rendered the actual page content.
+  await waitForPageContent(pageEl);
 
   const tl = gsap.timeline({
     defaults: { ease: 'power3.out' },

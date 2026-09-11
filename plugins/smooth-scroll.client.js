@@ -114,7 +114,22 @@ function makeLocomotiveScrollAdaptor(locomotiveScroll) {
           }
         }
       } else {
-        window.scrollTo(0, typeof selectorOrNumber === 'number' ? selectorOrNumber : 0);
+        const targetElement =
+          typeof selectorOrNumber === 'string'
+            ? document.querySelector(selectorOrNumber)
+            : null;
+        let targetY = 0;
+
+        if (typeof selectorOrNumber === 'number') {
+          targetY = selectorOrNumber;
+        } else if (targetElement) {
+          targetY = targetElement.getBoundingClientRect().top + window.scrollY;
+        }
+
+        window.scrollTo({
+          top: targetY,
+          behavior: durationInSeconds > 0 ? 'smooth' : 'auto',
+        });
       }
     },
   };
