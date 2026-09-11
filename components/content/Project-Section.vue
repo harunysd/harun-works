@@ -61,7 +61,7 @@ const typeClasses = computed(() => {
     margin-block: 1.5rem;
 
     &:first-of-type {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
     }
 
     @media (prefers-color-scheme: light) {
@@ -76,7 +76,7 @@ const typeClasses = computed(() => {
   &--text {
     max-width: 55ch;
 
-    margin-bottom: 1.5rem;
+    margin-bottom: 4rem;
   }
 
   &--2-col {

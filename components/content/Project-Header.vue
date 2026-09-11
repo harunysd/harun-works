@@ -36,7 +36,7 @@ const imageUrl = computed(
   overflow: hidden;
 
   padding: clamp(5rem, 9vh, 7rem) clamp(1rem, 7vw, 10rem) clamp(1.5rem, 3vh, 2.25rem);
-  margin-bottom: 1.5rem;
+  margin-bottom: 3.5rem;
 
   &__bg {
     position: absolute;

@@ -57,8 +57,8 @@ if (process.server) {
 
   min-height: min(20rem, 40vh);
 
-  padding: 1.5rem 2rem;
-  margin-top: 1.5rem;
+  padding: 2.5rem 3rem;
+  margin-top: 3.5rem;
   margin-bottom: 0;
 
   background-color: #030303;
