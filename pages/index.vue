@@ -8,9 +8,9 @@ if (process.server) {
 }
 
 useHead({
-  title: 'Front End Developer',
+  title: 'Şehir Plancısı',
   meta: [
-    { property: 'og:title', name: 'og:title', content: 'Front End Developer' },
+    { property: 'og:title', name: 'og:title', content: 'Şehir Plancısı' },
     { name: 'description', content: 'Perfection hides in details' },
     {
       property: 'og:description',
