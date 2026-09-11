@@ -183,18 +183,18 @@ onMounted(() => {
     }
 
     &__group-title {
-      font-size: calc(var(--step--1) + 0.1rem);
-      font-weight: 500;
-      letter-spacing: 0.06em;
+      font-size: clamp(0.72rem, 0.8vw, 0.82rem);
+      font-weight: 600;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--ff-color);
-      opacity: 0.9;
-      margin: 0 0 1.25rem 0;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      opacity: 0.8;
+      margin: 0 0 1rem 0;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
       @media (prefers-color-scheme: light) {
-        border-bottom-color: rgba(0, 0, 0, 0.1);
+        border-bottom-color: rgba(0, 0, 0, 0.08);
       }
     }
 
@@ -204,15 +204,15 @@ onMounted(() => {
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.55rem;
+      gap: 0.4rem;
     }
 
     &__item {
-      font-size: var(--step--1);
+      font-size: clamp(0.75rem, 0.85vw, 0.88rem);
       color: var(--ff-color);
-      opacity: 0.65;
+      opacity: 0.6;
       font-weight: 400;
-      line-height: 1.4;
+      line-height: 1.35;
       transition: opacity 200ms ease;
 
       &:hover {

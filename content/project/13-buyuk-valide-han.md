@@ -7,8 +7,8 @@ tags:
   - 'Tarihi Yarımada'
   - 'Büyük Valide Han'
   - 'Mekânsal Analiz'
-image: '/img/sur-banner.jpg'
-previewImage: '/img/sur-preview.jpg'
+image: '/img/13-validehan-banner.jpg'
+previewImage: '/img/13-validehan-preview.jpg'
 createdAt: '2018-12-01T00:00:00+03:00'
 ---
 

@@ -7,7 +7,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'tr', dir: 'ltr' },
-      titleTemplate: '%s | HARUN WORKS',
+      title: 'Harun Yasir SARIDAŞ',
+      titleTemplate: '%s',
       meta: [
         { lang: 'tr' },
         { language: 'Turkish' },

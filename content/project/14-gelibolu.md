@@ -7,8 +7,8 @@ tags:
   - 'Kıyı Planlama'
   - 'Gelibolu'
   - 'Kamusal Alan'
-image: '/img/kiyi-banner.jpg'
-previewImage: '/img/kiyi-preview.jpg'
+image: '/img/14-gelibolu-banner.jpg'
+previewImage: '/img/14-gelibolu-preview.jpg'
 createdAt: '2018-06-01T00:00:00+03:00'
 ---
 

@@ -7,8 +7,8 @@ tags:
   - 'Mahalle Odaklı'
   - 'Kentsel Dönüşüm'
   - 'Etaplama'
-image: '/img/donusum-banner.jpg'
-previewImage: '/img/donusum-preview.jpg'
+image: '/img/08-gunesli-banner.jpg'
+previewImage: '/img/08-gunesli-preview.jpg'
 createdAt: '2021-05-01T00:00:00+03:00'
 ---
 

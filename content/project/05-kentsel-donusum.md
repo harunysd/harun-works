@@ -7,8 +7,8 @@ tags:
   - 'Risk Analizi'
   - 'Saha Analizi'
   - 'Uzlaşma'
-image: '/img/donusum-banner.jpg'
-previewImage: '/img/donusum-preview.jpg'
+image: '/img/05-donusum-banner.jpg'
+previewImage: '/img/05-donusum-preview.jpg'
 createdAt: '2024-05-01T00:00:00+03:00'
 ---
 

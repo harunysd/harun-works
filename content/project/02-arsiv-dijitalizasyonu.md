@@ -7,8 +7,8 @@ tags:
   - 'Mekânsal Veri'
   - 'ArcGIS Dashboard'
   - 'Yapay Zekâ'
-image: '/img/ulasim-banner.jpg'
-previewImage: '/img/ulasim-preview.jpg'
+image: '/img/02-arsiv-banner.jpg'
+previewImage: '/img/02-arsiv-preview.jpg'
 createdAt: '2026-02-01T00:00:00+03:00'
 ---
 

@@ -25,7 +25,7 @@ const { data: projects } = await useAsyncData('projects', () =>
 .projects {
   color: var(--ff-color);
 
-  padding: 4rem clamp(1rem, 7vw, 5rem) 1rem;
+  padding: 4rem clamp(1rem, 7vw, 5rem) clamp(6rem, 10vw, 10rem);
   margin-top: -1px;
 
   background-color: var(--surface-color);
@@ -38,18 +38,17 @@ const { data: projects } = await useAsyncData('projects', () =>
 
     // NOTE: smoothscroll (locomotive scroll) breakpoint
     @media screen and (min-width: 1024px) {
-      margin-bottom: 7rem;
+      margin-bottom: 6rem;
     }
   }
 
   &__list {
-    --spacing: 60%;
-
     display: grid;
     justify-items: center;
     align-items: start;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: calc(1.25 * var(--step-5));
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    row-gap: clamp(4rem, 6vw, 6.5rem);
 
     max-width: 1100px;
 
@@ -58,22 +57,10 @@ const { data: projects } = await useAsyncData('projects', () =>
     padding-inline-start: 0;
 
     @media screen and (min-width: 850px) {
-      margin-block-start: 5rem;
-
-      &__item:nth-child(odd) {
-        margin-block-start: calc(-0.75 * var(--spacing));
-      }
-
-      &__item:nth-child(even) {
-        margin-block-start: calc(0.125 * var(--spacing));
-      }
-
-      &__item:first-of-type {
-        margin-block-start: 0;
-      }
+      margin-block-start: 4rem;
 
       &__item:nth-child(2) {
-        margin-block-start: var(--spacing);
+        margin-block-start: 4.5rem;
       }
     }
   }

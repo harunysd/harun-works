@@ -7,8 +7,8 @@ tags:
   - 'Afet Yönetimi'
   - 'CBS & Harita'
   - 'Yapay Zekâ'
-image: '/img/akom-banner.jpg'
-previewImage: '/img/akom-preview.jpg'
+image: '/img/01-komuta-banner.jpg'
+previewImage: '/img/01-komuta-preview.jpg'
 createdAt: '2026-03-01T00:00:00+03:00'
 ---
 

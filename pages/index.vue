@@ -8,9 +8,13 @@ if (process.server) {
 }
 
 useHead({
-  title: 'Şehir Plancısı',
+  title: 'Harun Yasir SARIDAŞ',
   meta: [
-    { property: 'og:title', name: 'og:title', content: 'Şehir Plancısı' },
+    {
+      property: 'og:title',
+      name: 'og:title',
+      content: 'Harun Yasir SARIDAŞ',
+    },
     {
       name: 'description',
       content: 'Şehir Planlama · Afet Yönetimi · CBS · Dijital Sistemler',
@@ -27,6 +31,7 @@ useHead({
   ],
 });
 
+const { $smoothScroll } = useNuxtApp();
 const { gsap, ScrollTrigger } = useGsap();
 const emitter = useEmitter();
 const currentSection = useCurrentSection();
@@ -56,7 +61,12 @@ onMounted(() => {
   });
 });
 
-useImagesLoaded(indexPage, () => emitter.emit('images:loaded'));
+useImagesLoaded(indexPage, () => {
+  emitter.emit('images:loaded');
+  nextTick(() => {
+    $smoothScroll?.update?.();
+  });
+});
 </script>
 
 <template>
@@ -69,7 +79,6 @@ useImagesLoaded(indexPage, () => emitter.emit('images:loaded'));
         <VContact />
       </main>
     </div>
-    <VFooter />
 
     <Teleport to="body">
       <VMenu />

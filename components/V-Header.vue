@@ -66,12 +66,12 @@ onBeforeUnmount(() => {
     <div class="header__container">
       <h1 class="header__container__title">
         <span class="header__container__title__line">
-          <span class="header__container__title__line__content">HARUN</span>
+          <span class="header__container__title__line__content">Harun Yasir</span>
         </span>
         <span
           class="header__container__title__line header__container__title__line--pl"
         >
-          <span class="header__container__title__line__content">WORKS</span>
+          <span class="header__container__title__line__content">SARIDAŞ</span>
         </span>
       </h1>
 
@@ -188,6 +188,7 @@ onBeforeUnmount(() => {
     transition: color 400ms;
 
     &__title {
+      font-size: min(var(--step-5), 8.8vw);
       font-weight: 500;
 
       color: $base-color;
@@ -201,6 +202,7 @@ onBeforeUnmount(() => {
         line-height: 1.25;
 
         overflow: hidden;
+        white-space: nowrap;
 
         &__content {
           display: inline-block;
@@ -210,7 +212,7 @@ onBeforeUnmount(() => {
 
         &--pl {
           margin-top: clamp(-0.5rem, -1vw, -0.25rem);
-          padding-left: calc(var(--step-5) * 1.5);
+          padding-left: min(calc(var(--step-5) * 1.5), 18vw);
         }
       }
     }
