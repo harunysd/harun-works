@@ -33,9 +33,6 @@ if (process.server) {
       :src="next.previewImage"
       :alt="next.title"
       class="project-next__image"
-      data-scroll
-      data-scroll-speed="-2"
-      data-scroll-position="bottom"
     />
 
     <span class="project-next__title">{{ next.title }}</span>
@@ -50,6 +47,7 @@ if (process.server) {
 
   position: relative;
   z-index: 1;
+  isolation: isolate;
 
   font-size: var(--step-2);
   color: currentColor;
@@ -58,7 +56,7 @@ if (process.server) {
   min-height: min(20rem, 40vh);
 
   padding: 2.5rem 3rem;
-  margin-top: 0;
+  margin-top: -1px;
   margin-bottom: 0;
 
   background-color: #030303;
@@ -76,12 +74,12 @@ if (process.server) {
     display: block;
 
     position: absolute;
-    top: -20%;
+    top: 0;
     left: 0;
     z-index: 0;
 
     width: 100%;
-    height: 140%;
+    height: 100%;
 
     object-fit: cover;
     object-position: center center;

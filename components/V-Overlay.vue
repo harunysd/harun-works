@@ -13,10 +13,10 @@ function leavePageAnim(pageEl, done) {
   routeChanging.value = true;
 
   const tl = gsap.timeline({
-    defaults: { ease: 'expo.out' },
+    defaults: { ease: 'power3.inOut' },
   });
 
-  tl.to(pageEl, { y: -300, duration: 1, ease: 'power4.out' }, 0);
+  tl.to(pageEl, { y: -150, duration: 0.35, ease: 'power2.in' }, 0);
   tl.fromTo(
     '.page-overlay__slide',
     {
@@ -27,12 +27,9 @@ function leavePageAnim(pageEl, done) {
     {
       yPercent: 0,
       scaleY: 1,
-      stagger: { each: 0.085 },
-      duration: 0.75,
+      stagger: { each: 0.04 },
+      duration: 0.35,
       onComplete: () => {
-        // Call done() as soon as overlay fully covers the screen —
-        // this lets Vue swap pages immediately without waiting for
-        // the (slower) page-slide animation to finish.
         $smoothScroll.scrollTo(0, 0);
         $smoothScroll.reset?.();
         $smoothScroll.disable();
@@ -47,27 +44,21 @@ function enterPageAnim(pageEl, done) {
   routeChanging.value = true;
 
   const tl = gsap.timeline({
-    delay: 0.1,
-    defaults: { ease: 'expo.out' },
-    paused: true,
+    defaults: { ease: 'power3.out' },
     onStart: () => {
       routeChanging.value = false;
-
       emitter.emit('pointer:inactive');
     },
     onComplete: () => {
       done();
-
-      // when user was scrolling down, the nav will be hidden, but
-      // on a new page the nav should be visible
       gsap.to('.nav', { autoAlpha: 1 });
     },
   });
 
   tl.from(
     pageEl,
-    { y: 300, duration: 0.9, ease: 'power3.out', clearProps: true },
-    0.15,
+    { y: 150, duration: 0.45, ease: 'power3.out', clearProps: true },
+    0.05,
   );
 
   tl.fromTo(
@@ -80,32 +71,18 @@ function enterPageAnim(pageEl, done) {
     {
       yPercent: -75,
       scaleY: 0.5,
-      stagger: { each: 0.085, from: 'end' },
-      duration: 0.75,
+      stagger: { each: 0.04, from: 'end' },
+      duration: 0.35,
     },
-    0.15,
+    0.05,
   );
 
-  tl.add(() => emitter.emit('overlay:hiding'), '-=0.65');
+  tl.add(() => emitter.emit('overlay:hiding'), 0.1);
   tl.add(() => {
     $smoothScroll.enable();
     $smoothScroll.update();
     ScrollTrigger.refresh();
-  }, 0.5);
-
-  let hasPlayed = false;
-  const playTl = () => {
-    if (!hasPlayed) {
-      hasPlayed = true;
-      tl.play();
-    }
-  };
-
-  emitter.once('images:loaded', playTl);
-  // Short failsafe: images are cached on project-to-project nav,
-  // so images:loaded fires before this listener is registered.
-  // 30ms ensures we never hang more than ~130ms total.
-  setTimeout(playTl, 30);
+  }, 0.25);
 }
 </script>
 
