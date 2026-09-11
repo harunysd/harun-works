@@ -18,7 +18,7 @@ useHead({
       </template>
     </p>
 
-    <a href="/" class="error-page__home-link">Maybe to home ?</a>
+    <a href="/" class="error-page__home-link">Ana sayfaya dön</a>
   </main>
 </template>
 

@@ -11,11 +11,11 @@ useHead({
   title: 'Şehir Plancısı',
   meta: [
     { property: 'og:title', name: 'og:title', content: 'Şehir Plancısı' },
-    { name: 'description', content: 'Perfection hides in details' },
+    { name: 'description', content: 'Kusursuzluk detaylarda gizlidir' },
     {
       property: 'og:description',
       name: 'og:description',
-      content: 'Perfection hides in details',
+      content: 'Kusursuzluk detaylarda gizlidir',
     },
   ],
 

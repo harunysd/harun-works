@@ -17,10 +17,10 @@ const navMenuButton = ref(null);
 const navMenuButtonSVG = ref(null);
 
 const links = [
-  { label: 'Home', action: () => $smoothScroll.scrollTo(0) },
-  { label: 'Projects', action: () => $smoothScroll.scrollTo('.projects') },
-  { label: 'About', action: () => $smoothScroll.scrollTo('.about-me') },
-  { label: 'Contact', action: () => $smoothScroll.scrollTo('.contact') },
+  { label: 'Ana Sayfa', action: () => $smoothScroll.scrollTo(0) },
+  { label: 'Projeler', action: () => $smoothScroll.scrollTo('.projects') },
+  { label: 'Hakkımda', action: () => $smoothScroll.scrollTo('.about-me') },
+  { label: 'İletişim', action: () => $smoothScroll.scrollTo('.contact') },
 ];
 
 const SVG_SIZE = 20;

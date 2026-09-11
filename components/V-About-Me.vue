@@ -40,7 +40,7 @@ onMounted(() => {
 
 <template>
   <section class="about-me" data-scroll-section>
-    <VH2 class="about-me__title">About Me</VH2>
+    <VH2 class="about-me__title">Hakkımda</VH2>
 
     <ContentRenderer
       ref="aboutMeContent"

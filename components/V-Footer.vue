@@ -63,26 +63,26 @@ onMounted(() => {
         </ul>
 
         <p class="footer__content__copyright">
-          Copyright ©{{ getCurrentYear() }} HARUN WORKS
+          ©{{ getCurrentYear() }} HARUN WORKS. Tüm hakları saklıdır.
         </p>
 
         <p class="footer__content__note">
-          Made with
+          İstanbul, Türkiye'de
           <img
-            title="love"
+            title="sevgi"
             loading="lazy"
             src="~/assets/img/heart.png"
             width="60"
             height="60"
-            alt="love"
+            alt="sevgi"
           />
-          in Istanbul, Türkiye
+          ile tasarlandı
         </p>
       </div>
       <button
         v-hoverable.action
         class="footer__arrow"
-        aria-label="to top"
+        aria-label="yukarı çık"
         @click="() => $smoothScroll.scrollTo(0)"
       >
         <ArrowUpSVG />
@@ -140,6 +140,7 @@ onMounted(() => {
 
     &__title {
       font-size: var(--step-4);
+      font-weight: 500;
       text-align: left;
       line-height: 1.125;
 

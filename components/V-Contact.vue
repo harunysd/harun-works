@@ -58,8 +58,7 @@ onMounted(() => {
           aria-hidden="true"
           class="contact__email__row__text"
         >
-          Send me an <span class="serif">email</span
-          ><span v-if="textKey !== textCount">&nbsp; - &nbsp;</span>
+          Bana bir <span class="serif">e-posta</span> gönderin<span v-if="textKey !== textCount">&nbsp; - &nbsp;</span>
         </span>
       </span>
     </NuxtLink>

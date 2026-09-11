@@ -6,11 +6,11 @@ import SVGLoader from 'vite-svg-loader';
 export default defineNuxtConfig({
   app: {
     head: {
-      htmlAttrs: { lang: 'en', dir: 'ltr' },
+      htmlAttrs: { lang: 'tr', dir: 'ltr' },
       titleTemplate: '%s | HARUN WORKS',
       meta: [
-        { lang: 'en' },
-        { language: 'English' },
+        { lang: 'tr' },
+        { language: 'Turkish' },
         { property: 'name', name: 'name', content: 'Harun Yasir Sarıdaş' },
         { charset: 'utf-8' },
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
@@ -25,7 +25,7 @@ export default defineNuxtConfig({
           name: 'og:site_name',
           content: 'HARUN WORKS',
         },
-        { property: 'og:locale', name: 'og:locale', content: 'en' },
+        { property: 'og:locale', name: 'og:locale', content: 'tr_TR' },
         { property: 'og:type', name: 'og:type', content: 'website' },
       ],
       link: [

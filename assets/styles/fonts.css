@@ -1,6 +1,14 @@
 @font-face {
   font-family: 'e-Ukraine';
   font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/e-Ukraine-Light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'e-Ukraine';
+  font-style: normal;
   font-weight: 200;
   font-display: swap;
   src: url('/fonts/e-Ukraine-UltraLight.woff2') format('woff2');

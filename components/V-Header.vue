@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
     transition: color 400ms;
 
     &__title {
-      font-weight: 200;
+      font-weight: 500;
 
       color: $base-color;
 
@@ -215,12 +215,13 @@ onBeforeUnmount(() => {
     }
 
     &__subtitle {
-      font-size: var(--step--2);
-      font-weight: 100;
+      font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+      font-weight: 500;
+      letter-spacing: 0.2em;
       text-align: center;
+      text-transform: uppercase;
 
       color: $base-color;
-      color: darken($color: $base-color, $amount: 15);
 
       margin: 0;
 

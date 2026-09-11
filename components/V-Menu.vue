@@ -11,28 +11,28 @@ const prefersReducedMotion = useReducedMotion();
 
 const navigationalLinks = [
   {
-    label: 'Home',
+    label: 'Ana Sayfa',
     action: () => {
       $smoothScroll.scrollTo(0);
       isShowingMenu.value = false;
     },
   },
   {
-    label: 'Projects',
+    label: 'Projeler',
     action: () => {
       $smoothScroll.scrollTo('.projects');
       isShowingMenu.value = false;
     },
   },
   {
-    label: 'About',
+    label: 'Hakkımda',
     action: () => {
       $smoothScroll.scrollTo('.about-me');
       isShowingMenu.value = false;
     },
   },
   {
-    label: 'Contact',
+    label: 'İletişim',
     action: () => {
       $smoothScroll.scrollTo('.contact');
       isShowingMenu.value = false;
