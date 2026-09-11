@@ -217,9 +217,10 @@ onBeforeUnmount(() => {
     }
 
     &__subtitle {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
       font-size: clamp(0.68rem, 1.15vw, 0.95rem);
-      font-weight: 500;
-      letter-spacing: 0.12em;
+      font-weight: 700;
+      letter-spacing: 0.15em;
       text-align: center;
       text-transform: uppercase;
 
