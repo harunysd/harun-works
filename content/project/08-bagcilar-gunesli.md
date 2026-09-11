@@ -1,6 +1,6 @@
 ---
 title: 'Bağcılar Güneşli — Kentsel Dönüşüm Eylem Planı'
-description: 'Güneşli Mahallesi için hazırlanan mahalle odaklı planlama ve kentsel dönüşüm çalışması. Mekânsal analizlerden dönüşüm modeli, aktörler ve etaplamaya uzanan bir eylem planı geliştirildi.'
+description: 'Güneşli Mahallesi için hazırlanan mahalle ölçekli kentsel dönüşüm eylem planı. Mekânsal analizler, dönüşüm modeli, paydaşlar ve etaplama birlikte ele alındı.'
 live: 'https://harun.works'
 tags:
   - 'Eylem Planı'
@@ -27,9 +27,9 @@ Bağcılar Güneşli — Kentsel Dönüşüm Eylem Planı
 :::
 
 :::project-section{type="text"}
-Bağcılar Güneşli Mahallesi’nin mevcut riskli yapı dokusunu rehabilite etmeyi hedefleyen mahalle ölçekli planlama çalışmasıdır.
+Bağcılar Güneşli Mahallesi’nin mevcut yapı dokusunu ve dönüşüm kapasitesini mahalle ölçeğinde ele alan kentsel dönüşüm eylem planıdır.
 
-Fiziksel, sosyal ve mülkiyet analizlerini tamamlayarak; kamu-özel sektör-vatandaş dengesini gözeten etaplama stratejileri, transfer alanları ve uygulanabilir bir kentsel dönüşüm eylem planı kurguladım.
+Fiziksel, sosyal ve mülkiyet analizlerini birlikte değerlendirerek kamu, özel sektör ve vatandaş arasındaki dengeyi gözeten etaplama stratejileri, transfer alanları ve uygulanabilir dönüşüm senaryoları geliştirdim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

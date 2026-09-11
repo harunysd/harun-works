@@ -1,6 +1,6 @@
 ---
 title: 'Komuta Merkezi — Afet Yönetimi & Komuta Platformu'
-description: 'Afet ve kriz yönetimi için bağımsız olarak geliştirdiğim modüler komuta merkezi platformu. Olay takibi, saha operasyonları, kriz yönetimi, raporlama, CBS ve kapalı devre yapay zekâ bileşenlerini ortak bir sistemde birleştiriyor.'
+description: 'Afet ve kriz yönetimi için geliştirmekte olduğum modüler komuta platformu. Olay takibi, saha operasyonları, raporlama, CBS ve kapalı devre yapay zekâ bileşenlerini ortak bir sistemde birleştiriyor.'
 live: 'https://harun.works'
 tags:
   - 'Komuta Platformu'
@@ -27,9 +27,9 @@ Komuta Merkezi — Afet Yönetimi & Komuta Platformu
 :::
 
 :::project-section{type="text"}
-Afet ve acil durumlarda farklı kaynaklardan gelen karmaşık saha verilerini tek bir arayüzde toplayan modüler bir komuta merkezi platformudur.
+Afet ve acil durumlarda farklı kaynaklardan üretilen saha verilerini tek bir operasyonel arayüzde birleştiren modüler bir komuta platformudur.
 
-Olay takibi, saha ekiplerinin durumu, operasyonel raporlama, coğrafi bilgi sistemleri (CBS) katmanları ve kapalı devre yapay zekâ çözümlerini entegre eden bu sistemi bağımsız olarak tasarlamakta ve geliştirmekteyim.
+Olay kaydı ve takibi, saha ekiplerinin durum görünürlüğü, operasyonel raporlama, coğrafi bilgi sistemleri (CBS) katmanları ve kapalı devre yapay zekâ bileşenlerini aynı yapı içinde kurguluyor; platformun yazılım mimarisini ve kullanıcı akışlarını bağımsız olarak tasarlayıp geliştiriyorum.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

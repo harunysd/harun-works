@@ -27,9 +27,9 @@ AKOM Arşiv Dijitalizasyonu & Mekânsal Karar Destek
 :::
 
 :::project-section{type="text"}
-2011’den bu yana biriken yüz binlerce satırlık kriz ve operasyon kaydının analitik olarak değerlendirilmesini sağlayan bir veri dönüştürme çalışmasıdır.
+2011’den bu yana biriken yüz binlerce satırlık kriz ve operasyon kaydını kullanılabilir bir karar destek altyapısına dönüştürmeye yönelik veri mühendisliği ve mekânsal analiz çalışmasıdır.
 
-Tarihsel metin kayıtlarını temizleyip standartlaştırarak coğrafi koordinatlarla eşleştirdim; yapay zekâ destekli metin sınıflandırması, ArcGIS Dashboard katmanları ve geliştirmekte olduğum özel yazılım bileşenleriyle karar vericilere yönelik mekânsal analiz araçları kurguluyorum.
+Tarihsel metin kayıtlarını temizleyip standartlaştırarak coğrafi koordinatlarla eşleştirdim. Yapay zekâ destekli metin sınıflandırması, ArcGIS katmanları ve geliştirmekte olduğum özel yazılım bileşenleriyle karar vericilerin kullanabileceği mekânsal analiz ve raporlama araçları geliştiriyorum.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

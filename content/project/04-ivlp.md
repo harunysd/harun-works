@@ -27,9 +27,9 @@ IVLP — Kentsel Arama & Kurtarma Yaklaşımları
 :::
 
 :::project-section{type="text"}
-ABD Dışişleri Bakanlığı International Visitor Leadership Program (IVLP) kapsamında yürütülen "Urban Search & Rescue Approaches" programına katıldım.
+ABD Dışişleri Bakanlığı’nın International Visitor Leadership Program (IVLP) kapsamında yürütülen “Urban Search & Rescue Approaches” programına katıldım.
 
-Washington DC, New York, Denver, San Francisco ve Miami’de; federal (FEMA), eyalet ve yerel düzeydeki afet kurumlarını, USAR (Kentsel Arama ve Kurtarma) ekiplerini, erken uyarı mekanizmalarını, CBS ve dron teknolojilerini yerinde inceleyerek afet stratejileri üzerine analizler yaptım.
+Washington DC, New York, Denver, San Francisco ve Miami’de federal (FEMA), eyalet ve yerel düzeydeki afet kurumlarını; USAR ekiplerini, erken uyarı mekanizmalarını, CBS ve dron teknolojilerini yerinde inceledim. Bu gözlemler üzerinden farklı ölçeklerdeki afet yönetimi modellerini ve kurumlar arası koordinasyon yaklaşımlarını değerlendirdim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

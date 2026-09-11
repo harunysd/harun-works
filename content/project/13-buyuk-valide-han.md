@@ -1,6 +1,6 @@
 ---
 title: 'Büyük Valide Han — Kentsel Doku Analizi'
-description: 'Büyük Valide Han’ın kent içindeki konumu, ulaşım ilişkileri, avlu yapısı, kullanım biçimleri ve fiziksel özellikleri üzerinden hazırlanan kentsel doku çalışması.'
+description: 'Büyük Valide Han’ın kent içindeki konumu, ulaşım ilişkileri, avlu hiyerarşisi, kullanım biçimleri ve fiziksel özelliklerini inceleyen kentsel doku analizi.'
 live: 'https://harun.works'
 tags:
   - 'Kentsel Doku'
@@ -27,9 +27,9 @@ Büyük Valide Han — Kentsel Doku Analizi
 :::
 
 :::project-section{type="text"}
-İstanbul Tarihi Yarımada'nın en büyük ve en karmaşık yapı topluluklarından biri olan Büyük Valide Han ve çevresini konu alan kentsel doku çalışmasıdır.
+İstanbul Tarihi Yarımada’nın önemli yapı topluluklarından Büyük Valide Han ve çevresinin kentsel doku analizidir.
 
-Hanın kent içindeki konumsal ilişkilerini, ulaşım akslarıyla bağlantısını, avlu hiyerarşisini ve kat konfigürasyonunu, zanaat-ticaret kullanım örüntülerini ve yapısal bozulma durumunu yerinde gözlemleyerek belgeledim; mekânsal tipoloji ve morfoloji analizlerini ürettim.
+Hanın kent içindeki konumsal ilişkilerini, ulaşım akslarıyla bağlantısını, avlu hiyerarşisini, kat konfigürasyonunu, zanaat ve ticaret kullanım örüntülerini ve yapısal bozulma durumunu yerinde belgeledim; mekânsal tipoloji ve morfoloji analizlerini ürettim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

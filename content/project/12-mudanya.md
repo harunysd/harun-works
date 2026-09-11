@@ -1,6 +1,6 @@
 ---
 title: 'Mudanya — Sosyoekonomik & Mekânsal Analiz'
-description: 'Hanehalkı araştırmaları ve istatistiksel veriler üzerinden Mudanya’nın gelir dağılımı ve sosyoekonomik yapısını inceleyen analiz serisi. Yoksulluk, gelir dağılımı, Lorenz eğrisi, Gini katsayısı ve mahalleler arası farklılıklar çalışıldı.'
+description: 'Hanehalkı araştırmaları ve istatistiksel veriler üzerinden Mudanya’nın gelir dağılımını ve sosyoekonomik yapısını inceleyen niceliksel analiz çalışması.'
 live: 'https://harun.works'
 tags:
   - 'Sosyoekonomik Analiz'
@@ -27,9 +27,9 @@ Mudanya — Sosyoekonomik & Mekânsal Analiz
 :::
 
 :::project-section{type="text"}
-Bursa Mudanya ilçesinin sosyoekonomik katmanlaşmasını ve mekânsal adaletsizliklerini ortaya koyan niceliksel bir analiz çalışmasıdır.
+Bursa Mudanya ilçesinin sosyoekonomik katmanlaşmasını ve mahalleler arası mekânsal farklılıklarını ortaya koyan niceliksel analiz çalışmasıdır.
 
-Hanehalkı anketleri ve TÜİK verileri üzerinden gelir dağılımı, yoksulluk indeksleri, Lorenz eğrisi ve Gini katsayısı hesaplamalarını gerçekleştirdim; mahalleler arasındaki mekânsal ayrışmayı istatistiksel ve haritasal olarak modelledim.
+Hanehalkı anketleri ve TÜİK verileri üzerinden gelir dağılımını, yoksulluk göstergelerini, Lorenz eğrisini ve Gini katsayısını analiz ettim; mahalleler arasındaki sosyoekonomik ayrışmayı istatistiksel ve kartografik olarak modelledim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

@@ -1,6 +1,6 @@
 ---
 title: 'Gelibolu — Kıyı, Meydan & Liman'
-description: 'Gelibolu kıyı bandı için hazırlanan planlama ve kentsel tasarım çalışması. Kıyı kullanımı, meydan, ikinci liman, yeşil sistem, ulaşım ve 3 boyutlu tasarım birlikte ele alındı.'
+description: 'Gelibolu kıyı bandının kamusal erişimini, liman ilişkisini, yeşil sistemini ve ulaşım bağlantılarını birlikte ele alan planlama ve kentsel tasarım projesi.'
 live: 'https://harun.works'
 tags:
   - 'Kentsel Tasarım'
@@ -27,9 +27,9 @@ Gelibolu — Kıyı, Meydan & Liman
 :::
 
 :::project-section{type="text"}
-Gelibolu kıyı hattının kent bütünüyle entegrasyonunu sağlamak, kamusal erişimi artırmak ve liman çevresini dönüştürmek amacıyla geliştirilen kapsamlı planlama ve kentsel tasarım projesidir.
+Gelibolu kıyı hattının kent bütünüyle ilişkisini güçlendirmek, kamusal erişimi artırmak ve liman çevresini yeniden kurgulamak amacıyla geliştirilmiş planlama ve kentsel tasarım projesidir.
 
-Kıyı kullanımı, kent meydanı, ikinci liman alanı ve kesintisiz yeşil aks kurgusunu tasarladım; ulaşım ve yaya senaryolarını 3 boyutlu kentsel modeller ve görselleştirmelerle hayata geçirdim.
+Kıyı kullanımı, kent meydanı, ikinci liman alanı ve kesintisiz yeşil aks için tasarım kararları geliştirdim; ulaşım ve yaya senaryolarını üç boyutlu kentsel modeller ve görselleştirmelerle destekledim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

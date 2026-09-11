@@ -1,6 +1,6 @@
 ---
 title: 'Berlin — Kent Strüktürü'
-description: 'Berlin’in tarihi merkezi, yoğun yerleşim alanları, yeşil sistemi, ulaşım aksları, demiryolları ve su sistemi üzerinden hazırlanan kent strüktürü analizi.'
+description: 'Berlin’in tarihi merkezi, yerleşim dokusu, yeşil sistemi, ulaşım aksları, demiryolları ve su sistemi üzerinden hazırlanan kent strüktürü ve morfoloji analizi.'
 live: 'https://harun.works'
 tags:
   - 'Kent Strüktürü'
@@ -27,9 +27,9 @@ Berlin — Kent Strüktürü
 :::
 
 :::project-section{type="text"}
-Berlin metropolünün tarihi gelişim çizgisi, bölünme sonrası mekânsal birleşmesi ve çok merkezli yapısını çözümleyen makroform ve kent strüktürü analizidir.
+Berlin metropolünün tarihsel gelişimini, bölünme sonrası mekânsal bütünleşmesini ve çok merkezli yapısını çözümleyen makroform ve kent strüktürü analizidir.
 
-Tarihi merkez çekirdeği, konut alanları dokusu, demiryolu (S-Bahn/U-Bahn) şebekesi, Spree nehri ve su sistemi ile kentsel yeşil omurgayı katmanlaştırarak morfolojik strüktür haritalarını çıkardım.
+Tarihi merkez çekirdeğini, konut dokusunu, S-Bahn/U-Bahn şebekesini, Spree Nehri ve su sistemini ve kentsel yeşil omurgayı katmanlaştırarak morfolojik strüktür haritaları ürettim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

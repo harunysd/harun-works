@@ -1,6 +1,6 @@
 ---
 title: 'Kentsel Tasarım & 3D Modelleme'
-description: 'Erzurum, Elazığ, Malatya ve Batman Millet Bahçeleri projelerinde kentsel tasarım, üç boyutlu modelleme ve görselleştirme çalışmaları yaptım.'
+description: 'Erzurum, Elazığ, Malatya ve Batman Millet Bahçeleri projelerinde kentsel tasarım, üç boyutlu modelleme ve görselleştirme çalışmalarına destek verdim.'
 live: 'https://harun.works'
 tags:
   - 'Kentsel Tasarım'
@@ -27,9 +27,9 @@ Kentsel Tasarım & 3D Modelleme
 :::
 
 :::project-section{type="text"}
-Geniş ölçekli kamusal açık alanların mekânsal organizasyonu ve kentsel yaşam kalitesini artırmaya yönelik tasarım sürecidir.
+Erzurum, Elazığ, Malatya ve Batman’daki Millet Bahçeleri için yürütülen kentsel tasarım ve görselleştirme çalışmalarını kapsar.
 
-Erzurum, Elazığ, Malatya ve Batman Millet Bahçeleri projelerinde; alan düzenleme, SketchUp ile üç boyutlu kentsel modelleme, malzeme kararları ve render çalışmalarını gerçekleştirdim.
+Bu projelerde alan düzenleme kararlarına, SketchUp ile üç boyutlu kentsel modelleme, malzeme kararları ve render çalışmalarına destek verdim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

@@ -1,6 +1,6 @@
 ---
 title: 'Kentsel Dönüşüm & Risk Analizi'
-description: 'Yozgat Menekşe Evler, Bağcılar Demircan Sitesi, Konya Karapınar ve Karabük Yenice çalışmalarında saha analizi, yapı stoku, hak sahipliği, veri toplama ve uzlaşma süreçleri üzerinde çalıştım.'
+description: 'Yozgat Menekşe Evler, Bağcılar Demircan Sitesi, Konya Karapınar ve Karabük Yenice’de yapı stoku, hak sahipliği, saha analizi ve uzlaşma süreçlerine katkı sunduğum kentsel dönüşüm çalışmaları.'
 live: 'https://harun.works'
 tags:
   - 'Kentsel Dönüşüm'
@@ -27,9 +27,9 @@ Kentsel Dönüşüm & Risk Analizi
 :::
 
 :::project-section{type="text"}
-Deprem ve zemin riski taşıyan kentsel alanlarda dönüşümün uygulanabilirliğini sağlamaya yönelik kapsamlı bir planlama çalışmasıdır.
+Riskli yapı stokunun güvenli ve uygulanabilir biçimde yenilenmesine odaklanan saha, veri ve uzlaşma çalışmasıdır. Amaç; dönüşüm kararlarını yalnızca plan üzerinde bırakmadan, yapı durumu, mülkiyet ve alan koşullarıyla birlikte uygulanabilir hâle getirmekti.
 
-Yozgat Menekşe Evler, Bağcılar Demircan Sitesi, Konya Karapınar ve Karabük Yenice alanlarında; mevcut yapı stokunun tespiti, hak sahipliği verilerinin toplanması, mekânsal analizler ve vatandaşlarla uzlaşma görüşmelerini yürüttüm.
+Yozgat Menekşe Evler, Bağcılar Demircan Sitesi, Konya Karapınar ve 2022’deki sel ve aşırı yağışlar sonrasında Genel Hayata Etkili Afet Bölgesi ilan edilen Karabük Yenice’de; mevcut yapı stokunu ve alan koşullarını tespit ettim, hak sahipliği verilerini derledim, mekânsal analizler ürettim ve vatandaşlarla uzlaşma görüşmelerini yürüttüm. Teknik veriyi saha görüşmeleriyle birleştirerek dönüşüm kararlarının uygulanabilirliğini güçlendiren süreçleri başarıyla tamamladım.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

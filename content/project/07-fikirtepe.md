@@ -1,6 +1,6 @@
 ---
 title: 'Fikirtepe — Kompakt Kent & Kentsel Dönüşüm'
-description: 'Fikirtepe’nin dönüşüm sürecini kompakt kent yaklaşımı ve AB Kentsel Gündemi üzerinden değerlendirdiğim lisans bitirme çalışması. Ulaşım, arazi kullanımı, kentsel doku, yeşil sistem ve dönüşüm politikaları birlikte ele alındı.'
+description: 'Fikirtepe’nin dönüşüm sürecini kompakt kent yaklaşımı ve AB Kentsel Gündemi çerçevesinde ele alan lisans bitirme çalışması. Ulaşım, arazi kullanımı, kentsel doku ve yeşil sistem birlikte değerlendirildi.'
 live: 'https://harun.works'
 tags:
   - 'Kompakt Kent'
@@ -27,9 +27,9 @@ Fikirtepe — Kompakt Kent & Kentsel Dönüşüm
 :::
 
 :::project-section{type="text"}
-İstanbul’un en yoğun kentsel dönüşüm alanlarından biri olan Fikirtepe’nin mekânsal ve morfolojik gelişimini inceleyen bitirme çalışmasıdır.
+İstanbul’un en yoğun kentsel dönüşüm alanlarından biri olan Fikirtepe’nin mekânsal gelişimini ve dönüşüm dinamiklerini inceleyen lisans bitirme çalışmasıdır.
 
-Kompakt kent ilkeleri ve AB Kentsel Gündemi çerçevesinde; bölgedeki ulaşım ağları, karma arazi kullanımı, donatı yeterliliği ve yeşil alan sürekliliğini analiz ederek alternatif dönüşüm politikaları geliştirdim.
+Kompakt kent ilkeleri ve AB Kentsel Gündemi çerçevesinde ulaşım ağlarını, karma arazi kullanımını, donatı yeterliliğini ve yeşil alan sürekliliğini analiz ederek alternatif dönüşüm politikaları geliştirdim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

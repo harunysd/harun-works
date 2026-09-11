@@ -1,5 +1,5 @@
-Şehir planlama, afet yönetimi, CBS ve dijital sistemlerin kesişiminde üretiyorum. Mekânsal analizden kriz operasyonlarına, veri altyapılarından karar destek araçlarına kadar geniş bir alanda çalışıyorum.
+Şehir planlama, afet yönetimi, coğrafi bilgi sistemleri (CBS) ve dijital ürün geliştirme ekseninde çalışıyorum. Mekânsal veriyi; saha operasyonları, karar destek süreçleri ve kullanıcı odaklı yazılım çözümleriyle bir araya getiriyorum.
 
-İBB AKOM'da afet ve kriz yönetimi süreçlerinde görev alıyor; tarihsel veri arşivlerinin dijitalleştirilmesi, mekânsal veri altyapıları ve operasyonel karar destek sistemleri geliştiriyorum. Bunların yanında bağımsız olarak web uygulamaları, otomasyon sistemleri ve yapay zekâ destekli araçlar üretiyorum.
+İBB AKOM’da afet ve kriz yönetimi operasyonlarında görev alıyor; olay verilerinin doğrulanması, operasyonel raporlama, mekânsal veri altyapıları ve karar destek sistemlerinin geliştirilmesi süreçlerine katkı sunuyorum. Bunun yanı sıra tarihsel arşivleri dijitalleştiriyor, kapalı devre yapay zekâ ve otomasyon araçları ile bağımsız web uygulamaları geliştiriyorum.
 
-Mimar Sinan Güzel Sanatlar Üniversitesi Şehir ve Bölge Planlama mezunuyum. Yıldız Teknik Üniversitesi'nde Kentsel Dönüşüm ve Planlama yüksek lisansımı sürdürüyorum. 2025'te IVLP kapsamında ABD'de afet yönetimi ve kentsel arama-kurtarma sistemlerini yerinde inceleme fırsatı buldum.
+Mimar Sinan Güzel Sanatlar Üniversitesi Şehir ve Bölge Planlama Bölümü mezunuyum. Yıldız Teknik Üniversitesi’nde Kentsel Dönüşüm ve Planlama yüksek lisans eğitimimi sürdürüyorum. 2025 yılında ABD Dışişleri Bakanlığı’nın IVLP programı kapsamında afet yönetimi ve kentsel arama-kurtarma sistemlerini yerinde inceleyerek farklı kurumsal uygulamaları değerlendirdim.

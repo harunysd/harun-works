@@ -1,6 +1,6 @@
 ---
 title: 'Beykoz — Kırsal Turizm Eylem Planı'
-description: 'Beykoz’un kırsal alanlarını doğal değerler, yerel yaşam, kırsal miras ve turizm potansiyelleri üzerinden ele alan kırsal planlama çalışması.'
+description: 'Beykoz’un kırsal alanlarını doğal değerler, yerel yaşam, kırsal miras ve turizm potansiyelleri üzerinden değerlendiren kırsal planlama ve eylem planı çalışması.'
 live: 'https://harun.works'
 tags:
   - 'Kırsal Planlama'
@@ -27,9 +27,9 @@ Beykoz — Kırsal Turizm Eylem Planı
 :::
 
 :::project-section{type="text"}
-İstanbul Beykoz'un kırsal yerleşimlerini doğal sit alanları, tarımsal üretim ve kültürel miras potansiyeliyle buluşturan stratejik bir kırsal planlama ve koruma çalışmasıdır.
+İstanbul Beykoz’un kırsal yerleşimlerini doğal sit alanları, tarımsal üretim ve kültürel miras potansiyeliyle birlikte değerlendiren stratejik bir kırsal planlama çalışmasıdır.
 
-Köy yerleşimleri ve doğal peyzaj alanlarında arazi kullanımı, agro-turizm ve yerel kalkınma potansiyellerini analiz ederek mekânsal strateji haritaları ve eylem planı etaplamalarını hazırladım.
+Köy yerleşimleri ve doğal peyzaj alanlarında arazi kullanımını, agro-turizm ve yerel kalkınma potansiyellerini analiz ederek mekânsal strateji haritaları ve eylem planı etaplamaları hazırladım.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

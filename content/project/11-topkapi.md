@@ -1,6 +1,6 @@
 ---
 title: 'Topkapı — Mekânsal Analiz & Müdahale'
-description: 'Topkapı ve kara surları çevresinde yaya erişimi, yapılaşma, açık alan, otopark, güvenlik ve afet sonrası toplanma alanlarına odaklanan çok ölçekli mekânsal analiz çalışması.'
+description: 'Topkapı ve kara surları çevresinde yaya erişimi, yapılaşma, açık alan, otopark, güvenlik ve afet sonrası toplanma alanlarını birlikte değerlendiren çok ölçekli mekânsal analiz çalışması.'
 live: 'https://harun.works'
 tags:
   - 'Mekânsal Analiz'
@@ -27,9 +27,9 @@ Topkapı — Mekânsal Analiz & Müdahale
 :::
 
 :::project-section{type="text"}
-Topkapı kavşağı ve kara surları kesişimindeki yoğun yaya ve araç sirkülasyonunu çok ölçekli mekânsal analiz teknikleriyle ele alan kentsel çalışmadır.
+Topkapı kavşağı ile kara surlarının kesişimindeki yoğun yaya ve araç hareketliliğini çok ölçekli mekânsal analiz teknikleriyle inceleyen kentsel araştırmadır.
 
-Bölgedeki otopark baskısı, güvenlik zafiyeti olan kör noktalar, açık alan yetersizliği ve afet sonrası acil toplanma alanlarının durumunu haritalandırarak mekânsal müdahale stratejileri belirledim.
+Bölgedeki otopark baskısını, güvenlik açısından sorunlu kör noktaları, açık alan yetersizliğini ve afet sonrası acil toplanma alanlarını haritalandırarak mekânsal müdahale stratejileri belirledim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

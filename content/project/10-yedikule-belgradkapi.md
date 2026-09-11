@@ -1,6 +1,6 @@
 ---
 title: 'Yedikule–Belgradkapı — Geçirgen Sur'
-description: 'Kara surlarının kentle ilişkisini güçlendirmeye yönelik analiz ve tasarım çalışması. Sur geçişleri, ulaşım, bostanlar, yeni odaklar ve kamusal alanlar üzerinden daha geçirgen bir kent-sur ilişkisi araştırıldı.'
+description: 'Kara surlarının kentle ilişkisini güçlendirmeye yönelik analiz ve kentsel tasarım çalışması. Sur geçişleri, ulaşım, bostanlar ve kamusal odaklar üzerinden geçirgen bir kent-sur ilişkisi önerildi.'
 live: 'https://harun.works'
 tags:
   - 'Geçirgen Sur'
@@ -27,9 +27,9 @@ Yedikule–Belgradkapı — Geçirgen Sur
 :::
 
 :::project-section{type="text"}
-Yedikule ile Belgradkapı hattında sur duvarlarının kentsel bir eşik olmaktan çıkarılıp kent sakinleri için geçirgen bir buluşma omurgasına dönüştürülmesini araştıran çalışmadır.
+Yedikule ile Belgradkapı hattında sur duvarlarının kentsel bir eşik olmaktan çıkarılarak kent sakinleri için erişilebilir bir kamusal omurgaya dönüştürülmesini araştıran kentsel tasarım çalışmasıdır.
 
-Sur hendekleri, sur içi kapı geçişleri, raylı sistem entegrasyonu ve tarihi bostan alanlarının korunarak kamusal yaşama kazandırılması için mekânsal analizler ve ölçekli tasarım önerileri geliştirdim.
+Sur hendekleri, sur kapı geçişleri, raylı sistem entegrasyonu ve tarihi bostan alanlarını birlikte ele alarak mekânsal analizler ve farklı ölçeklerde tasarım önerileri geliştirdim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

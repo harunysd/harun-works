@@ -1,6 +1,6 @@
 ---
 title: 'Kara Surları — Sur İçi Rehabilitasyon'
-description: 'Mevlanakapı–Silivrikapı arasında sur ve mahalle ilişkisini güçlendirmeye yönelik kentsel tasarım çalışması. Tarihi doku, bostanlar, kamusal alanlar, yaya ve bisiklet bağlantıları ile yeni kullanım önerileri ele alındı.'
+description: 'Mevlanakapı–Silivrikapı aksında sur ve mahalle ilişkisini güçlendirmeye yönelik koruma ve kentsel rehabilitasyon çalışması. Tarihi doku, bostanlar, kamusal alanlar ve yaya bağlantıları birlikte ele alındı.'
 live: 'https://harun.works'
 tags:
   - 'Kara Surları'
@@ -27,9 +27,9 @@ Kara Surları — Sur İçi Rehabilitasyon
 :::
 
 :::project-section{type="text"}
-İstanbul Tarihi Yarımada kara surları boyunca Mevlanakapı ve Silivrikapı aksını odağa alan kentsel koruma ve rehabilitasyon projesidir.
+İstanbul Tarihi Yarımada kara surları boyunca Mevlanakapı ve Silivrikapı aksını odağa alan bir kentsel koruma ve rehabilitasyon projesidir.
 
-Tarihi sur bandı ile çevresindeki yerleşik mahalle dokusunun kopuk ilişkisini onarmak amacıyla; tescilli yapılar, tarihi bostan alanları, kesintisiz yaya/bisiklet yolları ve rekreasyon alanlarını içeren tasarım kararları ürettim.
+Tarihi sur bandı ile çevresindeki mahalle dokusunun ilişkisini güçlendirmek amacıyla tescilli yapıları, tarihi bostan alanlarını, kesintisiz yaya ve bisiklet bağlantılarını ve rekreasyon alanlarını birlikte değerlendiren tasarım kararları ürettim.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)

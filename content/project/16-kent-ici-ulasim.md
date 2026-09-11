@@ -1,6 +1,6 @@
 ---
 title: 'Kent İçi Ulaşım — Erişilebilirlik & Hizmet Düzeyi'
-description: 'Yaya erişilebilirliği ve toplu taşıma performansına odaklanan ulaşım çalışmaları. Vişnezade’de sokak ve yaya deneyimi, Eminönü–Maslak hattında ise zaman, ücret, konfor ve güvenlik karşılaştırıldı.'
+description: 'Yaya erişilebilirliği ve toplu taşıma performansını inceleyen uygulamalı ulaşım planlama çalışmaları. Vişnezade’de yaya deneyimi, Eminönü–Maslak hattında ise çok kriterli ulaşım karşılaştırması ele alındı.'
 live: 'https://harun.works'
 tags:
   - 'Ulaşım Planlama'
@@ -27,9 +27,9 @@ Kent İçi Ulaşım — Erişilebilirlik & Hizmet Düzeyi
 :::
 
 :::project-section{type="text"}
-Kentiçi hareketlilik, yaya konforu ve toplu taşıma sistemlerinin verimliliğini farklı ölçeklerde irdeleyen uygulamalı ulaşım planlama araştırmaları serisidir.
+Kent içi hareketlilik, yaya konforu ve toplu taşıma sistemlerinin performansını farklı ölçeklerde inceleyen uygulamalı ulaşım planlama araştırmaları serisidir.
 
-Beşiktaş Vişnezade'de sokak kesitleri, yaya akışları ve topoğrafik engelleri haritaladım; Eminönü–Maslak koridorunda ise farklı toplu taşıma modlarını süre, maliyet, konfor ve güvenlik metrikleriyle çok kriterli olarak karşılaştırdım.
+Beşiktaş Vişnezade’de sokak kesitlerini, yaya akışlarını ve topoğrafik engelleri haritaladım. Eminönü–Maslak koridorunda farklı toplu taşıma modlarını süre, maliyet, konfor ve güvenlik ölçütleri üzerinden çok kriterli olarak karşılaştırdım.
 
 - [LinkedIn](https://www.linkedin.com/in/harunsaridas)
 - [E-posta](mailto:iletisim@harun.works)
