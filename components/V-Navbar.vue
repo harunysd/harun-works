@@ -137,42 +137,13 @@ watch(currentSection, (val) => {
 });
 
 onMounted(() => {
-  const visibleOffset = 150;
-  let prevScrollY = 0;
-
-  $smoothScroll.on('scroll', ({ scroll }) => {
-    if (visibleOffset > scroll.y)
-      return gsap.to(nav.value, {
-        autoAlpha: 1,
-        ease: 'expo.out',
-        onStart: () => (prevScrollY = scroll.y),
-      });
-
-    const scrollingDown = prevScrollY - scroll.y < 0;
-
-    if (scrollingDown) gsap.to(nav.value, { autoAlpha: 0, ease: 'expo.out' });
-    else gsap.to(nav.value, { autoAlpha: 1, ease: 'expo.out' });
-
-    prevScrollY = scroll.y;
-  });
+  // Always keep navbar and HYS title permanently visible
+  gsap.set(nav.value, { autoAlpha: 1 });
+  if (navTitle.value) {
+    gsap.set(navTitle.value, { autoAlpha: 1 });
+  }
 
   const animations = [];
-
-  animations.push(
-    gsap.fromTo(
-      navTitle.value,
-      { autoAlpha: 0 },
-      {
-        autoAlpha: 1,
-        ease: 'expo.out',
-        scrollTrigger: {
-          start: `${window.innerHeight}px 5%`,
-          end: `${window.innerHeight}px 5%`,
-          toggleActions: 'play none reverse none',
-        },
-      },
-    ),
-  );
 
   animations.push(
     gsap.fromTo(
@@ -191,7 +162,7 @@ onMounted(() => {
   );
 
   onBeforeUnmount(() => {
-    animations.forEach((anim) => anim.scrollTrigger.kill());
+    animations.forEach((anim) => anim?.scrollTrigger?.kill?.());
   });
 });
 </script>
@@ -294,7 +265,7 @@ onMounted(() => {
     &__item {
       font-size: calc(var(--step--2) + 0.05rem);
 
-      opacity: 0;
+      opacity: 0.9;
 
       cursor: pointer !important;
       pointer-events: all;
@@ -359,7 +330,7 @@ onMounted(() => {
     color: currentColor;
     border: none;
     background: transparent;
-    opacity: 0;
+    opacity: 1;
 
     cursor: pointer;
     pointer-events: all;
@@ -424,7 +395,7 @@ onMounted(() => {
     margin-left: auto;
 
     pointer-events: all;
-    opacity: 0;
+    opacity: 1;
     cursor: pointer !important;
     transition: background-color 0.75s var(--easing);
 
