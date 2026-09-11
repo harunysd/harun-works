@@ -39,10 +39,9 @@ const skillGroups = [
   {
     title: 'Web & Uygulama Geliştirme',
     items: [
-      'Vue / Nuxt',
-      'React / Next.js',
-      'Node.js',
-      'Python',
+      'Web Uygulamaları',
+      'Prototipleme',
+      'Dijital Ürün Geliştirme',
     ],
   },
 ];
