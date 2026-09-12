@@ -2,6 +2,26 @@
 const { data: projects } = await useAsyncData('projects', () =>
   queryContent('project').sort({ createdAt: -1 }).find(),
 );
+const { projectOverrides } = useSiteContent();
+
+const visibleProjects = computed(() => {
+  const baseProjects = (projects.value || []).map((project) => {
+    const override = projectOverrides.value.find(
+      (item) => item._path === project._path,
+    );
+    return override ? { ...project, ...override } : project;
+  });
+
+  const customProjects = projectOverrides.value.filter(
+    (item) =>
+      item.isNew &&
+      !baseProjects.some((project) => project._path === item._path),
+  );
+
+  return [...baseProjects, ...customProjects].filter(
+    (project) => !project.hidden,
+  );
+});
 </script>
 
 <template>
@@ -10,7 +30,7 @@ const { data: projects } = await useAsyncData('projects', () =>
 
     <ul class="projects__list">
       <VProjectsItem
-        v-for="(project, key) in projects"
+        v-for="(project, key) in visibleProjects"
         :id="key"
         :key="key"
         :project="project"

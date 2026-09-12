@@ -2,6 +2,7 @@
 const { $smoothScrollBreakPoint } = useNuxtApp();
 const { gsap } = useGsap();
 const isEmailModalOpen = useEmailModal();
+const { settings } = useSiteContent();
 
 const rowsCount = 3;
 const textCount = 4;
@@ -66,7 +67,8 @@ onMounted(() => {
           aria-hidden="true"
           class="contact__email__row__text"
         >
-          Bana bir <span class="serif">e-posta</span> gönderin<span v-if="textKey !== textCount">&nbsp; - &nbsp;</span>
+          {{ settings.contactText
+          }}<span v-if="textKey !== textCount">&nbsp; - &nbsp;</span>
         </span>
       </span>
     </button>

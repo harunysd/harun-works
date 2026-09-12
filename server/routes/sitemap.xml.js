@@ -10,6 +10,7 @@ export default defineEventHandler(async (event) => {
   const sitemap = new SitemapStream({ hostname: 'https://harun.works' });
 
   sitemap.write({ url: '/', ...defaults });
+  sitemap.write({ url: '/blog', ...defaults });
 
   for (const doc of docs)
     if (doc._path.includes('project'))

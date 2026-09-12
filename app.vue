@@ -3,15 +3,18 @@ const route = useRoute();
 const { $smoothScroll } = useNuxtApp();
 const { gsap } = useGsap();
 const { base } = useRuntimeConfig().public;
+const { load: loadSiteContent } = useSiteContent();
+
+await useAsyncData('global-site-content', loadSiteContent);
 
 const overlay = shallowRef({});
 
 const projectSlug = computed(() => route.params.slug ?? '');
 const currentURL = computed(() =>
-  projectSlug.value ? `${base}/project/${projectSlug.value}` : base,
+  route.path === '/' ? base : `${base}${route.path}`,
 );
 const ogImageUrl = computed(() =>
-  projectSlug.value
+  route.path.startsWith('/project/') && projectSlug.value
     ? `${base}/img/${projectSlug.value}-preview.jpg`
     : `${base}/logo.png`,
 );

@@ -1,8 +1,12 @@
 <script setup>
 import SplitType from 'split-type';
 
-const { data: aboutMeText } = await useAsyncData('about-me-text', () =>
-  queryContent('about-me').findOne(),
+const { settings } = useSiteContent();
+const aboutParagraphs = computed(() =>
+  settings.value.aboutText
+    .split(/\n+/)
+    .map((text) => text.trim())
+    .filter(Boolean),
 );
 
 const { $smoothScrollBreakPoint } = useNuxtApp();
@@ -30,26 +34,18 @@ const skillGroups = [
   },
   {
     title: 'Veri & Dijital Sistemler',
-    items: [
-      'Veri & API Entegrasyonları',
-      'Otomasyon',
-      'AI / LLM',
-    ],
+    items: ['Veri & API Entegrasyonları', 'Otomasyon', 'AI / LLM'],
   },
   {
     title: 'Web & Uygulama Geliştirme',
-    items: [
-      'Web Uygulamaları',
-      'Prototipleme',
-      'Dijital Ürün Geliştirme',
-    ],
+    items: ['Web Uygulamaları', 'Prototipleme', 'Dijital Ürün Geliştirme'],
   },
 ];
 
 onMounted(() => {
-  const paragraphs = aboutMeContent.value.$el.querySelectorAll('p');
+  const paragraphs = aboutMeContent.value.querySelectorAll('p');
   const target =
-    paragraphs.length > 0 ? paragraphs : aboutMeContent.value.$el.firstChild;
+    paragraphs.length > 0 ? paragraphs : aboutMeContent.value.firstChild;
 
   const text = new SplitType(target, {
     types: 'lines',
@@ -64,7 +60,7 @@ onMounted(() => {
       stagger: 0.1,
       ease: 'none',
       scrollTrigger: {
-        trigger: aboutMeContent.value.$el,
+        trigger: aboutMeContent.value,
         start: 'top 80%',
         end: 'bottom 85%',
         scrub: window.innerWidth >= $smoothScrollBreakPoint ? true : 0.5,
@@ -82,11 +78,11 @@ onMounted(() => {
   <section class="about-me" data-scroll-section>
     <VH2 class="about-me__title">Hakkımda</VH2>
 
-    <ContentRenderer
-      ref="aboutMeContent"
-      :value="aboutMeText"
-      class="about-me__content"
-    />
+    <div ref="aboutMeContent" class="about-me__content">
+      <p v-for="paragraph in aboutParagraphs" :key="paragraph">
+        {{ paragraph }}
+      </p>
+    </div>
 
     <div class="skills-grid">
       <div

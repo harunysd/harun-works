@@ -2,9 +2,16 @@
 const { gsap } = useGsap();
 const emitter = useEmitter();
 const prefersReducedMotion = useReducedMotion();
+const { settings } = useSiteContent();
 
-const subtitleText =
-  'Şehir Planlama · Afet Yönetimi · CBS · Dijital Sistemler';
+const subtitleText = computed(() => settings.value.tagline);
+const nameParts = computed(() => {
+  const displayName =
+    settings.value.displayName.trim() || 'Harun Yasir SARIDAŞ';
+  const parts = displayName.split(/\s+/);
+  const pivot = Math.max(1, parts.length - 1);
+  return [parts.slice(0, pivot).join(' '), parts.slice(pivot).join(' ')];
+});
 
 const header = ref(null);
 
@@ -66,10 +73,14 @@ onBeforeUnmount(() => {
     <div class="header__container">
       <h1 class="header__container__title">
         <span class="header__container__title__line">
-          <span class="header__container__title__line__content">Harun Yasir</span>
+          <span class="header__container__title__line__content">{{
+            nameParts[0]
+          }}</span>
         </span>
         <span class="header__container__title__line">
-          <span class="header__container__title__line__content">SARIDAŞ</span>
+          <span class="header__container__title__line__content">{{
+            nameParts[1]
+          }}</span>
         </span>
       </h1>
 

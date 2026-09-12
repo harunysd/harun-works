@@ -3,13 +3,22 @@ const loader = ref(null);
 
 const { gsap } = useGsap();
 const emitter = useEmitter();
+const route = useRoute();
 
-emitter.on('shader:running', () => {
+function hideLoader() {
   gsap.to(loader.value, {
     autoAlpha: 0,
     pointerEvents: 'none',
     onComplete: () => emitter.emit('loader:end'),
   });
+}
+
+emitter.on('shader:running', () => {
+  hideLoader();
+});
+
+onMounted(() => {
+  if (route.name !== 'index') hideLoader();
 });
 </script>
 
@@ -33,7 +42,9 @@ emitter.on('shader:running', () => {
             font-weight="800"
             font-size="120"
             letter-spacing="4"
-          >HYS</text>
+          >
+            HYS
+          </text>
         </mask>
       </defs>
       <rect

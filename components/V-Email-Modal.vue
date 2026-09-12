@@ -1,15 +1,16 @@
 <script setup>
 const isEmailModalOpen = useEmailModal();
 const { gsap } = useGsap();
+const { settings } = useSiteContent();
 
 const modalBackdrop = ref(null);
 const modalCard = ref(null);
 const copiedField = ref(null);
 
-const emails = [
-  { label: 'Kişisel E-posta', value: 'harunysd@gmail.com' },
-  { label: 'Kurumsal / Web', value: 'iletisim@harun.works' },
-];
+const emails = computed(() => [
+  { label: 'Kişisel E-posta', value: settings.value.email },
+  { label: 'Kurumsal / Web', value: settings.value.secondaryEmail },
+]);
 
 function closeModal() {
   if (!modalBackdrop.value || !modalCard.value) {

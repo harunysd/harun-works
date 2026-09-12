@@ -18,22 +18,33 @@ const navMenuButtonSVG = ref(null);
 const links = [
   {
     label: 'Ana Sayfa',
-    action: () => (route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/')),
+    action: () =>
+      route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/'),
   },
   {
     label: 'Çalışmalar',
     action: () =>
-      route.name === 'index' ? $smoothScroll.scrollTo('.projects') : navigateTo('/#projects'),
+      route.name === 'index'
+        ? $smoothScroll.scrollTo('.projects')
+        : navigateTo('/#projects'),
   },
   {
     label: 'Hakkımda',
     action: () =>
-      route.name === 'index' ? $smoothScroll.scrollTo('.about-me') : navigateTo('/#about-me'),
+      route.name === 'index'
+        ? $smoothScroll.scrollTo('.about-me')
+        : navigateTo('/#about-me'),
   },
   {
     label: 'İletişim',
     action: () =>
-      route.name === 'index' ? $smoothScroll.scrollTo('.contact') : navigateTo('/#contact'),
+      route.name === 'index'
+        ? $smoothScroll.scrollTo('.contact')
+        : navigateTo('/#contact'),
+  },
+  {
+    label: 'Blog',
+    action: () => navigateTo('/blog'),
   },
 ];
 
@@ -250,7 +261,10 @@ onMounted(() => {
       padding: 0.35rem 0.75rem;
       margin: -0.1rem -0.4rem;
       border-radius: 4px;
-      transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+      transition:
+        background-color 0.2s,
+        color 0.2s,
+        opacity 0.2s;
 
       &:hover {
         color: #ffffff;

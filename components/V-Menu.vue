@@ -38,6 +38,13 @@ const navigationalLinks = [
       isShowingMenu.value = false;
     },
   },
+  {
+    label: 'Blog',
+    action: () => {
+      isShowingMenu.value = false;
+      navigateTo('/blog');
+    },
+  },
 ];
 
 const menu = ref(null);
@@ -151,6 +158,7 @@ watch(isShowingMenu, (bool) => {
         tabindex="0"
         :aria-label="link.label"
         @click="link.action"
+        @keydown.enter.space.prevent="link.action"
       >
         <p
           :ref="(el) => (menuBackItemContentTitle[key] = el)"
@@ -164,7 +172,7 @@ watch(isShowingMenu, (bool) => {
         class="menu__back-item__line"
       ></span>
     </div>
-    <div :ref="(el) => (menuBackItem[5] = el)" class="menu__back-item">
+    <div :ref="(el) => (menuBackItem[6] = el)" class="menu__back-item">
       <div class="menu__back-item__content menu__back-item__content--no-anim">
         <ul class="menu__back-item__content__links">
           <li
@@ -201,7 +209,7 @@ watch(isShowingMenu, (bool) => {
   pointer-events: all;
 
   &__back-item {
-    $ITEMS_COUNT: 6;
+    $ITEMS_COUNT: 7;
     --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
     --x-padding: calc(clamp(1rem, 4vw, 5rem) + var(--step-0));
 

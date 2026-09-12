@@ -1213,6 +1213,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vercel/blob@npm:^2.8.0":
+  version: 2.8.0
+  resolution: "@vercel/blob@npm:2.8.0"
+  dependencies:
+    "@vercel/oidc": ^3.6.1
+    async-retry: ^1.3.3
+    is-buffer: ^2.0.5
+    is-node-process: ^1.2.0
+    throttleit: ^2.1.0
+    undici: ^6.23.0
+  checksum: 445a7081677c5dd14d027275afbb14f732758144137dcb52ef12462ff548bd6475a3c7d37c495b4666065978cd0d9956cc5df8fbbb37fdbc399374b42bf86dd1
+  languageName: node
+  linkType: hard
+
+"@vercel/cli-config@npm:0.2.6":
+  version: 0.2.6
+  resolution: "@vercel/cli-config@npm:0.2.6"
+  dependencies:
+    xdg-app-paths: 5
+    zod: 4.1.11
+  checksum: 069a5ec9543d1ad354133326a5c57b37a2888ef5f830148eb9746e2b129ac7913d7b26d2f5d4df6e53356c0a84eefff291ce79e8a7fa1c9423b30c6bc59bde97
+  languageName: node
+  linkType: hard
+
+"@vercel/cli-exec@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@vercel/cli-exec@npm:1.0.1"
+  dependencies:
+    execa: 5.1.1
+  checksum: 1b50eaa7eb1f67b69966126f7716845c948269980d0af5b499b8d8b1d616369905ba19886a4fd2e07591d2863ff80f23208e2281c78225c7aee304e39944e093
+  languageName: node
+  linkType: hard
+
 "@vercel/nft@npm:^0.22.6":
   version: 0.22.6
   resolution: "@vercel/nft@npm:0.22.6"
@@ -1231,6 +1264,17 @@ __metadata:
   bin:
     nft: out/cli.js
   checksum: 03ab38477ca7006b3d5568a716128a5abb13a425205ea5cb23eed86967334a6c7fc9d36c58154e1ccd4e349e3ec0d725aa7496ef4159bf232ad706d842d85c29
+  languageName: node
+  linkType: hard
+
+"@vercel/oidc@npm:^3.6.1":
+  version: 3.8.7
+  resolution: "@vercel/oidc@npm:3.8.7"
+  dependencies:
+    "@vercel/cli-config": 0.2.6
+    "@vercel/cli-exec": 1.0.1
+    jose: ^5.9.6
+  checksum: bc36b38fb8dc7326873eabf3d140f32fc6989efb8600a14dd80e1e0981dc3cb77b6401ffdb75b9042e3eabe198c93caf0ba5ee26c75322f29ff2c4920680dec9
   languageName: node
   linkType: hard
 
@@ -1632,6 +1676,15 @@ __metadata:
     "@babel/parser": ^7.22.4
     "@babel/types": ^7.22.4
   checksum: 698a55fd36eb69190c759cbb7cbd767259384f88544b0eb710a9108cd47681488838fa88ec0d1887aa5eb0f2a6a52f0122bce8eccf7b47a1a2ccfe1a55a5f144
+  languageName: node
+  linkType: hard
+
+"async-retry@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "async-retry@npm:1.3.3"
+  dependencies:
+    retry: 0.13.1
+  checksum: 38a7152ff7265a9321ea214b9c69e8224ab1febbdec98efbbde6e562f17ff68405569b796b1c5271f354aef8783665d29953f051f68c1fc45306e61aec82fdc4
   languageName: node
   linkType: hard
 
@@ -2872,7 +2925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.1.1":
+"execa@npm:5.1.1, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -3746,7 +3799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-buffer@npm:^2.0.0":
+"is-buffer@npm:^2.0.0, is-buffer@npm:^2.0.5":
   version: 2.0.5
   resolution: "is-buffer@npm:2.0.5"
   checksum: 764c9ad8b523a9f5a32af29bdf772b08eb48c04d2ad0a7240916ac2688c983bf5f8504bf25b35e66240edeb9d9085461f9b5dae1f3d2861c6b06a65fe983de42
@@ -3837,6 +3890,13 @@ __metadata:
   version: 1.0.0
   resolution: "is-module@npm:1.0.0"
   checksum: 8cd5390730c7976fb4e8546dd0b38865ee6f7bacfa08dfbb2cc07219606755f0b01709d9361e01f13009bbbd8099fa2927a8ed665118a6105d66e40f1b838c3f
+  languageName: node
+  linkType: hard
+
+"is-node-process@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "is-node-process@npm:1.2.0"
+  checksum: 930765cdc6d81ab8f1bbecbea4a8d35c7c6d88a3ff61f3630e0fc7f22d624d7661c1df05c58547d0eb6a639dfa9304682c8e342c4113a6ed51472b704cee2928
   languageName: node
   linkType: hard
 
@@ -3942,6 +4002,13 @@ __metadata:
   bin:
     jiti: bin/jiti.js
   checksum: fdf55e315f9e81c04ae902416642062851d92c6cdcc17a59d5d1d35e1a0842e4e79be38da86613c5776fa18c579954542a441b93d1c347a50137dee2e558cbd0
+  languageName: node
+  linkType: hard
+
+"jose@npm:^5.9.6":
+  version: 5.10.0
+  resolution: "jose@npm:5.10.0"
+  checksum: e80965ef3ab47baafac3517f53fa9c74b948b57690de524f51320c314cd545ef51ec7b18761605d58fb5965b7c5e12b2bb6ddae87a6ccf55e3f4ad077347d8d7
   languageName: node
   linkType: hard
 
@@ -5607,6 +5674,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"os-paths@npm:^4.0.1":
+  version: 4.4.0
+  resolution: "os-paths@npm:4.4.0"
+  checksum: 4861e9262ca9fa7693a9e5801b0bb50a38a251158b222396102ebe7b04b56b5f716d3c5b81be3410a594e4673004fb247f01fe6a9a89e9616a2a21966f678d49
+  languageName: node
+  linkType: hard
+
 "p-map@npm:^4.0.0":
   version: 4.0.0
   resolution: "p-map@npm:4.0.0"
@@ -6518,6 +6592,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"retry@npm:0.13.1":
+  version: 0.13.1
+  resolution: "retry@npm:0.13.1"
+  checksum: 47c4d5be674f7c13eee4cfe927345023972197dbbdfba5d3af7e461d13b44de1bfd663bfc80d2f601f8ef3fc8164c16dd99655a221921954a65d044a2fc1233b
+  languageName: node
+  linkType: hard
+
 "retry@npm:^0.12.0":
   version: 0.12.0
   resolution: "retry@npm:0.12.0"
@@ -6582,6 +6663,7 @@ __metadata:
   dependencies:
     "@nuxt/content": ^2.7.2
     "@nuxtjs/fontaine": ^0.4.1
+    "@vercel/blob": ^2.8.0
     gsap: ^3.12.2
     locomotive-scroll: ^4.1.4
     mitt: ^3.0.1
@@ -7181,6 +7263,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"throttleit@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "throttleit@npm:2.1.0"
+  checksum: a2003947aafc721c4a17e6f07db72dc88a64fa9bba0f9c659f7997d30f9590b3af22dadd6a41851e0e8497d539c33b2935c2c7919cf4255922509af6913c619b
+  languageName: node
+  linkType: hard
+
 "tiny-emitter@npm:^1.0.0":
   version: 1.2.0
   resolution: "tiny-emitter@npm:1.2.0"
@@ -7333,6 +7422,13 @@ __metadata:
   dependencies:
     busboy: ^1.6.0
   checksum: 048a3365f622be44fb319316cedfaa241c59cf7f3368ae7667a12323447e1822e8cc3d00f6956c852d1478a6fde1cbbe753f49e05f2fdaed229693e716ebaf35
+  languageName: node
+  linkType: hard
+
+"undici@npm:^6.23.0":
+  version: 6.28.1
+  resolution: "undici@npm:6.28.1"
+  checksum: 25f7398989c7f6d22b4120bb97ac2d8449e5bd30fe0c5eb9265537786a9950c35a0b363a74770729d94084784689f1304744e3e02cff32c614385d5dd4172af7
   languageName: node
   linkType: hard
 
@@ -8087,6 +8183,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"xdg-app-paths@npm:5":
+  version: 5.5.1
+  resolution: "xdg-app-paths@npm:5.5.1"
+  dependencies:
+    os-paths: ^4.0.1
+    xdg-portable: ^7.2.0
+  checksum: 2bd430f47beb5626445fe77d38c83ce560670ee3c06dfff7a275416290c252458e69c9f33d15738efa92776ea4388aebd73daac3451beb436a8509cb08396e6f
+  languageName: node
+  linkType: hard
+
+"xdg-portable@npm:^7.2.0":
+  version: 7.3.0
+  resolution: "xdg-portable@npm:7.3.0"
+  dependencies:
+    os-paths: ^4.0.1
+  checksum: e228ec6486e143d58d2e151bbb5899107bddbd57f92841e52598ba9515373fc095a570d4e974b009afd9b94bd9b98d4a4e5ebac66736cc02d30d178c7182bf6b
+  languageName: node
+  linkType: hard
+
 "xmlhttprequest-ssl@npm:~2.0.0":
   version: 2.0.0
   resolution: "xmlhttprequest-ssl@npm:2.0.0"
@@ -8168,6 +8283,13 @@ __metadata:
     compress-commons: ^4.1.0
     readable-stream: ^3.6.0
   checksum: 4a73da856738b0634700b52f4ab3fe0bf0a532bea6820ad962d0bda0163d2d5525df4859f89a7238e204a378384e12551985049790c1894c3ac191866e85887f
+  languageName: node
+  linkType: hard
+
+"zod@npm:4.1.11":
+  version: 4.1.11
+  resolution: "zod@npm:4.1.11"
+  checksum: 022d59f85ebe054835fbcdc96a93c01479a64321104f846cb5644812c91e00d17ae3479f823956ec9b04e4351dd32841e1f12c567e81bc43f6e21ef5cc02ce3c
   languageName: node
   linkType: hard
 

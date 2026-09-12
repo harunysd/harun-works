@@ -19,6 +19,7 @@
     "vite-svg-loader": "^4.0.0"
   },
   "dependencies": {
+    "@vercel/blob": "^2.8.0",
     "gsap": "^3.12.2",
     "locomotive-scroll": "^4.1.4",
     "mitt": "^3.0.1",
