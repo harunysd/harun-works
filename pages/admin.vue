@@ -1,5 +1,9 @@
 <script setup>
-import { parseVideoSource } from '~/lib/article-body.js';
+import {
+  parseArticleBody,
+  renderInlineMarkdown,
+  parseVideoSource,
+} from '~/lib/article-body.js';
 import { slugifyContent } from '~/lib/site-content-defaults.js';
 import {
   ADMIN_IMAGE_TYPES,
@@ -32,6 +36,8 @@ const loginError = ref('');
 const activeTab = ref('blog');
 const notice = ref('');
 const blogBodyInput = ref(null);
+const editorTab = ref('write');
+const previewBlocks = computed(() => parseArticleBody(blogForm.body));
 const { uploadState, uploadProgress, uploadMedia, uploadImage } =
   useAdminMedia();
 const imageTypes = ADMIN_IMAGE_TYPES;
@@ -145,16 +151,24 @@ async function insertBlogImage(event) {
   event.target.value = '';
   if (!file) return;
 
+  const defaultCaption = file.name
+    .replace(/\.[^.]+$/, '')
+    .replace(/[-_]+/g, ' ')
+    .trim();
+  const captionPrompt = window.prompt(
+    'Resim altı yazısı girin (isteğe bağlı - resmin altında otomatik ince yatay yazı olarak görünür):',
+    defaultCaption,
+  );
+  const caption =
+    captionPrompt !== null ? captionPrompt.trim() : defaultCaption;
+
   const cursor = blogBodyInput.value?.selectionStart ?? blogForm.body.length;
   try {
     const url = await uploadImage(file, 'blog', 'inline');
-    const alt = file.name
-      .replace(/\.[^.]+$/, '')
-      .replace(/[-_]+/g, ' ')
-      .trim();
-    const nextCursor = insertBlogBlock(`![${alt}](${url})`, cursor);
+    const alt = caption || 'Görsel';
+    const nextCursor = insertBlogBlock(`\n![${alt}](${url})\n`, cursor);
     await focusBlogCursor(nextCursor);
-    showNotice('Görsel yazı metnine eklendi.');
+    showNotice('Görsel ve ince yatay resim yazısı eklendi.');
   } catch (error) {
     showNotice(error instanceof Error ? error.message : 'Görsel yüklenemedi.');
   }
@@ -209,6 +223,114 @@ function insertTableTemplate() {
   const nextCursor = insertBlogBlock(sampleTable, cursor);
   focusBlogCursor(nextCursor);
   showNotice('Örnek tablo eklendi. Başlık ve verileri düzenleyebilirsiniz.');
+}
+
+function applyFormat(type) {
+  const textarea = blogBodyInput.value;
+  if (!textarea) return;
+
+  const start = textarea.selectionStart ?? 0;
+  const end = textarea.selectionEnd ?? 0;
+  const text = blogForm.body;
+  const selected = text.substring(start, end);
+
+  let replacement = '';
+  let cursorOffset = 0;
+
+  switch (type) {
+    case 'h2': {
+      replacement = selected ? `\n## ${selected}\n` : '\n## Başlık 2\n';
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'h3': {
+      replacement = selected ? `\n### ${selected}\n` : '\n### Başlık 3\n';
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'bold': {
+      replacement = selected ? `**${selected}**` : '**kalın yazı**';
+      cursorOffset = selected ? replacement.length : 2;
+      break;
+    }
+    case 'italic': {
+      replacement = selected ? `*${selected}*` : '*italik yazı*';
+      cursorOffset = selected ? replacement.length : 1;
+      break;
+    }
+    case 'quote': {
+      replacement = selected
+        ? selected
+            .split('\n')
+            .map((l) => `> ${l}`)
+            .join('\n')
+        : '> Alıntı metni buraya';
+      replacement = `\n${replacement}\n`;
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'code': {
+      if (selected.includes('\n')) {
+        replacement = `\n\`\`\`\n${selected || 'kod buraya'}\n\`\`\`\n`;
+      } else {
+        replacement = selected ? `\`${selected}\`` : '`kod`';
+      }
+      cursorOffset = selected ? replacement.length : 1;
+      break;
+    }
+    case 'link': {
+      replacement = selected
+        ? `[${selected}](https://)`
+        : '[bağlantı metni](https://example.com)';
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'ul': {
+      const items = selected
+        ? selected
+            .split('\n')
+            .map((l) => (l.startsWith('- ') ? l : `- ${l}`))
+            .join('\n')
+        : '- Madde 1\n- Madde 2\n- Madde 3';
+      replacement = `\n${items}\n`;
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'ol': {
+      const items = selected
+        ? selected
+            .split('\n')
+            .map((l, i) => (/^\d+\.\s/.test(l) ? l : `${i + 1}. ${l}`))
+            .join('\n')
+        : '1. Madde 1\n2. Madde 2\n3. Madde 3';
+      replacement = `\n${items}\n`;
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'hr': {
+      replacement = '\n\n---\n\n';
+      cursorOffset = replacement.length;
+      break;
+    }
+    case 'caption': {
+      const captionText =
+        selected ||
+        window.prompt('Resim altı için ince yatay yazı girin:') ||
+        'Resim altı açıklaması';
+      replacement = `\n*${captionText}*\n`;
+      cursorOffset = replacement.length;
+      break;
+    }
+    default:
+      return;
+  }
+
+  const before = text.slice(0, start);
+  const after = text.slice(end);
+  blogForm.body = before + replacement + after;
+
+  const nextPos = start + (selected ? replacement.length : cursorOffset);
+  focusBlogCursor(nextPos);
 }
 
 async function uploadProjectImage(event) {
@@ -547,71 +669,307 @@ onMounted(async () => {
               <span>Kısa açıklama</span>
               <textarea v-model="blogForm.excerpt" rows="3" />
             </label>
-            <div class="field field--wide">
-              <label for="blog-body">Yazı metni</label>
-              <div class="field-toolbar">
-                <input
-                  id="blog-inline-file"
-                  class="visually-hidden"
-                  type="file"
-                  :accept="imageTypes"
-                  :disabled="uploadState.inline"
-                  @change="insertBlogImage"
-                />
-                <label
-                  class="upload-button upload-button--compact"
-                  for="blog-inline-file"
-                >
-                  {{
-                    uploadState.inline
-                      ? `Yükleniyor · %${uploadProgress.inline}`
-                      : '+ İmlecin olduğu yere görsel ekle'
-                  }}
-                </label>
-                <input
-                  id="blog-video-file"
-                  class="visually-hidden"
-                  type="file"
-                  :accept="videoTypes"
-                  :disabled="uploadState.video"
-                  @change="insertUploadedVideo"
-                />
-                <label
-                  class="upload-button upload-button--compact"
-                  for="blog-video-file"
-                >
-                  {{
-                    uploadState.video
-                      ? `Yükleniyor · %${uploadProgress.video}`
-                      : '+ Video yükle'
-                  }}
-                </label>
-                <button
-                  type="button"
-                  class="upload-button upload-button--compact"
-                  @click="insertVideoLink"
-                >
-                  + YouTube / Drive
-                </button>
-                <button
-                  type="button"
-                  class="upload-button upload-button--compact"
-                  @click="insertTableTemplate"
-                >
-                  + Tablo ekle
-                </button>
-                <small>
-                  Önce metinde eklemek istediğiniz yere tıklayın. Büyük videolar
-                  için YouTube veya Drive kullanın.
-                </small>
+            <div class="field field--wide github-editor">
+              <div class="github-editor__header">
+                <div class="github-editor__tabs">
+                  <button
+                    type="button"
+                    class="github-editor__tab"
+                    :class="{ 'is-active': editorTab === 'write' }"
+                    @click="editorTab = 'write'"
+                  >
+                    ✏️ Yaz
+                  </button>
+                  <button
+                    type="button"
+                    class="github-editor__tab"
+                    :class="{ 'is-active': editorTab === 'preview' }"
+                    @click="editorTab = 'preview'"
+                  >
+                    👁️ Canlı Önizleme
+                  </button>
+                </div>
+                <span class="github-editor__hint">Markdown · Tablo · İnce Resim Yazısı Destekli</span>
               </div>
-              <textarea
-                id="blog-body"
-                ref="blogBodyInput"
-                v-model="blogForm.body"
-                rows="14"
-                required
-              />
+
+              <!-- Toolbar (shown in write mode) -->
+              <div v-show="editorTab === 'write'" class="github-toolbar">
+                <div class="github-toolbar__group">
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Büyük Başlık (H2)"
+                    @click="applyFormat('h2')"
+                  >
+                    H2
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Alt Başlık (H3)"
+                    @click="applyFormat('h3')"
+                  >
+                    H3
+                  </button>
+                </div>
+                <div class="github-toolbar__divider" />
+                <div class="github-toolbar__group">
+                  <button
+                    type="button"
+                    class="toolbar-btn toolbar-btn--bold"
+                    title="Kalın"
+                    @click="applyFormat('bold')"
+                  >
+                    B
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn toolbar-btn--italic"
+                    title="İtalik"
+                    @click="applyFormat('italic')"
+                  >
+                    I
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Alıntı"
+                    @click="applyFormat('quote')"
+                  >
+                    ❝
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Kod"
+                    @click="applyFormat('code')"
+                  >
+                    &lt;&gt;
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Bağlantı"
+                    @click="applyFormat('link')"
+                  >
+                    🔗
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Maddeli Liste"
+                    @click="applyFormat('ul')"
+                  >
+                    ☰
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Numaralı Liste"
+                    @click="applyFormat('ol')"
+                  >
+                    1.
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn"
+                    title="Yatay Çizgi / Ayraç"
+                    @click="applyFormat('hr')"
+                  >
+                    —
+                  </button>
+                </div>
+                <div class="github-toolbar__divider" />
+                <div class="github-toolbar__group">
+                  <button
+                    type="button"
+                    class="toolbar-btn toolbar-btn--action"
+                    title="Tablo Şablonu Ekle"
+                    @click="insertTableTemplate"
+                  >
+                    📊 + Tablo
+                  </button>
+                  <input
+                    id="blog-inline-file"
+                    class="visually-hidden"
+                    type="file"
+                    :accept="imageTypes"
+                    :disabled="uploadState.inline"
+                    @change="insertBlogImage"
+                  />
+                  <label
+                    class="toolbar-btn toolbar-btn--action"
+                    for="blog-inline-file"
+                    title="Görsel Yükle ve İnce Yatay Resim Yazısı Ekle"
+                  >
+                    {{
+                      uploadState.inline
+                        ? `Yükleniyor · %${uploadProgress.inline}`
+                        : '📷 + Görsel Ekle'
+                    }}
+                  </label>
+                  <button
+                    type="button"
+                    class="toolbar-btn toolbar-btn--action"
+                    title="Resim Yazısı Ekle (İnce Yatay)"
+                    @click="applyFormat('caption')"
+                  >
+                    ✍️ Resim Yazısı
+                  </button>
+                  <button
+                    type="button"
+                    class="toolbar-btn toolbar-btn--action"
+                    title="YouTube veya Google Drive videosu ekle"
+                    @click="insertVideoLink"
+                  >
+                    🎥 + Video Linki
+                  </button>
+                  <input
+                    id="blog-video-file"
+                    class="visually-hidden"
+                    type="file"
+                    :accept="videoTypes"
+                    :disabled="uploadState.video"
+                    @change="insertUploadedVideo"
+                  />
+                  <label
+                    class="toolbar-btn toolbar-btn--action"
+                    for="blog-video-file"
+                    title="Doğrudan Video Dosyası Yükle"
+                  >
+                    {{
+                      uploadState.video
+                        ? `Yükleniyor · %${uploadProgress.video}`
+                        : '📁 + Video Dosyası'
+                    }}
+                  </label>
+                </div>
+              </div>
+
+              <!-- Write Area -->
+              <div v-show="editorTab === 'write'" class="github-editor__write">
+                <textarea
+                  id="blog-body"
+                  ref="blogBodyInput"
+                  v-model="blogForm.body"
+                  rows="16"
+                  placeholder="Yazınızı buraya yazın. Markdown, tablolar, başlıklar (## Başlık), görseller ve listeler desteklenir..."
+                  required
+                />
+              </div>
+
+              <!-- Preview Area -->
+              <div v-show="editorTab === 'preview'" class="github-editor__preview">
+                <div v-if="!blogForm.body.trim()" class="preview-empty">
+                  Henüz bir metin girmediniz. [Yaz] sekmesine geçip yazınızı yazabilirsiniz.
+                </div>
+                <div v-else class="article-preview-content">
+                  <template
+                    v-for="(block, index) in previewBlocks"
+                    :key="`${block.type}-${index}`"
+                  >
+                    <figure v-if="block.type === 'image'" class="article-inline-image">
+                      <img
+                        :src="block.src"
+                        :alt="block.alt"
+                        loading="lazy"
+                      />
+                      <figcaption
+                        v-if="block.caption"
+                        :class="[
+                          'article-caption',
+                          `article-caption--${block.captionStyle || 'italic-thin'}`,
+                          `article-caption--${block.captionAlign || 'center'}`,
+                        ]"
+                        v-html="renderInlineMarkdown(block.caption)"
+                      />
+                    </figure>
+                    <figure v-else-if="block.type === 'embed'" class="article-video">
+                      <iframe
+                        :src="block.src"
+                        :title="`${block.provider}: ${block.title}`"
+                        loading="lazy"
+                        allowfullscreen
+                      />
+                      <figcaption v-if="block.title" class="article-caption article-caption--italic-thin">{{ block.title }}</figcaption>
+                    </figure>
+                    <figure v-else-if="block.type === 'video'" class="article-video">
+                      <video controls preload="metadata">
+                        <source :src="block.src" />
+                      </video>
+                      <figcaption v-if="block.title" class="article-caption article-caption--italic-thin">{{ block.title }}</figcaption>
+                    </figure>
+                    <h2
+                      v-else-if="block.type === 'heading' && block.level === 2"
+                      class="article-heading-2"
+                      v-html="renderInlineMarkdown(block.text)"
+                    />
+                    <h3
+                      v-else-if="block.type === 'heading' && block.level === 3"
+                      class="article-heading-3"
+                      v-html="renderInlineMarkdown(block.text)"
+                    />
+                    <blockquote
+                      v-else-if="block.type === 'blockquote'"
+                      class="article-blockquote"
+                      v-html="renderInlineMarkdown(block.text)"
+                    />
+                    <ul
+                      v-else-if="block.type === 'list' && !block.ordered"
+                      class="article-list"
+                    >
+                      <li
+                        v-for="(item, itemIndex) in block.items"
+                        :key="itemIndex"
+                        v-html="renderInlineMarkdown(item)"
+                      />
+                    </ul>
+                    <ol
+                      v-else-if="block.type === 'list' && block.ordered"
+                      class="article-list article-list--ordered"
+                    >
+                      <li
+                        v-for="(item, itemIndex) in block.items"
+                        :key="itemIndex"
+                        v-html="renderInlineMarkdown(item)"
+                      />
+                    </ol>
+                    <hr v-else-if="block.type === 'hr'" class="article-divider" />
+                    <div v-else-if="block.type === 'table'" class="article-table-wrapper">
+                      <table class="article-table">
+                        <thead v-if="block.headers?.length">
+                          <tr>
+                            <th
+                              v-for="(header, hIndex) in block.headers"
+                              :key="`th-${hIndex}`"
+                              :style="block.alignments?.[hIndex] ? { textAlign: block.alignments[hIndex] } : null"
+                              v-html="renderInlineMarkdown(header)"
+                            />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="(row, rIndex) in block.rows"
+                            :key="`row-${rIndex}`"
+                          >
+                            <td
+                              v-for="(cell, cIndex) in row"
+                              :key="`cell-${cIndex}`"
+                              :style="block.alignments?.[cIndex] ? { textAlign: block.alignments[cIndex] } : null"
+                              v-html="renderInlineMarkdown(cell)"
+                            />
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <p
+                      v-else
+                      class="article-paragraph"
+                      v-html="renderInlineMarkdown(block.text)"
+                    />
+                  </template>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1078,14 +1436,311 @@ onMounted(async () => {
   padding: 0.55rem 0.75rem;
 }
 
-.field-toolbar {
+.github-editor {
   display: flex;
-  align-items: center;
-  gap: 0.75rem 1rem;
-  flex-wrap: wrap;
-  padding: 0.75rem;
+  flex-direction: column;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.025);
+  background: var(--panel-2);
+  margin-top: 0.5rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  &__tab {
+    padding: 0.55rem 0.95rem;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: var(--ff-color);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    &.is-active {
+      color: var(--ff-color);
+      background: var(--panel);
+      border-color: var(--border);
+      border-bottom: 1px solid var(--panel);
+      margin-bottom: -1px;
+    }
+  }
+
+  &__hint {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .github-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.015);
+
+    &__group {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    &__divider {
+      width: 1px;
+      height: 1.4rem;
+      margin: 0 0.35rem;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .toolbar-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 2rem;
+      height: 2rem;
+      padding: 0 0.55rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--ff-color);
+      font-size: 0.76rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+
+      &:hover {
+        background: rgba(255, 230, 237, 0.12);
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      &--bold {
+        font-weight: 800;
+      }
+
+      &--italic {
+        font-style: italic;
+      }
+
+      &--action {
+        font-size: 0.72rem;
+        background: rgba(255, 230, 237, 0.06);
+        border-color: rgba(255, 230, 237, 0.25);
+        color: var(--primary-color);
+
+        &:hover {
+          background: rgba(255, 230, 237, 0.18);
+        }
+      }
+    }
+  }
+
+  &__write {
+    textarea {
+      width: 100%;
+      border: 0;
+      border-radius: 0;
+      background: var(--panel);
+      padding: 1rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--ff-color);
+      min-height: 380px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  &__preview {
+    min-height: 380px;
+    max-height: 75vh;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+    background: #030303;
+    border-top: 1px solid var(--border);
+
+    .preview-empty {
+      padding: 3rem 1rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .article-preview-content {
+      max-width: 800px;
+      margin: 0 auto;
+
+      .article-paragraph {
+        margin: 0 0 1.5rem;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: rgba(247, 247, 247, 0.92);
+      }
+
+      .article-heading-2 {
+        margin: 2.5rem 0 1rem;
+        font-size: 1.7rem;
+        font-weight: 600;
+        color: var(--ff-color);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: 0.4rem;
+      }
+
+      .article-heading-3 {
+        margin: 2rem 0 0.8rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--ff-color);
+      }
+
+      .article-blockquote {
+        margin: 2rem 0;
+        padding: 1rem 1.5rem;
+        border-left: 3px solid var(--primary-color);
+        background: rgba(255, 230, 237, 0.04);
+        color: rgba(247, 247, 247, 0.88);
+        font-style: italic;
+        font-weight: 300;
+        line-height: 1.6;
+      }
+
+      .article-list {
+        margin: 0 0 1.5rem;
+        padding-left: 1.5rem;
+        font-size: 1rem;
+        line-height: 1.8;
+        color: rgba(247, 247, 247, 0.92);
+
+        li {
+          margin-bottom: 0.4rem;
+          &::marker {
+            color: var(--primary-color);
+          }
+        }
+
+        &--ordered {
+          list-style-type: decimal;
+        }
+      }
+
+      .article-divider {
+        border: 0;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.12);
+        margin: 2.5rem auto;
+        width: 60%;
+      }
+
+      .article-inline-image {
+        margin: 2rem auto;
+        text-align: center;
+
+        img {
+          display: block;
+          max-width: 100%;
+          height: auto;
+          margin: 0 auto;
+          border-radius: 4px;
+        }
+      }
+
+      .article-caption {
+        display: block;
+        width: 100%;
+        margin-top: 0.75rem;
+        color: rgba(247, 247, 247, 0.65);
+        font-size: 0.88rem;
+        line-height: 1.5;
+        letter-spacing: 0.02em;
+        text-align: center;
+        font-style: italic;
+        font-weight: 300;
+
+        &--italic-thin {
+          font-style: italic;
+          font-weight: 300;
+        }
+
+        &--left {
+          text-align: left;
+        }
+        &--right {
+          text-align: right;
+        }
+        &--center {
+          text-align: center;
+        }
+      }
+
+      .article-table-wrapper {
+        margin: 2rem 0;
+        overflow-x: auto;
+        border: 1px solid rgba(247, 247, 247, 0.14);
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .article-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+        line-height: 1.5;
+
+        th,
+        td {
+          padding: 0.75rem 1rem;
+          border-bottom: 1px solid rgba(247, 247, 247, 0.08);
+        }
+
+        th {
+          font-weight: 600;
+          color: var(--ff-color);
+          background: rgba(255, 255, 255, 0.04);
+        }
+
+        td {
+          color: rgba(247, 247, 247, 0.88);
+        }
+
+        tr:nth-child(even) td {
+          background: rgba(255, 255, 255, 0.015);
+        }
+      }
+
+      .article-video {
+        margin: 2rem 0;
+        iframe, video {
+          display: block;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          border: 0;
+        }
+      }
+    }
+  }
 }
 
 .check-field {

@@ -1,5 +1,8 @@
 <script setup>
-import { parseArticleBody } from '~/lib/article-body.js';
+import {
+  parseArticleBody,
+  renderInlineMarkdown,
+} from '~/lib/article-body.js';
 
 const route = useRoute();
 const { blogPosts, settings } = useSiteContent();
@@ -59,7 +62,15 @@ function formatDate(value) {
             loading="lazy"
             decoding="async"
           />
-          <figcaption v-if="block.alt">{{ block.alt }}</figcaption>
+          <figcaption
+            v-if="block.caption"
+            :class="[
+              'article-caption',
+              `article-caption--${block.captionStyle || 'italic-thin'}`,
+              `article-caption--${block.captionAlign || 'center'}`,
+            ]"
+            v-html="renderInlineMarkdown(block.caption)"
+          />
         </figure>
         <figure v-else-if="block.type === 'embed'" class="article-video">
           <iframe
@@ -70,7 +81,7 @@ function formatDate(value) {
             referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
           />
-          <figcaption>{{ block.title }}</figcaption>
+          <figcaption v-if="block.title" class="article-caption article-caption--italic-thin">{{ block.title }}</figcaption>
         </figure>
         <figure v-else-if="block.type === 'video'" class="article-video">
           <video
@@ -82,20 +93,44 @@ function formatDate(value) {
             <source :src="block.src" />
             Tarayıcınız video oynatmayı desteklemiyor.
           </video>
-          <figcaption>{{ block.title }}</figcaption>
+          <figcaption v-if="block.title" class="article-caption article-caption--italic-thin">{{ block.title }}</figcaption>
         </figure>
         <h2
           v-else-if="block.type === 'heading' && block.level === 2"
           class="article-heading-2"
-        >
-          {{ block.text }}
-        </h2>
+          v-html="renderInlineMarkdown(block.text)"
+        />
         <h3
           v-else-if="block.type === 'heading' && block.level === 3"
           class="article-heading-3"
+          v-html="renderInlineMarkdown(block.text)"
+        />
+        <blockquote
+          v-else-if="block.type === 'blockquote'"
+          class="article-blockquote"
+          v-html="renderInlineMarkdown(block.text)"
+        />
+        <ul
+          v-else-if="block.type === 'list' && !block.ordered"
+          class="article-list"
         >
-          {{ block.text }}
-        </h3>
+          <li
+            v-for="(item, itemIndex) in block.items"
+            :key="itemIndex"
+            v-html="renderInlineMarkdown(item)"
+          />
+        </ul>
+        <ol
+          v-else-if="block.type === 'list' && block.ordered"
+          class="article-list article-list--ordered"
+        >
+          <li
+            v-for="(item, itemIndex) in block.items"
+            :key="itemIndex"
+            v-html="renderInlineMarkdown(item)"
+          />
+        </ol>
+        <hr v-else-if="block.type === 'hr'" class="article-divider" />
         <div v-else-if="block.type === 'table'" class="article-table-wrapper">
           <table class="article-table">
             <thead v-if="block.headers?.length">
@@ -104,9 +139,8 @@ function formatDate(value) {
                   v-for="(header, hIndex) in block.headers"
                   :key="`th-${hIndex}`"
                   :style="{ textAlign: block.alignments?.[hIndex] || 'left' }"
-                >
-                  {{ header }}
-                </th>
+                  v-html="renderInlineMarkdown(header)"
+                />
               </tr>
             </thead>
             <tbody>
@@ -115,14 +149,13 @@ function formatDate(value) {
                   v-for="(cell, cIndex) in row"
                   :key="`td-${cIndex}`"
                   :style="{ textAlign: block.alignments?.[cIndex] || 'left' }"
-                >
-                  {{ cell }}
-                </td>
+                  v-html="renderInlineMarkdown(cell)"
+                />
               </tr>
             </tbody>
           </table>
         </div>
-        <p v-else>{{ block.text }}</p>
+        <p v-else class="article-p" v-html="renderInlineMarkdown(block.text)" />
       </template>
     </article>
 
@@ -228,11 +261,119 @@ function formatDate(value) {
   object-fit: contain;
 }
 
-.article-inline-image figcaption {
-  margin-top: 0.75rem;
-  color: rgba(247, 247, 247, 0.55);
-  font-size: 0.78rem;
-  line-height: 1.5;
+.article-caption {
+  display: block;
+  width: 100%;
+  margin-top: 0.9rem;
+  color: rgba(247, 247, 247, 0.65);
+  font-size: clamp(0.84rem, 1.15vw, 0.96rem);
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+  text-align: center;
+
+  /* "Yatay ince" (italic + light weight 300) */
+  font-style: italic;
+  font-weight: 300;
+
+  &--italic-thin {
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  &--normal-thin {
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  &--italic-regular {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  &--bold {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  &--left {
+    text-align: left;
+  }
+
+  &--right {
+    text-align: right;
+  }
+
+  &--center {
+    text-align: center;
+  }
+}
+
+.article-p {
+  margin: 0 0 2rem;
+  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+  line-height: 1.8;
+  color: rgba(247, 247, 247, 0.92);
+}
+
+.article-link {
+  color: var(--primary-color);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.inline-code {
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--primary-color);
+  font-size: 0.88em;
+  font-family: monospace;
+}
+
+.article-blockquote {
+  margin: 2.75rem 0;
+  padding: 1.25rem 2rem;
+  border-left: 3px solid var(--primary-color);
+  background: rgba(255, 230, 237, 0.035);
+  color: rgba(247, 247, 247, 0.88);
+  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1.65;
+}
+
+.article-list {
+  margin: 0 0 2rem;
+  padding-left: 1.75rem;
+  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
+  line-height: 1.8;
+  color: rgba(247, 247, 247, 0.92);
+
+  li {
+    margin-bottom: 0.6rem;
+
+    &::marker {
+      color: var(--primary-color);
+    }
+  }
+
+  &--ordered {
+    list-style-type: decimal;
+  }
+}
+
+.article-divider {
+  border: 0;
+  height: 1px;
+  background: rgba(247, 247, 247, 0.12);
+  margin: 3.5rem auto;
+  width: 60%;
 }
 
 .article-video {

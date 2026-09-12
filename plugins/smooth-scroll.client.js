@@ -55,15 +55,25 @@ export default defineNuxtPlugin({
     }
 
     nuxtApp.$router?.afterEach((to) => {
+      window.scrollTo(0, 0);
       if (!isSmoothRoute(to)) {
         disableLocomotiveHelper(locomotiveScroll, scrollerEl);
       } else if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
         nextTick(() => {
           document.documentElement.classList.add('has-scroll-smooth');
+          if (locomotiveScroll.scroll?.instance) {
+            locomotiveScroll.scroll.instance.scroll.y = 0;
+            locomotiveScroll.scroll.instance.delta.y = 0;
+          }
+          if (locomotiveScroll.el) {
+            locomotiveScroll.el.style.transform = '';
+          }
           locomotiveScroll.start();
           locomotiveScroll.update();
           $ScrollTrigger?.refresh?.();
         });
+      } else {
+        disableLocomotiveHelper(locomotiveScroll, scrollerEl);
       }
     });
 

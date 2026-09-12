@@ -13,13 +13,16 @@ function leavePageAnim(pageEl, done) {
   routeChanging.value = true;
 
   gsap.killTweensOf('.page-overlay__slide');
-  if (pageEl) gsap.killTweensOf(pageEl);
+  if (pageEl) {
+    gsap.killTweensOf(pageEl);
+    pageEl.style.transform = '';
+  }
 
   const tl = gsap.timeline({
     defaults: { ease: 'power3.inOut' },
   });
 
-  tl.to(pageEl, { y: -50, duration: 0.18, ease: 'power2.in' }, 0);
+  tl.to(pageEl, { opacity: 0, duration: 0.15, ease: 'power2.in' }, 0);
   tl.fromTo(
     '.page-overlay__slide',
     {
@@ -33,9 +36,14 @@ function leavePageAnim(pageEl, done) {
       stagger: { each: 0.015 },
       duration: 0.18,
       onComplete: () => {
+        window.scrollTo(0, 0);
         $smoothScroll.scrollTo(0, 0);
         $smoothScroll.reset?.();
         $smoothScroll.disable();
+        if (pageEl) {
+          pageEl.style.transform = '';
+          pageEl.style.opacity = '';
+        }
         done();
       },
     },
@@ -74,6 +82,10 @@ async function enterPageAnim(pageEl, done) {
   // Keep the outgoing page covered while async page data/components mount.
   await waitForPageContent(pageEl);
 
+  if (pageEl) {
+    pageEl.style.transform = '';
+  }
+
   const tl = gsap.timeline({
     defaults: { ease: 'power3.out' },
     onStart: () => {
@@ -81,14 +93,18 @@ async function enterPageAnim(pageEl, done) {
       emitter.emit('pointer:inactive');
     },
     onComplete: () => {
+      if (pageEl) {
+        pageEl.style.transform = '';
+      }
       done();
       gsap.to('.nav', { autoAlpha: 1, duration: 0.15 });
     },
   });
 
-  tl.from(
+  tl.fromTo(
     pageEl,
-    { y: 50, duration: 0.22, ease: 'power3.out', clearProps: true },
+    { opacity: 0 },
+    { opacity: 1, duration: 0.2, ease: 'power2.out', clearProps: 'all' },
     0,
   );
 
@@ -114,6 +130,7 @@ async function enterPageAnim(pageEl, done) {
     const isSmooth =
       currentRoute?.name === 'index' || currentRoute?.name === 'project-slug';
     if (isSmooth) {
+      window.scrollTo(0, 0);
       $smoothScroll.enable();
       $smoothScroll.update();
       ScrollTrigger.refresh();
