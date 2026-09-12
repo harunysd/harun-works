@@ -4,7 +4,10 @@ import {
   renderInlineMarkdown,
   parseVideoSource,
 } from '~/lib/article-body.js';
-import { slugifyContent } from '~/lib/site-content-defaults.js';
+import {
+  slugifyContent,
+  DEFAULT_MASTER_COVER_PROMPT,
+} from '~/lib/site-content-defaults.js';
 import {
   ADMIN_IMAGE_TYPES,
   ADMIN_VIDEO_TYPES,
@@ -72,7 +75,16 @@ const settingsForm = reactive({
   tagline: '',
   aboutText: '',
   contactText: '',
+  coverPrompt: '',
 });
+
+const promptModalOpen = ref(false);
+const promptModalTab = ref('filled');
+const promptModalContext = ref('blog');
+const promptCopied = ref(false);
+const promptCustomNote = ref('');
+const promptRefImages = ref('');
+const promptSaving = ref(false);
 
 const blogForm = reactive({
   id: '',
@@ -733,6 +745,105 @@ async function saveSettings() {
   }
 }
 
+watch(
+  settings,
+  (val) => {
+    if (val) {
+      Object.assign(settingsForm, val);
+      if (!settingsForm.coverPrompt) {
+        settingsForm.coverPrompt = DEFAULT_MASTER_COVER_PROMPT;
+      }
+    }
+  },
+  { immediate: true, deep: true },
+);
+
+const computedFilledPrompt = computed(() => {
+  const template = settingsForm.coverPrompt || DEFAULT_MASTER_COVER_PROMPT;
+  let title = '';
+  let description = '';
+
+  if (promptModalContext.value === 'blog') {
+    title = blogForm.title.trim() || '[Yazı Başlığı Henüz Girilmedi]';
+    description =
+      blogForm.excerpt.trim() || blogForm.title.trim() || '[Açıklama / Bağlam]';
+  } else if (promptModalContext.value === 'project') {
+    title = projectForm.title.trim() || '[Çalışma Başlığı Henüz Girilmedi]';
+    description =
+      projectForm.description.trim() ||
+      projectForm.title.trim() ||
+      '[Açıklama / Bağlam]';
+  } else {
+    title =
+      blogForm.title.trim() || projectForm.title.trim() || '[Başlık]';
+    description =
+      blogForm.excerpt.trim() ||
+      projectForm.description.trim() ||
+      '[Açıklama / Bağlam]';
+  }
+
+  const note =
+    promptCustomNote.value.trim() || 'Standart kurallar ve seri uyumu';
+  const refs =
+    promptRefImages.value.trim() || 'Ekli görsel seri kapakları (Attached reference covers)';
+
+  return template
+    .replace(/\{\{TITLE\}\}/g, title)
+    .replace(/\{\{DESCRIPTION\}\}/g, description)
+    .replace(/\{\{OPTIONAL_NOTE\}\}/g, note)
+    .replace(/\{\{REFERENCE_IMAGES\}\}/g, refs);
+});
+
+function openPromptModal(context = 'blog') {
+  promptModalContext.value = context;
+  promptModalOpen.value = true;
+  promptCopied.value = false;
+  if (!settingsForm.coverPrompt) {
+    settingsForm.coverPrompt =
+      settings.value?.coverPrompt || DEFAULT_MASTER_COVER_PROMPT;
+  }
+}
+
+function closePromptModal() {
+  promptModalOpen.value = false;
+}
+
+async function copyPromptToClipboard(textToCopy) {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    promptCopied.value = true;
+    showNotice('Prompt panoya kopyalandı!');
+    setTimeout(() => {
+      promptCopied.value = false;
+    }, 2500);
+  } catch (err) {
+    showNotice('Kopyalama başarısız oldu. Lütfen metni seçip elle kopyalayın.');
+  }
+}
+
+async function saveMasterPrompt() {
+  promptSaving.value = true;
+  try {
+    await updateSettings({ coverPrompt: settingsForm.coverPrompt });
+    showNotice('Master görsel promptu sisteme kalıcı olarak kaydedildi!');
+  } catch (err) {
+    showNotice('Prompt kaydedilemedi. Lütfen tekrar deneyin.');
+  } finally {
+    promptSaving.value = false;
+  }
+}
+
+function resetMasterPromptToDefault() {
+  if (
+    confirm(
+      'Master promptu varsayılan fabrika ayarlarına sıfırlamak istediğinizden emin misiniz?',
+    )
+  ) {
+    settingsForm.coverPrompt = DEFAULT_MASTER_COVER_PROMPT;
+    showNotice('Prompt şablonu sıfırlandı. Kalıcı olması için kaydet butonuna basın.');
+  }
+}
+
 onMounted(async () => {
   const { $smoothScroll } = useNuxtApp();
   $smoothScroll?.disable?.();
@@ -921,6 +1032,14 @@ onMounted(async () => {
           <h1>İçerik masası</h1>
         </div>
         <div class="admin-header__actions">
+          <button
+            type="button"
+            class="admin-header__prompt-btn"
+            title="Master Görsel & Kapak Prompt Yöneticisini Aç"
+            @click="openPromptModal('general')"
+          >
+            ✨ Görsel Promptu
+          </button>
           <NuxtLink to="/blog">Blogu görüntüle ↗</NuxtLink>
           <button type="button" @click="logout">Çıkış</button>
         </div>
@@ -1014,6 +1133,13 @@ onMounted(async () => {
                     : 'Kapak görseli yükle'
                 }}
               </label>
+              <button
+                type="button"
+                class="btn-prompt-trigger"
+                @click="openPromptModal('blog')"
+              >
+                ✨ 16:9 Kapak Promptu Al / Düzenle
+              </button>
               <small
                 >Önerilen: 1600 × 900 px (16:9), tercihen WebP veya JPG.</small
               >
@@ -1141,6 +1267,14 @@ onMounted(async () => {
                 </div>
                 <div class="github-toolbar__divider" />
                 <div class="github-toolbar__group">
+                  <button
+                    type="button"
+                    class="toolbar-btn toolbar-btn--action toolbar-btn--prompt"
+                    title="Kapak Görseli İçin Master Prompt Üret / Düzenle"
+                    @click="openPromptModal('blog')"
+                  >
+                    ✨ Görsel Promptu
+                  </button>
                   <button
                     type="button"
                     class="toolbar-btn toolbar-btn--action"
@@ -1428,6 +1562,13 @@ onMounted(async () => {
                     : 'Tek görsel yükle'
                 }}
               </label>
+              <button
+                type="button"
+                class="btn-prompt-trigger"
+                @click="openPromptModal('project')"
+              >
+                ✨ 16:9 Çalışma Görsel Promptu Al / Düzenle
+              </button>
               <small>
                 1600 × 900 px (16:9) önerilir. Aynı görsel kartta ve detay
                 banner’ında otomatik kullanılır.
@@ -1513,6 +1654,53 @@ onMounted(async () => {
           </form>
         </section>
 
+        <section class="settings-card" style="margin-top: 2rem;">
+          <div class="editor-card__heading">
+            <div>
+              <p class="admin-eyebrow">YAPAY ZEKA & GÖRSEL DİLİ</p>
+              <h2>Master Görsel / Kapak Promptu</h2>
+            </div>
+          </div>
+          <p class="settings-card__desc">
+            Yazı ve proje kapakları üretirken kullanılan master görsel sistem promptu. Buradan yapacağınız değişiklikler kalıcı olarak saklanır ve editördeki hızlı prompt üreticide kullanılır.
+          </p>
+          <div class="field-grid">
+            <label class="field field--wide">
+              <span>Master Sistem Promptu (Şablon)</span>
+              <textarea
+                v-model="settingsForm.coverPrompt"
+                rows="12"
+                class="prompt-code-box prompt-code-box--editable"
+                placeholder="Master prompt şablonu..."
+              />
+            </label>
+            <div class="prompt-actions-row field--wide">
+              <button
+                class="primary-button"
+                type="button"
+                :disabled="promptSaving"
+                @click="saveMasterPrompt"
+              >
+                {{ promptSaving ? 'Kaydediliyor...' : 'Promptu Sisteme Kaydet' }}
+              </button>
+              <button
+                class="secondary-button btn-danger-soft"
+                type="button"
+                @click="resetMasterPromptToDefault"
+              >
+                ↺ Varsayılana Sıfırla
+              </button>
+              <button
+                class="secondary-button"
+                type="button"
+                @click="openPromptModal('general')"
+              >
+                ✨ Hızlı Üreticiyi Aç
+              </button>
+            </div>
+          </div>
+        </section>
+
         <section class="settings-card admin-password-card" style="margin-top: 2rem;">
           <div class="editor-card__heading">
             <div>
@@ -1560,6 +1748,184 @@ onMounted(async () => {
       </div>
 
       <div v-if="notice" class="notice" role="status">{{ notice }}</div>
+
+      <!-- Master Cover Prompt Modal -->
+      <div
+        v-if="promptModalOpen"
+        class="prompt-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="prompt-modal-title"
+      >
+        <div class="prompt-modal__backdrop" @click="closePromptModal"></div>
+        <div class="prompt-modal__card">
+          <header class="prompt-modal__header">
+            <div class="prompt-modal__title-group">
+              <span class="prompt-modal__badge">MASTER PROMPT</span>
+              <h2 id="prompt-modal-title">16:9 Görsel & Kapak Prompt Üretici</h2>
+            </div>
+            <button
+              type="button"
+              class="prompt-modal__close-btn"
+              title="Kapat"
+              @click="closePromptModal"
+            >
+              ✕
+            </button>
+          </header>
+
+          <div class="prompt-modal__tabs">
+            <button
+              type="button"
+              class="prompt-modal__tab"
+              :class="{ 'is-active': promptModalTab === 'filled' }"
+              @click="promptModalTab = 'filled'"
+            >
+              ✨ Hazır Prompt (Doldurulmuş)
+            </button>
+            <button
+              type="button"
+              class="prompt-modal__tab"
+              :class="{ 'is-active': promptModalTab === 'template' }"
+              @click="promptModalTab = 'template'"
+            >
+              ⚙️ Şablonu Düzenle & Sisteme Kaydet
+            </button>
+          </div>
+
+          <div class="prompt-modal__body">
+            <!-- Filled Prompt Tab -->
+            <div v-show="promptModalTab === 'filled'" class="prompt-view-filled">
+              <div class="prompt-context-banner">
+                <div class="prompt-context-banner__info">
+                  <span class="prompt-context-pill">
+                    {{ promptModalContext === 'blog' ? 'Blog Yazısı' : promptModalContext === 'project' ? 'Çalışma / Proje' : 'Genel' }}
+                  </span>
+                  <strong>{{ promptModalContext === 'blog' ? (blogForm.title || 'Başlık Girilmedi') : promptModalContext === 'project' ? (projectForm.title || 'Başlık Girilmedi') : 'Özel İçerik' }}</strong>
+                </div>
+                <small>Başlık ve açıklama mevcut formdan otomatik aktarılmıştır.</small>
+              </div>
+
+              <div class="prompt-inputs-grid">
+                <label class="field">
+                  <span>İsteğe bağlı ek yönerge / odak noktası</span>
+                  <input
+                    v-model="promptCustomNote"
+                    placeholder="Örn: TV ekranındaki arayüzü ve arkadaki yumuşak ışığı vurgula..."
+                  />
+                </label>
+                <label class="field">
+                  <span>Referans görsel notu</span>
+                  <input
+                    v-model="promptRefImages"
+                    placeholder="Örn: Ekli seri kapakları veya /img/blog/oem-tv-launcher/cover.png"
+                  />
+                </label>
+              </div>
+
+              <div class="prompt-preview-wrap">
+                <div class="prompt-preview-header">
+                  <span>Üretilen Tam Prompt (Kullanıma Hazır)</span>
+                  <button
+                    type="button"
+                    class="prompt-copy-inline-btn"
+                    :class="{ 'is-copied': promptCopied }"
+                    @click="copyPromptToClipboard(computedFilledPrompt)"
+                  >
+                    {{ promptCopied ? '✅ Kopyalandı!' : '📋 Kopyala' }}
+                  </button>
+                </div>
+                <textarea
+                  class="prompt-code-box"
+                  :value="computedFilledPrompt"
+                  readonly
+                  rows="14"
+                />
+              </div>
+            </div>
+
+            <!-- Master Template Tab -->
+            <div v-show="promptModalTab === 'template'" class="prompt-view-template">
+              <div class="prompt-template-info">
+                <p>
+                  Bu metin sisteminizde kalıcı olarak saklanan <strong>Master Görsel / Kapak Üretim Promptu</strong>dur.
+                  Değişiklik yaptığınızda <code v-pre>{{TITLE}}</code>, <code v-pre>{{DESCRIPTION}}</code>, <code v-pre>{{OPTIONAL_NOTE}}</code> ve <code v-pre>{{REFERENCE_IMAGES}}</code> değişkenleri korunmalıdır.
+                </p>
+              </div>
+
+              <label class="field field--wide">
+                <span>Master Prompt Şablonu</span>
+                <textarea
+                  v-model="settingsForm.coverPrompt"
+                  class="prompt-code-box prompt-code-box--editable"
+                  rows="16"
+                  placeholder="Master prompt şablonu..."
+                />
+              </label>
+            </div>
+          </div>
+
+          <footer class="prompt-modal__footer">
+            <template v-if="promptModalTab === 'filled'">
+              <div class="prompt-modal__footer-left">
+                <button
+                  type="button"
+                  class="secondary-button"
+                  @click="promptModalTab = 'template'"
+                >
+                  ⚙️ Şablonu Düzenle
+                </button>
+              </div>
+              <div class="prompt-modal__footer-right">
+                <button
+                  type="button"
+                  class="text-button"
+                  @click="closePromptModal"
+                >
+                  Kapat
+                </button>
+                <button
+                  type="button"
+                  class="primary-button"
+                  :class="{ 'btn-success': promptCopied }"
+                  @click="copyPromptToClipboard(computedFilledPrompt)"
+                >
+                  {{ promptCopied ? '✅ Panoya Kopyalandı!' : '📋 Promptu Kopyala' }}
+                </button>
+              </div>
+            </template>
+
+            <template v-else>
+              <div class="prompt-modal__footer-left">
+                <button
+                  type="button"
+                  class="secondary-button btn-danger-soft"
+                  @click="resetMasterPromptToDefault"
+                >
+                  ↺ Varsayılana Sıfırla
+                </button>
+              </div>
+              <div class="prompt-modal__footer-right">
+                <button
+                  type="button"
+                  class="text-button"
+                  @click="closePromptModal"
+                >
+                  Kapat
+                </button>
+                <button
+                  type="button"
+                  class="primary-button"
+                  :disabled="promptSaving"
+                  @click="saveMasterPrompt"
+                >
+                  {{ promptSaving ? 'Kaydediliyor...' : '💾 Değişiklikleri Sisteme Kaydet' }}
+                </button>
+              </div>
+            </template>
+          </footer>
+        </div>
+      </div>
     </template>
   </main>
 </template>
@@ -2530,5 +2896,348 @@ onMounted(async () => {
   margin: 0;
   color: #8effaa;
   font-size: 0.82rem;
+}
+
+/* Prompt Modal & Trigger Styles */
+.toolbar-btn--prompt {
+  background: rgba(255, 120, 80, 0.12) !important;
+  border-color: rgba(255, 120, 80, 0.3) !important;
+  color: #ffaa88 !important;
+  font-weight: 500;
+
+  &:hover {
+    background: rgba(255, 120, 80, 0.22) !important;
+    border-color: rgba(255, 120, 80, 0.5) !important;
+    color: #ffffff !important;
+  }
+}
+
+.btn-prompt-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.85rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 120, 80, 0.12);
+    border-color: rgba(255, 120, 80, 0.35);
+    color: #ffaa88;
+  }
+}
+
+.admin-header__prompt-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 120, 80, 0.12);
+  border: 1px solid rgba(255, 120, 80, 0.3) !important;
+  border-radius: 4px;
+  color: #ffaa88 !important;
+  font-size: 0.72rem !important;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 120, 80, 0.22);
+    border-color: rgba(255, 120, 80, 0.5) !important;
+    color: #ffffff !important;
+  }
+}
+
+.prompt-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 6, 8, 0.82);
+    backdrop-filter: blur(8px);
+  }
+
+  &__card {
+    position: relative;
+    z-index: 1;
+    width: min(940px, 100%);
+    max-height: 88vh;
+    background: #131315;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+
+    h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+  }
+
+  &__title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__badge {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 120, 80, 0.15);
+    color: #ffaa88;
+    border: 1px solid rgba(255, 120, 80, 0.3);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  &__close-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    line-height: 1;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__tab {
+    background: none;
+    border: 1px solid transparent;
+    color: var(--muted);
+    font-size: 0.8rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &.is-active {
+      background: rgba(255, 255, 255, 0.09);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.16);
+      font-weight: 500;
+    }
+
+    &:hover:not(.is-active) {
+      color: #e0e0e0;
+    }
+  }
+
+  &__body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+
+    &-left,
+    &-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+  }
+}
+
+.prompt-view-filled,
+.prompt-view-template {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.prompt-context-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.88rem;
+  }
+
+  small {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+}
+
+.prompt-context-pill {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.prompt-inputs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.prompt-preview-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.prompt-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.prompt-copy-inline-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 4px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.74rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.is-copied {
+    background: #1b4d2e;
+    border-color: #2ea043;
+    color: #8effaa;
+  }
+
+  &:hover:not(.is-copied) {
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.prompt-code-box {
+  width: 100%;
+  padding: 1rem;
+  background: #0a0a0c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #d8d8d8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.55;
+  resize: vertical;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  &:focus {
+    outline: none;
+    border-color: rgba(255, 120, 80, 0.45);
+  }
+
+  &--editable {
+    background: #0e0e11;
+  }
+}
+
+.prompt-template-info {
+  padding: 0.85rem 1.1rem;
+  background: rgba(255, 180, 80, 0.06);
+  border: 1px solid rgba(255, 180, 80, 0.18);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #ddd;
+
+  code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: #ffaa88;
+    font-size: 0.8rem;
+  }
+}
+
+.btn-danger-soft {
+  background: rgba(255, 70, 70, 0.1) !important;
+  border: 1px solid rgba(255, 70, 70, 0.25) !important;
+  color: #ff8888 !important;
+
+  &:hover {
+    background: rgba(255, 70, 70, 0.2) !important;
+    border-color: rgba(255, 70, 70, 0.4) !important;
+  }
+}
+
+.btn-success {
+  background: #238636 !important;
+  border-color: #2ea043 !important;
+  color: #ffffff !important;
+}
+
+.prompt-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
 }
 </style>
