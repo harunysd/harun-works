@@ -5324,6 +5324,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nodemailer@npm:^10.0.9":
+  version: 10.0.9
+  resolution: "nodemailer@npm:10.0.9"
+  checksum: f24b24715c2c5ea60b9e6e52c4319df993afffc0236ca08329477de11221a38d6a120a75e6d9b1b364fe8650aa8f711e259dfad755ae5584bbbeb6fc190041ec
+  languageName: node
+  linkType: hard
+
 "nopt@npm:^5.0.0":
   version: 5.0.0
   resolution: "nopt@npm:5.0.0"
@@ -6667,6 +6674,7 @@ __metadata:
     gsap: ^3.12.2
     locomotive-scroll: ^4.1.4
     mitt: ^3.0.1
+    nodemailer: ^10.0.9
     normalize.css: ^8.0.1
     nuxt: ^3.6.5
     ogl: ^0.0.117

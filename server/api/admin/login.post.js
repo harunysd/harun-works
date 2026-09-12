@@ -5,7 +5,7 @@ import {
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  if (!validateAdminPassword(body?.password)) {
+  if (!(await validateAdminPassword(body?.password))) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Parola doğru değil.',

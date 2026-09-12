@@ -23,6 +23,7 @@
     "gsap": "^3.12.2",
     "locomotive-scroll": "^4.1.4",
     "mitt": "^3.0.1",
+    "nodemailer": "^10.0.9",
     "normalize.css": "^8.0.1",
     "ogl": "^0.0.117",
     "rad-event-listener": "^0.2.4",

@@ -35,6 +35,28 @@ const passwordInput = ref('');
 const loginError = ref('');
 const activeTab = ref('blog');
 const notice = ref('');
+
+const googleClientId = ref('');
+const isGoogleLoading = ref(false);
+const googleError = ref('');
+const showGoogleHelp = ref(false);
+
+const recoveryMode = ref(false);
+const recoveryCode = ref('');
+const recoveryError = ref('');
+const recoveryMessage = ref('');
+const isRequestingRecovery = ref(false);
+const isVerifyingRecovery = ref(false);
+const maskedEmail = ref('harunysd@gmail.com');
+const fallbackMockCode = ref('');
+
+const passwordChange = reactive({
+  newPassword: '',
+  confirmPassword: '',
+  loading: false,
+  message: '',
+  error: '',
+});
 const blogBodyInput = ref(null);
 const editorTab = ref('write');
 const previewBlocks = computed(() => parseArticleBody(blogForm.body));
@@ -373,6 +395,210 @@ async function logout() {
   passwordInput.value = '';
 }
 
+async function initGoogleAuth() {
+  try {
+    const config = await $fetch('/api/admin/auth-config');
+    googleClientId.value = config.googleClientId || '';
+    maskedEmail.value = config.maskedEmail || 'harunysd@gmail.com';
+
+    if (googleClientId.value) {
+      loadGoogleScript();
+    }
+  } catch (e) {
+    console.warn('Failed to load auth config:', e);
+  }
+}
+
+function loadGoogleScript() {
+  if (typeof window === 'undefined') return;
+  if (window.google?.accounts?.id) {
+    renderGoogleButton();
+    return;
+  }
+
+  const existingScript = document.getElementById('google-gsi-script');
+  if (existingScript) return;
+
+  const script = document.createElement('script');
+  script.id = 'google-gsi-script';
+  script.src = 'https://accounts.google.com/gsi/client';
+  script.async = true;
+  script.defer = true;
+  script.onload = () => {
+    renderGoogleButton();
+  };
+  document.head.appendChild(script);
+}
+
+function renderGoogleButton() {
+  if (!window.google?.accounts?.id || !googleClientId.value) return;
+
+  try {
+    window.google.accounts.id.initialize({
+      client_id: googleClientId.value,
+      callback: handleGoogleCredentialResponse,
+      auto_select: false,
+      cancel_on_tap_outside: true,
+    });
+
+    const targetEl = document.getElementById('google-btn-target');
+    if (targetEl) {
+      targetEl.innerHTML = '';
+      window.google.accounts.id.renderButton(targetEl, {
+        theme: 'filled_black',
+        size: 'large',
+        shape: 'rectangular',
+        text: 'signin_with',
+        locale: 'tr',
+        width: 320,
+      });
+    }
+  } catch (err) {
+    console.error('Google button render error:', err);
+  }
+}
+
+async function handleGoogleCredentialResponse(response) {
+  isGoogleLoading.value = true;
+  googleError.value = '';
+  try {
+    const res = await $fetch('/api/admin/auth-google', {
+      method: 'POST',
+      body: { credential: response.credential },
+    });
+    if (res.ok) {
+      isUnlocked.value = true;
+      loginError.value = '';
+      showNotice(`Hoş geldiniz, ${res.name || res.email}!`);
+    }
+  } catch (err) {
+    googleError.value =
+      err.data?.statusMessage ||
+      err.message ||
+      'Google ile giriş yapılamadı. Hesabınız yetkili olmayabilir.';
+  } finally {
+    isGoogleLoading.value = false;
+  }
+}
+
+function handleGoogleClick() {
+  googleError.value = '';
+  if (googleClientId.value) {
+    if (window.google?.accounts?.id) {
+      window.google.accounts.id.prompt();
+    } else {
+      window.location.href = '/api/admin/auth/google/login';
+    }
+  } else {
+    showGoogleHelp.value = !showGoogleHelp.value;
+  }
+}
+
+async function startRecovery() {
+  recoveryMode.value = true;
+  recoveryError.value = '';
+  recoveryMessage.value = '';
+  isRequestingRecovery.value = true;
+  try {
+    const res = await $fetch('/api/admin/request-recovery', { method: 'POST' });
+    if (res.ok) {
+      recoveryMessage.value = `${res.maskedEmail || 'harunysd@gmail.com'} adresinize 6 haneli giriş kodu gönderildi.`;
+      if (res.mailerStatus?.code) {
+        fallbackMockCode.value = res.mailerStatus.code;
+        recoveryCode.value = res.mailerStatus.code;
+      }
+    }
+  } catch (err) {
+    recoveryError.value =
+      err.data?.statusMessage || err.message || 'Kod gönderilemedi.';
+  } finally {
+    isRequestingRecovery.value = false;
+  }
+}
+
+async function submitRecoveryCode() {
+  if (!recoveryCode.value.trim()) {
+    recoveryError.value = 'Lütfen 6 haneli kodu girin.';
+    return;
+  }
+  isVerifyingRecovery.value = true;
+  recoveryError.value = '';
+  try {
+    const res = await $fetch('/api/admin/verify-recovery', {
+      method: 'POST',
+      body: { code: recoveryCode.value.trim() },
+    });
+    if (res.ok) {
+      isUnlocked.value = true;
+      recoveryMode.value = false;
+      showNotice('Giriş kodu doğrulandı. Panele hoş geldiniz!');
+    }
+  } catch (err) {
+    recoveryError.value =
+      err.data?.statusMessage || err.message || 'Kod geçersiz veya süresi dolmuş.';
+  } finally {
+    isVerifyingRecovery.value = false;
+  }
+}
+
+async function handleUrlRecoveryToken() {
+  const route = useRoute();
+  const token = route.query.recovery_token;
+  const urlError = route.query.error;
+
+  if (urlError) {
+    googleError.value = String(urlError);
+  }
+
+  if (token) {
+    try {
+      const res = await $fetch('/api/admin/verify-recovery', {
+        method: 'POST',
+        body: { token: String(token) },
+      });
+      if (res.ok) {
+        isUnlocked.value = true;
+        showNotice('E-posta bağlantısı doğrulandı. Panele giriş yapıldı!');
+      }
+    } catch (err) {
+      loginError.value =
+        err.data?.statusMessage ||
+        'Kurtarma bağlantısı geçersiz veya süresi dolmuş.';
+    }
+  }
+}
+
+async function submitChangePassword() {
+  if (!passwordChange.newPassword || passwordChange.newPassword.length < 6) {
+    passwordChange.error = 'Yeni parola en az 6 karakter olmalıdır.';
+    return;
+  }
+  if (passwordChange.newPassword !== passwordChange.confirmPassword) {
+    passwordChange.error = 'Girdiğiniz parolalar birbiriyle eşleşmiyor.';
+    return;
+  }
+
+  passwordChange.loading = true;
+  passwordChange.error = '';
+  passwordChange.message = '';
+
+  try {
+    const res = await $fetch('/api/admin/change-password', {
+      method: 'POST',
+      body: { newPassword: passwordChange.newPassword },
+    });
+    passwordChange.message = 'Yönetim parolanız başarıyla güncellendi!';
+    passwordChange.newPassword = '';
+    passwordChange.confirmPassword = '';
+    showNotice('Yönetim parolası güncellendi.');
+  } catch (err) {
+    passwordChange.error =
+      err.data?.statusMessage || 'Parola güncellenirken bir hata oluştu.';
+  } finally {
+    passwordChange.loading = false;
+  }
+}
+
 function resetBlogForm() {
   Object.assign(blogForm, {
     id: '',
@@ -527,6 +753,11 @@ onMounted(async () => {
   isUnlocked.value = session.authenticated;
   Object.assign(settingsForm, settings.value);
   resetProjectForm();
+
+  await handleUrlRecoveryToken();
+  if (!isUnlocked.value) {
+    await initGoogleAuth();
+  }
 });
 </script>
 
@@ -544,7 +775,115 @@ onMounted(async () => {
         Blog yazılarını, ana sayfadaki çalışmaları ve iletişim metinlerini
         düzenlemek için giriş yapın.
       </p>
-      <form class="login-form" autocomplete="off" @submit.prevent="unlock">
+      <!-- Google Sign-In Primary Action -->
+      <div class="google-auth-box">
+        <div id="google-btn-target" class="google-btn-target"></div>
+        <button
+          v-if="!googleClientId"
+          type="button"
+          class="google-auth-button"
+          :disabled="isGoogleLoading"
+          @click="handleGoogleClick"
+        >
+          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+            <path
+              fill="#4285F4"
+              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+            />
+            <path
+              fill="#34A853"
+              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+            />
+            <path
+              fill="#FBBC05"
+              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+            />
+            <path
+              fill="#EA4335"
+              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+            />
+          </svg>
+          <span>{{ isGoogleLoading ? 'Giriş yapılıyor...' : 'Google ile Giriş Yap' }}</span>
+        </button>
+
+        <p v-if="googleError" class="form-error" role="alert">
+          {{ googleError }}
+        </p>
+
+        <!-- Google Client ID setup guide if clicked before configuring env var -->
+        <div v-if="showGoogleHelp" class="google-help-box">
+          <div class="google-help-box__header">
+            <h4>Google ile Giriş Yap</h4>
+            <button type="button" @click="showGoogleHelp = false">✕</button>
+          </div>
+          <p>
+            Gmail (<strong>harunysd@gmail.com</strong>) hesabınızla doğrudan tek tıkla giriş yapabilmek için:
+          </p>
+          <ol>
+            <li><strong>console.cloud.google.com</strong> adresine gidin.</li>
+            <li><strong>APIs &amp; Services &gt; Credentials</strong> sayfasından <em>Create Credentials &gt; OAuth client ID</em> (Web application) seçin.</li>
+            <li>Yetkili JavaScript kaynaklarına <code>https://harun.works</code> ekleyin.</li>
+            <li>Oluşan Client ID'yi Vercel Environment Variables'a <code>GOOGLE_CLIENT_ID</code> olarak kaydedin.</li>
+          </ol>
+          <p class="google-help-box__note">
+            💡 Kurulumu tamamlayana kadar aşağıdaki parola veya e-posta kurtarma koduyla anında giriş yapabilirsiniz.
+          </p>
+        </div>
+      </div>
+
+      <div class="auth-divider">
+        <span>veya parola ile girin</span>
+      </div>
+
+      <!-- Recovery Mode (OTP Code Input) -->
+      <div v-if="recoveryMode" class="recovery-box">
+        <h3 class="recovery-title">E-posta ile Giriş</h3>
+        <p class="recovery-desc">
+          {{ recoveryMessage || `${maskedEmail} adresinize tek kullanımlık 6 haneli kod gönderiliyor...` }}
+        </p>
+
+        <form class="login-form" @submit.prevent="submitRecoveryCode">
+          <label for="recovery-code">6 Haneli Doğrulama Kodu</label>
+          <input
+            id="recovery-code"
+            v-model="recoveryCode"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="000000"
+            class="recovery-code-input"
+            autocomplete="one-time-code"
+            required
+          />
+          <p v-if="recoveryError" class="form-error" role="alert">
+            {{ recoveryError }}
+          </p>
+          <button type="submit" :disabled="isVerifyingRecovery">
+            {{ isVerifyingRecovery ? 'Doğrulanıyor...' : 'Kodu Onayla ve Giriş Yap' }}
+          </button>
+
+          <div class="recovery-actions">
+            <button
+              type="button"
+              class="text-link-btn"
+              :disabled="isRequestingRecovery"
+              @click="startRecovery"
+            >
+              {{ isRequestingRecovery ? 'Gönderiliyor...' : 'Tekrar Kod Gönder' }}
+            </button>
+            <button
+              type="button"
+              class="text-link-btn"
+              @click="recoveryMode = false"
+            >
+              ← Parola ile Girişe Dön
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Regular Password Form -->
+      <form v-else class="login-form" autocomplete="off" @submit.prevent="unlock">
         <label for="admin-password">Parola</label>
         <input
           id="admin-password"
@@ -561,6 +900,17 @@ onMounted(async () => {
           {{ loginError }}
         </p>
         <button type="submit">Panele gir</button>
+
+        <div class="login-forgot-row">
+          <button
+            type="button"
+            class="text-link-btn"
+            :disabled="isRequestingRecovery"
+            @click="startRecovery"
+          >
+            {{ isRequestingRecovery ? 'Kod gönderiliyor...' : 'Şifremi unuttum / Giriş kodu gönder' }}
+          </button>
+        </div>
       </form>
     </section>
 
@@ -1122,45 +1472,92 @@ onMounted(async () => {
         </aside>
       </section>
 
-      <section v-else class="settings-card">
-        <div class="editor-card__heading">
-          <div>
-            <p class="admin-eyebrow">GENEL AYARLAR</p>
-            <h2>Site metinleri</h2>
+      <div v-else class="settings-wrapper">
+        <section class="settings-card">
+          <div class="editor-card__heading">
+            <div>
+              <p class="admin-eyebrow">GENEL AYARLAR</p>
+              <h2>Site metinleri</h2>
+            </div>
           </div>
-        </div>
-        <form class="field-grid" @submit.prevent="saveSettings">
-          <label class="field">
-            <span>Ad soyad</span>
-            <input v-model="settingsForm.displayName" required />
-          </label>
-          <label class="field">
-            <span>Kişisel e-posta</span>
-            <input v-model="settingsForm.email" type="email" required />
-          </label>
-          <label class="field">
-            <span>Kurumsal e-posta</span>
-            <input
-              v-model="settingsForm.secondaryEmail"
-              type="email"
-              required
-            />
-          </label>
-          <label class="field field--wide">
-            <span>Ana sayfa alt başlığı</span>
-            <input v-model="settingsForm.tagline" required />
-          </label>
-          <label class="field field--wide">
-            <span>Hakkımda metni</span>
-            <textarea v-model="settingsForm.aboutText" rows="10" required />
-          </label>
-          <label class="field field--wide">
-            <span>İletişim çağrısı</span>
-            <input v-model="settingsForm.contactText" required />
-          </label>
-          <button class="primary-button" type="submit">Ayarları kaydet</button>
-        </form>
-      </section>
+          <form class="field-grid" @submit.prevent="saveSettings">
+            <label class="field">
+              <span>Ad soyad</span>
+              <input v-model="settingsForm.displayName" required />
+            </label>
+            <label class="field">
+              <span>Kişisel e-posta</span>
+              <input v-model="settingsForm.email" type="email" required />
+            </label>
+            <label class="field">
+              <span>Kurumsal e-posta</span>
+              <input
+                v-model="settingsForm.secondaryEmail"
+                type="email"
+                required
+              />
+            </label>
+            <label class="field field--wide">
+              <span>Ana sayfa alt başlığı</span>
+              <input v-model="settingsForm.tagline" required />
+            </label>
+            <label class="field field--wide">
+              <span>Hakkımda metni</span>
+              <textarea v-model="settingsForm.aboutText" rows="10" required />
+            </label>
+            <label class="field field--wide">
+              <span>İletişim çağrısı</span>
+              <input v-model="settingsForm.contactText" required />
+            </label>
+            <button class="primary-button" type="submit">Ayarları kaydet</button>
+          </form>
+        </section>
+
+        <section class="settings-card admin-password-card" style="margin-top: 2rem;">
+          <div class="editor-card__heading">
+            <div>
+              <p class="admin-eyebrow">GÜVENLİK</p>
+              <h2>Yönetim parolası</h2>
+            </div>
+          </div>
+          <p class="settings-card__desc">
+            Yönetim paneline şifreyle girişte kullanacağınız parolayı buradan güncelleyebilirsiniz. Yeni parolanız güvenli şekilde şifrelenerek saklanır.
+          </p>
+          <form class="field-grid" @submit.prevent="submitChangePassword">
+            <label class="field">
+              <span>Yeni Parola</span>
+              <input
+                v-model="passwordChange.newPassword"
+                type="password"
+                placeholder="En az 6 karakter"
+                required
+              />
+            </label>
+            <label class="field">
+              <span>Yeni Parola Tekrar</span>
+              <input
+                v-model="passwordChange.confirmPassword"
+                type="password"
+                placeholder="Parolayı tekrar girin"
+                required
+              />
+            </label>
+            <p v-if="passwordChange.error" class="form-error field--wide" role="alert">
+              {{ passwordChange.error }}
+            </p>
+            <p v-if="passwordChange.message" class="form-success field--wide" role="status">
+              {{ passwordChange.message }}
+            </p>
+            <button
+              class="primary-button"
+              type="submit"
+              :disabled="passwordChange.loading"
+            >
+              {{ passwordChange.loading ? 'Kaydediliyor...' : 'Parolayı Güncelle' }}
+            </button>
+          </form>
+        </section>
+      </div>
 
       <div v-if="notice" class="notice" role="status">{{ notice }}</div>
     </template>
@@ -1946,5 +2343,192 @@ onMounted(async () => {
     align-items: flex-start;
     flex-direction: column;
   }
+}
+
+.google-auth-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.google-btn-target {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  iframe {
+    margin: 0 auto !important;
+  }
+}
+
+.google-auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  background: #181818;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #242424;
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.google-icon {
+  flex-shrink: 0;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border);
+  }
+
+  span {
+    padding: 0 1rem;
+  }
+}
+
+.google-help-box {
+  margin-top: 0.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+
+    h4 {
+      margin: 0;
+      color: #fff;
+      font-size: 0.92rem;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.2rem 0.5rem;
+    }
+  }
+
+  ol {
+    margin: 0.5rem 0;
+    padding-left: 1.2rem;
+    color: var(--muted);
+
+    li {
+      margin-bottom: 0.35rem;
+    }
+  }
+
+  code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: #ffe6ed;
+    font-size: 0.82rem;
+  }
+
+  &__note {
+    margin: 0.75rem 0 0;
+    color: #ffd699;
+    font-size: 0.8rem;
+  }
+}
+
+.recovery-box {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .recovery-title {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  .recovery-desc {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .recovery-code-input {
+    letter-spacing: 0.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: monospace;
+    font-weight: 700;
+  }
+
+  .recovery-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+}
+
+.login-forgot-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.4rem;
+}
+
+.text-link-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 0.3rem 0;
+  text-decoration: underline;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+.form-success {
+  margin: 0;
+  color: #8effaa;
+  font-size: 0.82rem;
 }
 </style>
