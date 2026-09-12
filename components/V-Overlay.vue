@@ -12,23 +12,26 @@ defineExpose({ leavePageAnim, enterPageAnim });
 function leavePageAnim(pageEl, done) {
   routeChanging.value = true;
 
+  gsap.killTweensOf('.page-overlay__slide');
+  if (pageEl) gsap.killTweensOf(pageEl);
+
   const tl = gsap.timeline({
     defaults: { ease: 'power3.inOut' },
   });
 
-  tl.to(pageEl, { y: -150, duration: 0.35, ease: 'power2.in' }, 0);
+  tl.to(pageEl, { y: -50, duration: 0.18, ease: 'power2.in' }, 0);
   tl.fromTo(
     '.page-overlay__slide',
     {
       opacity: 1,
       yPercent: 75,
-      scaleY: 0.5,
+      scaleY: 0.6,
     },
     {
       yPercent: 0,
       scaleY: 1,
-      stagger: { each: 0.04 },
-      duration: 0.35,
+      stagger: { each: 0.015 },
+      duration: 0.18,
       onComplete: () => {
         $smoothScroll.scrollTo(0, 0);
         $smoothScroll.reset?.();
@@ -43,11 +46,12 @@ function leavePageAnim(pageEl, done) {
 function waitForPageContent(pageEl) {
   return new Promise((resolve) => {
     const startedAt = performance.now();
-    const maxWait = 250;
+    const maxWait = 60;
 
     const check = () => {
       const hasPageContent =
         pageEl?.firstElementChild ||
+        (pageEl?.children && pageEl.children.length > 0) ||
         pageEl?.querySelector(
           '.blog-page, .article-page, .admin-page, .project-header, .projects-page, .smooth-scroll-fix, [data-error-page]',
         );
@@ -68,8 +72,6 @@ async function enterPageAnim(pageEl, done) {
   routeChanging.value = true;
 
   // Keep the outgoing page covered while async page data/components mount.
-  // Vue calls the enter hook as soon as the transition wrapper exists, which
-  // can be a few frames before Nuxt has rendered the actual page content.
   await waitForPageContent(pageEl);
 
   const tl = gsap.timeline({
@@ -80,14 +82,14 @@ async function enterPageAnim(pageEl, done) {
     },
     onComplete: () => {
       done();
-      gsap.to('.nav', { autoAlpha: 1 });
+      gsap.to('.nav', { autoAlpha: 1, duration: 0.15 });
     },
   });
 
   tl.from(
     pageEl,
-    { y: 150, duration: 0.45, ease: 'power3.out', clearProps: true },
-    0.05,
+    { y: 50, duration: 0.22, ease: 'power3.out', clearProps: true },
+    0,
   );
 
   tl.fromTo(
@@ -99,19 +101,19 @@ async function enterPageAnim(pageEl, done) {
     },
     {
       yPercent: -75,
-      scaleY: 0.5,
-      stagger: { each: 0.04, from: 'end' },
-      duration: 0.35,
+      scaleY: 0.6,
+      stagger: { each: 0.015, from: 'end' },
+      duration: 0.2,
     },
-    0.05,
+    0,
   );
 
-  tl.add(() => emitter.emit('overlay:hiding'), 0.1);
+  tl.add(() => emitter.emit('overlay:hiding'), 0.04);
   tl.add(() => {
     $smoothScroll.enable();
     $smoothScroll.update();
     ScrollTrigger.refresh();
-  }, 0.25);
+  }, 0.1);
 }
 </script>
 
@@ -173,18 +175,6 @@ async function enterPageAnim(pageEl, done) {
 
       background: #332e2f;
       background: linear-gradient(0deg, #332e2f 0%, #665c5f 50%, #332e2f 100%);
-
-      @media (prefers-color-scheme: light) {
-        background-color: var(--primary-color);
-
-        background: #ffe6ed;
-        background: linear-gradient(
-          0deg,
-          #ffe6ed 0%,
-          #fff6f8 50%,
-          #ffe6ed 100%
-        );
-      }
     }
 
     &:nth-of-type(2) {

@@ -165,19 +165,11 @@ onMounted(() => {
       color: #cccccc;
 
       margin-bottom: 0;
-
-      @media (prefers-color-scheme: light) {
-        color: #424242;
-      }
     }
 
     &__tags {
       color: #bfbfbf;
       font-size: calc(var(--step--2) - 0rem);
-
-      @media (prefers-color-scheme: light) {
-        color: #4b4b4b;
-      }
     }
   }
 

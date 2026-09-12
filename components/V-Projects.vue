@@ -80,9 +80,5 @@ const visibleProjects = computed(() => {
       margin-block-start: 4rem;
     }
   }
-
-  @media (prefers-color-scheme: light) {
-    color: #252525;
-  }
 }
 </style>

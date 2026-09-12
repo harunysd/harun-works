@@ -11,7 +11,6 @@ import { MAX_DPR } from '~/lib/constants';
 const { $smoothScroll } = useNuxtApp();
 const { gsap } = useGsap();
 const emitter = useEmitter();
-const isDarkMode = useDarkMode();
 const prefersReducedMotion = useReducedMotion();
 
 const canvas = ref(null);
@@ -50,10 +49,7 @@ function render() {
 function createBackground() {
   aspect = window.innerWidth / window.innerHeight;
 
-  const backgroundColor = pallet.color1;
-  const clearColor = (
-    isDarkMode.value ? backgroundColor.dark : backgroundColor.light
-  ).map((number) => number / 255);
+  const clearColor = pallet.color1.dark.map((number) => number / 255);
 
   renderer = new Renderer({
     canvas: canvas.value,
@@ -96,19 +92,13 @@ function createBackground() {
         value: new Vec2(window.innerWidth, window.innerHeight),
       },
       color1: {
-        value: isDarkMode.value
-          ? new Color(pallet.color1.dark)
-          : new Color(pallet.color1.light),
+        value: new Color(pallet.color1.dark),
       },
       color2: {
-        value: isDarkMode.value
-          ? new Color(pallet.color2.dark)
-          : new Color(pallet.color2.light),
+        value: new Color(pallet.color2.dark),
       },
       color3: {
-        value: isDarkMode.value
-          ? new Color(pallet.color3.dark)
-          : new Color(pallet.color3.light),
+        value: new Color(pallet.color3.dark),
       },
     },
   });
@@ -144,18 +134,6 @@ function createBackground() {
     observer.disconnect();
   });
 }
-
-watch(isDarkMode, (value) => {
-  if (!object) return;
-
-  const switchTo = value ? 'dark' : 'light';
-
-  const tl = gsap.timeline();
-
-  tl.to(object.program.uniforms.color1.value, pallet.color1[switchTo], 0);
-  tl.to(object.program.uniforms.color2.value, pallet.color2[switchTo], 0);
-  tl.to(object.program.uniforms.color3.value, pallet.color3[switchTo], 0);
-});
 
 onMounted(() => {
   createBackground();

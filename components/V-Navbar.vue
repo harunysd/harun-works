@@ -18,11 +18,13 @@ const navMenuButtonSVG = ref(null);
 const links = [
   {
     label: 'Ana Sayfa',
+    to: '/',
     action: () =>
       route.name === 'index' ? $smoothScroll.scrollTo(0) : navigateTo('/'),
   },
   {
     label: 'Çalışmalar',
+    to: '/#projects',
     action: () =>
       route.name === 'index'
         ? $smoothScroll.scrollTo('.projects')
@@ -30,6 +32,7 @@ const links = [
   },
   {
     label: 'Hakkımda',
+    to: '/#about-me',
     action: () =>
       route.name === 'index'
         ? $smoothScroll.scrollTo('.about-me')
@@ -37,6 +40,7 @@ const links = [
   },
   {
     label: 'İletişim',
+    to: '/#contact',
     action: () =>
       route.name === 'index'
         ? $smoothScroll.scrollTo('.contact')
@@ -44,9 +48,16 @@ const links = [
   },
   {
     label: 'Blog',
+    to: '/blog',
     action: () => navigateTo('/blog'),
   },
 ];
+
+function preloadRoute(link) {
+  if (link?.to && typeof preloadRouteComponents === 'function') {
+    preloadRouteComponents(link.to.split('#')[0] || '/');
+  }
+}
 
 const SVG_SIZE = 20;
 const SVG_LINES_PADDING = 5;
@@ -147,6 +158,10 @@ watch(currentSection, (val) => {
 });
 
 onMounted(() => {
+  if (typeof preloadRouteComponents === 'function') {
+    preloadRouteComponents('/blog');
+  }
+
   // Always keep navbar permanently visible
   gsap.set(nav.value, { autoAlpha: 1 });
 
@@ -184,6 +199,7 @@ onMounted(() => {
         class="nav__list__item"
         @click="link.action"
         @keypress.space.enter.prevent="link.action"
+        @pointerenter="preloadRoute(link)"
       >
         {{ link.label }}
       </li>
@@ -295,10 +311,6 @@ onMounted(() => {
       background-color: var(--ff-color);
 
       transform: translateY(var(--indicator-offset, 0px));
-
-      @media (prefers-color-scheme: light) {
-        background-color: var(--surface-color);
-      }
     }
 
     @media screen and (max-width: 768px) {

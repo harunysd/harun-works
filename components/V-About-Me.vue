@@ -160,10 +160,6 @@ onMounted(() => {
         transform: translateX(var(--overlay-offset, 0%));
       }
     }
-
-    @media (prefers-color-scheme: light) {
-      color: lighten($color: #000000, $amount: 25);
-    }
   }
 
   .skills-grid {
@@ -181,10 +177,6 @@ onMounted(() => {
       gap: 2.5rem 1.5rem;
     }
 
-    @media (prefers-color-scheme: light) {
-      border-top-color: rgba(0, 0, 0, 0.08);
-    }
-
     &__column {
       display: flex;
       flex-direction: column;
@@ -200,10 +192,6 @@ onMounted(() => {
       margin: 0 0 1rem 0;
       padding-bottom: 0.4rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-      @media (prefers-color-scheme: light) {
-        border-bottom-color: rgba(0, 0, 0, 0.08);
-      }
     }
 
     &__list {

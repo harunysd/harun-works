@@ -66,7 +66,7 @@ function showMenu() {
     ));
 
   prevAnimation = gsap.timeline({
-    defaults: { ease: 'expo.out', duration: 1 },
+    defaults: { ease: 'power3.out' },
   });
 
   prevAnimation.set(menu.value, {
@@ -76,45 +76,61 @@ function showMenu() {
   prevAnimation.fromTo(
     menuBackItem.value,
     {
-      yPercent: 100,
-      rotateX: -90,
+      yPercent: 35,
       opacity: 0,
-      transformOrigin: 'center top',
-      transformStyle: 'preserve-3d',
     },
     {
       yPercent: 0,
-      rotateX: 0,
       opacity: 1,
-      stagger: 0.05,
+      stagger: 0.035,
+      duration: 0.5,
+      ease: 'power3.out',
     },
+    0,
   );
+
   prevAnimation.fromTo(
     menu.value,
     { backgroundColor: 'transparent' },
     {
-      backgroundColor: isDarkMode.value ? '#030303' : '#f7f7f7',
+      backgroundColor: '#030303',
       duration: 0.2,
     },
-    '-=0.65',
+    0,
   );
+
   prevAnimation.fromTo(
     menuBackItemLine.value,
-    { transform: 'scaleX(0)', transformOrigin: 'left bottom' },
-    { transform: 'scaleX(1)', stagger: 0.05 },
-    '<-0.2',
+    { scaleX: 0, opacity: 0, transformOrigin: 'left center' },
+    {
+      scaleX: 1,
+      opacity: 1,
+      duration: 0.45,
+      stagger: 0.035,
+      ease: 'power2.out',
+    },
+    0.12,
   );
+
   prevAnimation.fromTo(
     [...menuBackItemContentTitle.value, ...menuBackItemContentLinksItem.value],
-    { opacity: 0, yPercent: 50 },
+    { opacity: 0, yPercent: 25 },
     {
       opacity: 1,
       yPercent: 0,
-      stagger: 0.05,
+      stagger: 0.035,
+      duration: 0.45,
+      ease: 'power2.out',
     },
-    '<-0.1',
+    0.08,
   );
 }
+
+onMounted(() => {
+  if (typeof preloadRouteComponents === 'function') {
+    preloadRouteComponents('/blog');
+  }
+});
 
 function hideMenu() {
   if (prevAnimation) prevAnimation.kill();
@@ -271,10 +287,6 @@ watch(isShowingMenu, (bool) => {
 
           transform: translate(-50%, -50%);
           transition: opacity 200ms ease;
-
-          @media (prefers-color-scheme: light) {
-            background-color: #303030;
-          }
         }
       }
 
@@ -297,10 +309,6 @@ watch(isShowingMenu, (bool) => {
 
           &:is(:hover, :focus) {
             color: #ffe6ed;
-
-            @media (prefers-color-scheme: light) {
-              color: #030303;
-            }
           }
         }
       }
@@ -311,10 +319,6 @@ watch(isShowingMenu, (bool) => {
         span {
           transform: scale(0.96);
         }
-
-        @media (prefers-color-scheme: light) {
-          color: #030303;
-        }
       }
 
       &--active {
@@ -323,10 +327,6 @@ watch(isShowingMenu, (bool) => {
 
           &::after {
             opacity: 1;
-          }
-
-          @media (prefers-color-scheme: light) {
-            color: #030303;
           }
         }
       }
@@ -339,15 +339,20 @@ watch(isShowingMenu, (bool) => {
     }
 
     &__line {
-      display: inline-block;
+      display: block;
 
       position: absolute;
-      bottom: 1%;
+      bottom: 0;
       left: var(--x-padding);
       right: var(--x-padding);
 
       height: 1px;
-      background-color: darken($color: #fff, $amount: 75);
+      background-color: rgba(255, 255, 255, 0.12);
+
+      transform-origin: left center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      will-change: transform, opacity;
     }
   }
 }

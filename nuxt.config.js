@@ -19,8 +19,13 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'format-detection', content: 'telephone=no' },
         { name: 'robots', content: 'all' },
-        { name: 'theme-color', content: 'var(--surface-color)' },
+        { name: 'theme-color', content: '#030303' },
+        { name: 'color-scheme', content: 'dark' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        {
+          name: 'apple-mobile-web-app-status-bar-style',
+          content: 'black-translucent',
+        },
         {
           property: 'og:site_name',
           name: 'og:site_name',

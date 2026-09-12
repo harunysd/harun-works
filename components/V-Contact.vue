@@ -124,9 +124,5 @@ onMounted(() => {
       cursor: pointer;
     }
   }
-
-  @media (prefers-color-scheme: light) {
-    box-shadow: 0 2rem 0.75rem -1rem rgba($color: #030303, $alpha: 0.025);
-  }
 }
 </style>

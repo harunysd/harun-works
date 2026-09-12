@@ -213,15 +213,6 @@ onBeforeUnmount(() => {
     color: #f7f7f7;
 
     will-change: transform, opacity;
-
-    @media (prefers-color-scheme: light) {
-      background: rgba(255, 255, 255, 0.98);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow:
-        0 24px 48px -12px rgba(0, 0, 0, 0.2),
-        0 0 0 1px rgba(0, 0, 0, 0.04);
-      color: #111111;
-    }
   }
 
   &__header {
@@ -232,10 +223,6 @@ onBeforeUnmount(() => {
     padding-bottom: 1rem;
     margin-bottom: 1.25rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-    @media (prefers-color-scheme: light) {
-      border-bottom-color: rgba(0, 0, 0, 0.08);
-    }
   }
 
   &__title-wrap {
@@ -247,10 +234,6 @@ onBeforeUnmount(() => {
   &__icon {
     color: #ffffff;
     opacity: 0.85;
-
-    @media (prefers-color-scheme: light) {
-      color: #111111;
-    }
   }
 
   &__title {
@@ -282,17 +265,6 @@ onBeforeUnmount(() => {
       color: #ffffff;
       transform: scale(1.05);
     }
-
-    @media (prefers-color-scheme: light) {
-      background: rgba(0, 0, 0, 0.05);
-      border-color: rgba(0, 0, 0, 0.08);
-      color: #555555;
-
-      &:hover {
-        background: rgba(0, 0, 0, 0.1);
-        color: #000000;
-      }
-    }
   }
 
   &__body {
@@ -310,11 +282,6 @@ onBeforeUnmount(() => {
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 12px;
-
-    @media (prefers-color-scheme: light) {
-      background: rgba(0, 0, 0, 0.03);
-      border-color: rgba(0, 0, 0, 0.06);
-    }
   }
 
   &__item-label {
@@ -343,10 +310,6 @@ onBeforeUnmount(() => {
     user-select: all;
     overflow-wrap: anywhere;
     color: #f0f0f0;
-
-    @media (prefers-color-scheme: light) {
-      color: #1a1a1a;
-    }
   }
 
   &__copy-btn {
@@ -372,16 +335,6 @@ onBeforeUnmount(() => {
       background: #10b981 !important;
       border-color: #10b981 !important;
       color: #ffffff !important;
-    }
-
-    @media (prefers-color-scheme: light) {
-      background: #030303;
-      border-color: #030303;
-      color: #ffffff;
-
-      &:hover {
-        background: #252525;
-      }
     }
   }
 

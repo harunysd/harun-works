@@ -14,7 +14,7 @@
   --ff-color: #f7f7f7;
   --primary-color: #ffe6ed;
 
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
 ::selection {
@@ -79,10 +79,10 @@ h5 {
 }
 
 /* Preserve dark theme consistently across all browser settings */
-@media (prefers-color-scheme: light) {
-  :root {
-    color-scheme: dark;
-  }
+:root,
+html,
+body {
+  color-scheme: dark;
 }
 
 .c-scrollbar {
