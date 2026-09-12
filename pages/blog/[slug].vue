@@ -253,22 +253,21 @@ function formatDate(value) {
 }
 
 .article-hero-cover {
-  width: min(920px, 100%);
+  width: min(820px, 100%);
   margin: 2.5rem auto 3.5rem;
 
   &__frame {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     background: #0d0d0d;
 
     img {
       display: block;
       width: 100%;
       height: auto;
-      max-height: 70vh;
+      max-height: 65vh;
       object-fit: contain;
     }
   }
