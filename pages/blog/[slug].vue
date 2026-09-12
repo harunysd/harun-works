@@ -194,7 +194,7 @@ function formatDate(value) {
 .article-page,
 .article-missing {
   min-height: 100vh;
-  padding: clamp(6rem, 10vw, 9rem) clamp(1.25rem, 5vw, 4rem) 5rem;
+  padding: clamp(3.25rem, 5.5vw, 4.5rem) clamp(1.25rem, 5vw, 4rem) 5rem;
   background: var(--surface-color);
   color: var(--ff-color);
 }
@@ -227,8 +227,8 @@ function formatDate(value) {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 2.5rem;
-  padding: 0.75rem 0;
+  margin-top: 1.25rem;
+  padding: 0.65rem 0;
   border-block: 1px solid rgba(247, 247, 247, 0.12);
   color: rgba(247, 247, 247, 0.58);
   font-size: 0.74rem;
@@ -237,7 +237,7 @@ function formatDate(value) {
 }
 
 .article-header h1 {
-  margin: 1.75rem 0 1.25rem;
+  margin: 1.15rem 0 0.85rem;
   font-size: clamp(2rem, 3.8vw, 2.85rem);
   font-weight: 600;
   letter-spacing: -0.025em;
@@ -530,7 +530,7 @@ function formatDate(value) {
 @media (max-width: 700px) {
   .article-page,
   .article-missing {
-    padding-top: 6rem;
+    padding-top: 4.5rem;
   }
 
   .article-meta,
