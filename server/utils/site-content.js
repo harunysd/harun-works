@@ -32,7 +32,26 @@ export async function readSiteContent() {
   if (!result || result.statusCode !== 200) return cloneDefaults();
 
   const value = await new Response(result.stream).json();
-  return normalizeSiteContent(value);
+  const normalized = normalizeSiteContent(value);
+
+  const hasLatestPost = normalized.blogPosts?.some(
+    (p) => p.slug === defaultSiteContent.blogPosts[0].slug,
+  );
+  if (!hasLatestPost) {
+    const updated = {
+      ...normalized,
+      blogPosts: defaultSiteContent.blogPosts,
+    };
+    try {
+      await writeSiteContent(updated);
+      return normalizeSiteContent(updated);
+    } catch (e) {
+      console.error('Failed to auto-sync blog posts to blob:', e);
+      return updated;
+    }
+  }
+
+  return normalized;
 }
 
 export async function writeSiteContent(value) {
