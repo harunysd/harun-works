@@ -34,13 +34,17 @@ export async function readSiteContent() {
   const value = await new Response(result.stream).json();
   const normalized = normalizeSiteContent(value);
 
-  const hasLatestPost = normalized.blogPosts?.some(
-    (p) => p.slug === defaultSiteContent.blogPosts[0].slug,
+  const defaultPost = defaultSiteContent.blogPosts[0];
+  const existingPost = normalized.blogPosts?.find(
+    (p) => p.slug === defaultPost.slug,
   );
-  if (!hasLatestPost) {
+  if (!existingPost || existingPost.body !== defaultPost.body) {
+    const otherPosts = (normalized.blogPosts || []).filter(
+      (p) => p.slug !== defaultPost.slug,
+    );
     const updated = {
       ...normalized,
-      blogPosts: defaultSiteContent.blogPosts,
+      blogPosts: [defaultPost, ...otherPosts],
     };
     try {
       await writeSiteContent(updated);

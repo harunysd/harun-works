@@ -44,7 +44,7 @@ function excerpt(post) {
         <h1 class="blog-hero__title">Çalışma Notları / Blog</h1>
         <div class="blog-hero__meta">
           <span>{{ sortedPosts.length }} yazı</span>
-          <a :href="`mailto:${settings.email}`">{{ settings.email }}</a>
+          <a :href="`mailto:${settings.secondaryEmail || 'iletisim@harun.works'}`">{{ settings.secondaryEmail || 'iletisim@harun.works' }}</a>
         </div>
       </div>
     </header>
@@ -210,6 +210,8 @@ function excerpt(post) {
     a {
       color: inherit;
       text-decoration: none;
+      text-transform: lowercase;
+      letter-spacing: normal;
       transition: color 0.2s;
 
       &:hover {
@@ -291,41 +293,58 @@ function excerpt(post) {
     .post-card__link {
       @media (min-width: 800px) {
         display: grid;
-        grid-template-columns: 1.15fr 1fr;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.15fr);
         align-items: stretch;
       }
     }
 
     .post-card__image-wrap {
-      aspect-ratio: 16 / 10;
+      width: 100%;
       height: 100%;
+      min-width: 0;
+      position: relative;
+      aspect-ratio: auto;
+
+      @media (max-width: 799px) {
+        aspect-ratio: 16 / 9;
+      }
 
       @media (min-width: 800px) {
         border-right: 1px solid var(--blog-border);
       }
     }
 
+    .post-card__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .post-card__body {
-      padding: clamp(1.75rem, 3.5vw, 3rem);
+      min-width: 0;
+      padding: clamp(1.5rem, 2.75vw, 2.5rem);
       justify-content: center;
     }
 
     h3 {
-      max-width: 26ch;
-      margin: 1.5rem 0 1rem;
-      font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+      max-width: 100%;
+      margin: 1.15rem 0 0.85rem;
+      font-size: clamp(1.35rem, 1.9vw, 1.95rem);
       font-weight: 600;
-      line-height: 1.22;
+      line-height: 1.25;
+      word-break: break-word;
     }
 
     p {
-      max-width: 44ch;
-      font-size: 1.02rem;
+      max-width: 100%;
+      font-size: 0.96rem;
       line-height: 1.6;
     }
 
     .post-card__read {
-      margin-top: 2rem;
+      margin-top: 1.75rem;
       padding-top: 0;
     }
   }
@@ -341,11 +360,14 @@ function excerpt(post) {
 
 .post-card__image-wrap {
   aspect-ratio: 16 / 9;
+  position: relative;
   overflow: hidden;
   background: #0d0d0d;
 }
 
 .post-card__image {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;

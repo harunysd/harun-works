@@ -179,8 +179,7 @@ function formatDate(value) {
     </article>
 
     <footer class="article-footer">
-      <a :href="`mailto:${settings.email}`">Bir şey konuşalım ↗</a>
-      <NuxtLink to="/blog">Diğer yazılar</NuxtLink>
+      <NuxtLink to="/blog">← Diğer yazılar</NuxtLink>
     </footer>
   </main>
 
