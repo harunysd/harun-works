@@ -9,9 +9,15 @@ const numberOfLoadingPoints = 3;
 
 defineExpose({ leavePageAnim, enterPageAnim });
 
+onMounted(() => {
+  gsap.set('.page-overlay', { autoAlpha: 0 });
+  gsap.set('.page-overlay__slide', { autoAlpha: 0 });
+});
+
 function leavePageAnim(pageEl, done) {
   routeChanging.value = true;
 
+  gsap.set('.page-overlay', { autoAlpha: 1 });
   gsap.killTweensOf('.page-overlay__slide');
   if (pageEl) {
     gsap.killTweensOf(pageEl);
@@ -26,8 +32,8 @@ function leavePageAnim(pageEl, done) {
   tl.fromTo(
     '.page-overlay__slide',
     {
-      opacity: 1,
-      yPercent: 75,
+      autoAlpha: 1,
+      yPercent: 100,
       scaleY: 0.6,
     },
     {
@@ -93,6 +99,13 @@ async function enterPageAnim(pageEl, done) {
       emitter.emit('pointer:inactive');
     },
     onComplete: () => {
+      gsap.set('.page-overlay', { autoAlpha: 0 });
+      gsap.set('.page-overlay__slide', {
+        autoAlpha: 0,
+        yPercent: 0,
+        scaleY: 1,
+        clearProps: 'all',
+      });
       if (pageEl) {
         pageEl.style.transform = '';
       }
@@ -111,15 +124,17 @@ async function enterPageAnim(pageEl, done) {
   tl.fromTo(
     '.page-overlay__slide',
     {
-      opacity: 1,
+      autoAlpha: 1,
       yPercent: 0,
       scaleY: 1,
     },
     {
-      yPercent: -75,
+      yPercent: -105,
       scaleY: 0.6,
+      autoAlpha: 0,
       stagger: { each: 0.015, from: 'end' },
-      duration: 0.2,
+      duration: 0.22,
+      ease: 'power3.in',
     },
     0,
   );
@@ -174,6 +189,8 @@ async function enterPageAnim(pageEl, done) {
   z-index: 10;
 
   pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
 
   &__slide {
     display: flex;

@@ -100,13 +100,27 @@ onMounted(() => {
 
   cleanups.push(
     on(window, 'pointermove', ({ x, y }) => {
-      if (!firstMove)
-        gsap
-          .to(pointer.value, { autoAlpha: 1, clearProps: 'opacity' })
-          .then(() => (firstMove = true));
+      if (!firstMove) {
+        firstMove = true;
+      }
+      gsap.to(pointer.value, { autoAlpha: 1, duration: 0.1 });
 
       toPointerX(x);
       toPointerY(y);
+    }),
+  );
+
+  cleanups.push(
+    on(document, 'mouseleave', () => {
+      gsap.to(pointer.value, { autoAlpha: 0, duration: 0.2 });
+    }),
+  );
+
+  cleanups.push(
+    on(document, 'mouseenter', () => {
+      if (firstMove) {
+        gsap.to(pointer.value, { autoAlpha: 1, duration: 0.2 });
+      }
     }),
   );
 
@@ -192,9 +206,5 @@ onMounted(() => {
 
     color: #030303;
   }
-}
-
-body:hover .pointer {
-  opacity: 1;
 }
 </style>
