@@ -954,6 +954,22 @@ onMounted(async () => {
   background: var(--panel-2);
   font: inherit;
   line-height: 1.5;
+}
+
+.field input,
+.login-form input {
+  resize: none;
+  overflow: hidden;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+}
+
+.field textarea {
   resize: vertical;
 }
 
@@ -1141,6 +1157,19 @@ onMounted(async () => {
 .login-form {
   display: grid;
   gap: 0.75rem;
+
+  input {
+    resize: none;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
+  }
 }
 
 .login-form label {
