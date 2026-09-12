@@ -37,73 +37,80 @@ function excerpt(post) {
 <template>
   <main class="blog-page">
     <header class="blog-hero">
-      <h1 class="blog-hero__title">Çalışma Notları / Blog</h1>
-      <div class="blog-hero__meta">
-        <span>{{ sortedPosts.length }} yazı</span>
-        <a :href="`mailto:${settings.email}`">{{ settings.email }}</a>
+      <VHeaderBackground class="blog-hero__canvas" />
+      <div class="blog-hero__gradient" aria-hidden="true" />
+
+      <div class="blog-hero__inner">
+        <h1 class="blog-hero__title">Çalışma Notları / Blog</h1>
+        <div class="blog-hero__meta">
+          <span>{{ sortedPosts.length }} yazı</span>
+          <a :href="`mailto:${settings.email}`">{{ settings.email }}</a>
+        </div>
       </div>
     </header>
 
-    <section class="blog-list" aria-labelledby="blog-list-title">
-      <div class="blog-list__heading">
-        <h2 id="blog-list-title">Son yazılar</h2>
-        <span aria-hidden="true">↘</span>
-      </div>
-
-      <div
-        v-if="sortedPosts.length"
-        class="blog-list__grid"
-        :class="{ 'blog-list__grid--single': sortedPosts.length === 1 }"
-      >
-        <article
-          v-for="post in sortedPosts"
-          :key="post.id"
-          class="post-card"
-          :class="{ 'post-card--featured': sortedPosts.length === 1 }"
-        >
-          <NuxtLink :to="`/blog/${post.slug}`" class="post-card__link">
-            <div v-if="post.coverImage" class="post-card__image-wrap">
-              <img
-                :src="post.coverImage"
-                :alt="post.title"
-                class="post-card__image"
-              />
-            </div>
-            <div class="post-card__body">
-              <div class="post-card__meta">
-                <span>{{ post.category || 'Notlar' }}</span>
-                <time :datetime="post.publishedAt">{{
-                  formatDate(post.publishedAt)
-                }}</time>
-              </div>
-              <h3>{{ post.title }}</h3>
-              <p>{{ excerpt(post) }}</p>
-              <span class="post-card__read"
-                >Yazıyı oku <span aria-hidden="true">↗</span></span
-              >
-            </div>
-          </NuxtLink>
-        </article>
-      </div>
-
-      <div v-else class="blog-empty" role="status">
-        <span class="blog-empty__index">01</span>
-        <div>
-          <h3>İlk yazı yakında burada.</h3>
-          <p>
-            Çalışma notları, saha gözlemleri ve yeni projeler için bu alanı
-            kullanacağım.
-          </p>
+    <div class="blog-content">
+      <section class="blog-list" aria-labelledby="blog-list-title">
+        <div class="blog-list__heading">
+          <h2 id="blog-list-title">Son yazılar</h2>
+          <span aria-hidden="true">↘</span>
         </div>
-      </div>
-    </section>
 
-    <footer class="blog-footer">
-      <NuxtLink to="/"
-        >Ana sayfaya dön <span aria-hidden="true">↗</span></NuxtLink
-      >
-      <span>{{ new Date().getFullYear() }} / HARUN WORKS</span>
-    </footer>
+        <div
+          v-if="sortedPosts.length"
+          class="blog-list__grid"
+          :class="{ 'blog-list__grid--single': sortedPosts.length === 1 }"
+        >
+          <article
+            v-for="post in sortedPosts"
+            :key="post.id"
+            class="post-card"
+            :class="{ 'post-card--featured': sortedPosts.length === 1 }"
+          >
+            <NuxtLink :to="`/blog/${post.slug}`" class="post-card__link">
+              <div v-if="post.coverImage" class="post-card__image-wrap">
+                <img
+                  :src="post.coverImage"
+                  :alt="post.title"
+                  class="post-card__image"
+                />
+              </div>
+              <div class="post-card__body">
+                <div class="post-card__meta">
+                  <span>{{ post.category || 'Notlar' }}</span>
+                  <time :datetime="post.publishedAt">{{
+                    formatDate(post.publishedAt)
+                  }}</time>
+                </div>
+                <h3>{{ post.title }}</h3>
+                <p>{{ excerpt(post) }}</p>
+                <span class="post-card__read"
+                  >Yazıyı oku <span aria-hidden="true">↗</span></span
+                >
+              </div>
+            </NuxtLink>
+          </article>
+        </div>
+
+        <div v-else class="blog-empty" role="status">
+          <span class="blog-empty__index">01</span>
+          <div>
+            <h3>İlk yazı yakında burada.</h3>
+            <p>
+              Çalışma notları, saha gözlemleri ve yeni projeler için bu alanı
+              kullanacağım.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="blog-footer">
+        <NuxtLink to="/"
+          >Ana sayfaya dön <span aria-hidden="true">↗</span></NuxtLink
+        >
+        <span>{{ new Date().getFullYear() }} / HARUN WORKS</span>
+      </footer>
+    </div>
   </main>
 </template>
 
@@ -112,28 +119,117 @@ function excerpt(post) {
   --blog-border: rgba(247, 247, 247, 0.13);
   --blog-muted: rgba(247, 247, 247, 0.62);
   min-height: 100vh;
-  padding: clamp(7rem, 14vw, 12rem) clamp(1.25rem, 7vw, 7rem) 4rem;
+  padding: 0 0 4rem;
   color: var(--ff-color);
   background: var(--surface-color);
 }
 
-.blog-hero,
-.blog-list,
-.blog-footer {
+.blog-hero {
+  position: relative;
+  width: 100%;
+  min-height: clamp(320px, 42vh, 460px);
+  display: flex;
+  align-items: flex-end;
+  padding-top: clamp(4.5rem, 8vw, 6.5rem);
+  padding-bottom: clamp(3rem, 5.5vw, 4.5rem);
+  overflow: hidden;
+  background-color: var(--surface-color);
+
+  &__canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  &__gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: clamp(7rem, 16vw, 12rem);
+    pointer-events: none;
+    z-index: 1;
+
+    // Homepage signature easing gradient (non-boring-gradient) to surface black
+    background: linear-gradient(
+      0deg,
+      rgb(1.176% 1.176% 1.176%) 0%,
+      rgb(1.176% 1.176% 1.176% / 0.9903926402016152) 6.25%,
+      rgb(1.176% 1.176% 1.176% / 0.9619397662556434) 12.5%,
+      rgb(1.176% 1.176% 1.176% / 0.9157348061512727) 18.75%,
+      rgb(1.176% 1.176% 1.176% / 0.8535533905932737) 25%,
+      rgb(1.176% 1.176% 1.176% / 0.7777851165098011) 31.25%,
+      rgb(1.176% 1.176% 1.176% / 0.6913417161825449) 37.5%,
+      rgb(1.176% 1.176% 1.176% / 0.5975451610080642) 43.75%,
+      rgb(1.176% 1.176% 1.176% / 0.5) 50%,
+      rgb(1.176% 1.176% 1.176% / 0.4024548389919359) 56.25%,
+      rgb(1.176% 1.176% 1.176% / 0.3086582838174552) 62.5%,
+      rgb(1.176% 1.176% 1.176% / 0.22221488349019902) 68.75%,
+      rgb(1.176% 1.176% 1.176% / 0.14644660940672627) 75%,
+      rgb(1.176% 1.176% 1.176% / 0.08426519384872733) 81.25%,
+      rgb(1.176% 1.176% 1.176% / 0.03806023374435663) 87.5%,
+      rgb(1.176% 1.176% 1.176% / 0.009607359798384785) 93.75%,
+      rgb(1.176% 1.176% 1.176% / 0) 100%
+    );
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 2;
+    width: min(1160px, 100%);
+    margin: 0 auto;
+    padding-inline: clamp(1.25rem, 7vw, 7rem);
+  }
+
+  &__title {
+    margin: 0 0 2rem;
+    font-size: clamp(2.4rem, 6vw, 5.2rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: #ffffff;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
+  }
+
+  &__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.15rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+.blog-content {
   width: min(1160px, 100%);
   margin: 0 auto;
+  padding-inline: clamp(1.25rem, 7vw, 7rem);
 }
 
-.blog-hero__title {
-  margin: 0 0 2.2rem;
-  font-size: clamp(2.4rem, 6vw, 5.2rem);
-  font-weight: 500;
-  letter-spacing: -0.04em;
-  line-height: 1.05;
-  color: #ffffff;
+.blog-list,
+.blog-footer {
+  width: 100%;
 }
 
-.blog-hero__meta,
 .post-card__meta,
 .blog-footer {
   display: flex;
@@ -141,22 +237,8 @@ function excerpt(post) {
   gap: 1rem;
 }
 
-.blog-hero__meta {
-  padding-top: 1rem;
-  border-top: 1px solid var(--blog-border);
-  color: var(--blog-muted);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.blog-hero__meta a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .blog-list {
-  margin-top: clamp(3.5rem, 8vw, 6.5rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
 }
 
 .blog-list__heading {
@@ -365,10 +447,6 @@ function excerpt(post) {
 }
 
 @media (max-width: 700px) {
-  .blog-page {
-    padding-top: 6rem;
-  }
-
   .blog-list__grid {
     grid-template-columns: 1fr;
   }
