@@ -1,3 +1,4 @@
+import { Readable } from 'node:stream';
 import { get } from '@vercel/blob';
 
 // Blob appends a case-sensitive random suffix to otherwise normalized names.
@@ -15,11 +16,19 @@ export default defineEventHandler(async (event) => {
   }
 
   setResponseHeader(event, 'Content-Type', result.blob.contentType);
+  if (result.blob.size) {
+    setResponseHeader(event, 'Content-Length', result.blob.size);
+  }
   setResponseHeader(
     event,
     'Cache-Control',
     'public, max-age=31536000, immutable',
   );
   setResponseHeader(event, 'X-Content-Type-Options', 'nosniff');
-  return sendStream(event, result.stream);
+
+  const stream =
+    result.stream instanceof Readable
+      ? result.stream
+      : Readable.fromWeb(result.stream);
+  return sendStream(event, stream);
 });

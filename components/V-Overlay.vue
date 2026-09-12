@@ -43,12 +43,14 @@ function leavePageAnim(pageEl, done) {
 function waitForPageContent(pageEl) {
   return new Promise((resolve) => {
     const startedAt = performance.now();
-    const maxWait = 1800;
+    const maxWait = 250;
 
     const check = () => {
-      const hasPageContent = pageEl?.querySelector(
-        '.project-header, .smooth-scroll-fix, [data-error-page]',
-      );
+      const hasPageContent =
+        pageEl?.firstElementChild ||
+        pageEl?.querySelector(
+          '.blog-page, .article-page, .admin-page, .project-header, .projects-page, .smooth-scroll-fix, [data-error-page]',
+        );
 
       if (hasPageContent || performance.now() - startedAt >= maxWait) {
         resolve();
