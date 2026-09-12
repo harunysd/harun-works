@@ -203,6 +203,14 @@ async function insertVideoLink() {
   showNotice(`${source.provider} videosu yazıya eklendi.`);
 }
 
+function insertTableTemplate() {
+  const cursor = blogBodyInput.value?.selectionStart ?? blogForm.body.length;
+  const sampleTable = `| Başlık 1 | Başlık 2 | Başlık 3 |\n| :--- | :---: | ---: |\n| Veri 1 | Veri 2 | Veri 3 |\n| Veri 4 | Veri 5 | Veri 6 |`;
+  const nextCursor = insertBlogBlock(sampleTable, cursor);
+  focusBlogCursor(nextCursor);
+  showNotice('Örnek tablo eklendi. Başlık ve verileri düzenleyebilirsiniz.');
+}
+
 async function uploadProjectImage(event) {
   const file = event.target.files?.[0];
   event.target.value = '';
@@ -584,6 +592,13 @@ onMounted(async () => {
                   @click="insertVideoLink"
                 >
                   + YouTube / Drive
+                </button>
+                <button
+                  type="button"
+                  class="upload-button upload-button--compact"
+                  @click="insertTableTemplate"
+                >
+                  + Tablo ekle
                 </button>
                 <small>
                   Önce metinde eklemek istediğiniz yere tıklayın. Büyük videolar

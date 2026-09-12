@@ -84,6 +84,44 @@ function formatDate(value) {
           </video>
           <figcaption>{{ block.title }}</figcaption>
         </figure>
+        <h2
+          v-else-if="block.type === 'heading' && block.level === 2"
+          class="article-heading-2"
+        >
+          {{ block.text }}
+        </h2>
+        <h3
+          v-else-if="block.type === 'heading' && block.level === 3"
+          class="article-heading-3"
+        >
+          {{ block.text }}
+        </h3>
+        <div v-else-if="block.type === 'table'" class="article-table-wrapper">
+          <table class="article-table">
+            <thead v-if="block.headers?.length">
+              <tr>
+                <th
+                  v-for="(header, hIndex) in block.headers"
+                  :key="`th-${hIndex}`"
+                  :style="{ textAlign: block.alignments?.[hIndex] || 'left' }"
+                >
+                  {{ header }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(row, rIndex) in block.rows" :key="`tr-${rIndex}`">
+                <td
+                  v-for="(cell, cIndex) in row"
+                  :key="`td-${cIndex}`"
+                  :style="{ textAlign: block.alignments?.[cIndex] || 'left' }"
+                >
+                  {{ cell }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <p v-else>{{ block.text }}</p>
       </template>
     </article>
@@ -216,6 +254,70 @@ function formatDate(value) {
   margin-top: 0.75rem;
   color: rgba(247, 247, 247, 0.55);
   font-size: 0.78rem;
+}
+
+.article-heading-2 {
+  margin: 3.5rem 0 1.25rem;
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--ff-color);
+}
+
+.article-heading-3 {
+  margin: 2.5rem 0 1rem;
+  font-size: clamp(1.25rem, 2.5vw, 1.8rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--ff-color);
+}
+
+.article-table-wrapper {
+  width: min(1040px, calc(100vw - 2.5rem));
+  margin: clamp(2.5rem, 6vw, 4.5rem) 50%;
+  transform: translateX(-50%);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(247, 247, 247, 0.14);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.article-table {
+  width: 100%;
+  min-width: 480px;
+  border-collapse: collapse;
+  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
+  line-height: 1.5;
+
+  th,
+  td {
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid rgba(247, 247, 247, 0.08);
+  }
+
+  th {
+    background: #101010;
+    color: var(--primary-color);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 2px solid rgba(255, 230, 237, 0.25);
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
+  }
+
+  tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.015);
+  }
+
+  tbody tr:hover {
+    background: rgba(255, 230, 237, 0.04);
+  }
 }
 
 .article-footer {
