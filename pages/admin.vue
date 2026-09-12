@@ -375,6 +375,21 @@ async function saveSettings() {
 }
 
 onMounted(async () => {
+  const { $smoothScroll } = useNuxtApp();
+  $smoothScroll?.disable?.();
+  const scrollerEl = document.getElementById('__nuxt');
+  if (scrollerEl) {
+    scrollerEl.style.transform = '';
+    scrollerEl.style.top = '';
+    scrollerEl.style.position = '';
+  }
+  document.documentElement.classList.remove('has-scroll-smooth');
+  document.documentElement.style.overflow = '';
+  document.documentElement.style.position = '';
+  document.body.style.overflow = '';
+  document.body.style.position = '';
+  window.scrollTo(0, 0);
+
   const session = await $fetch('/api/admin/session');
   isUnlocked.value = session.authenticated;
   Object.assign(settingsForm, settings.value);
@@ -396,14 +411,18 @@ onMounted(async () => {
         Blog yazılarını, ana sayfadaki çalışmaları ve iletişim metinlerini
         düzenlemek için giriş yapın.
       </p>
-      <form class="login-form" @submit.prevent="unlock">
+      <form class="login-form" autocomplete="off" @submit.prevent="unlock">
         <label for="admin-password">Parola</label>
         <input
           id="admin-password"
+          name="admin_secret_key"
           v-model="passwordInput"
           type="password"
-          autocomplete="current-password"
-          autofocus
+          autocomplete="new-password"
+          data-bwignore="true"
+          data-lpignore="true"
+          data-1p-ignore="true"
+          spellcheck="false"
         />
         <p v-if="loginError" class="form-error" role="alert">
           {{ loginError }}
@@ -977,7 +996,7 @@ onMounted(async () => {
 .field textarea:focus,
 .login-form input:focus {
   outline: 2px solid var(--primary-color);
-  outline-offset: 1px;
+  outline-offset: 0;
 }
 
 .field input:disabled {
@@ -1141,6 +1160,8 @@ onMounted(async () => {
   width: min(560px, 100%);
   margin: 6vh auto 0;
   padding: clamp(1.5rem, 5vw, 3rem);
+  overflow-x: hidden;
+  position: relative;
 }
 
 .login-panel .admin-back {
@@ -1157,18 +1178,32 @@ onMounted(async () => {
 .login-form {
   display: grid;
   gap: 0.75rem;
+  overflow: hidden;
+  position: relative;
 
   input {
+    width: 100%;
     resize: none;
-    overflow: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    overflow: hidden !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    box-sizing: border-box !important;
 
     &::-webkit-scrollbar {
-      display: none;
-      width: 0;
-      height: 0;
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
     }
+  }
+
+  iframe,
+  div[class*='bitwarden'],
+  div[class*='password'],
+  div[id*='bitwarden'] {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
   }
 }
 

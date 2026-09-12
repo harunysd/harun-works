@@ -9,6 +9,31 @@ const SCROLL_TO_DURATION_IN_SECONDS = 1.5;
 // will need to completely rework scroll related animation
 // NOTE: reinitializing smooth scroll after each route transition
 // could result in better ux (locomotive scroll only?)
+function isSmoothRoute(route) {
+  const name = route?.name;
+  return name === 'index' || name === 'project-slug';
+}
+
+function disableLocomotiveHelper(locomotiveScroll, scrollerEl) {
+  try {
+    locomotiveScroll.stop();
+  } catch (e) {}
+
+  if (scrollerEl) {
+    scrollerEl.style.transform = '';
+    scrollerEl.style.top = '';
+    scrollerEl.style.position = '';
+  }
+
+  if (typeof document !== 'undefined') {
+    document.documentElement.classList.remove('has-scroll-smooth');
+    document.documentElement.style.overflow = '';
+    document.documentElement.style.position = '';
+    document.body.style.overflow = '';
+    document.body.style.position = '';
+  }
+}
+
 export default defineNuxtPlugin({
   parallel: true,
   setup(nuxtApp) {
@@ -24,10 +49,32 @@ export default defineNuxtPlugin({
       smooth: !hasError,
     });
 
+    const initialRoute = nuxtApp.$router?.currentRoute?.value;
+    if (!isSmoothRoute(initialRoute)) {
+      disableLocomotiveHelper(locomotiveScroll, scrollerEl);
+    }
+
+    nuxtApp.$router?.afterEach((to) => {
+      if (!isSmoothRoute(to)) {
+        disableLocomotiveHelper(locomotiveScroll, scrollerEl);
+      } else if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+        nextTick(() => {
+          document.documentElement.classList.add('has-scroll-smooth');
+          locomotiveScroll.start();
+          locomotiveScroll.update();
+          $ScrollTrigger?.refresh?.();
+        });
+      }
+    });
+
     locomotiveScroll.on('scroll', $ScrollTrigger.update);
 
     $ScrollTrigger.scrollerProxy(locomotiveScroll.el, {
       scrollTop(value) {
+        const currentRoute = nuxtApp.$router?.currentRoute?.value;
+        if (!isSmoothRoute(currentRoute)) {
+          return arguments.length ? window.scrollTo(0, value) : window.scrollY;
+        }
         return arguments.length
           ? locomotiveScroll.scrollTo(value, { disableLerp: true, duration: 0 })
           : locomotiveScroll.scroll.instance.scroll.y;
@@ -43,18 +90,29 @@ export default defineNuxtPlugin({
       pinType: locomotiveScroll.el.style.transform ? 'transform' : 'fixed',
     });
 
-    $ScrollTrigger.addEventListener('refresh', () => locomotiveScroll.update());
+    $ScrollTrigger.addEventListener('refresh', () => {
+      const currentRoute = nuxtApp.$router?.currentRoute?.value;
+      if (isSmoothRoute(currentRoute)) {
+        locomotiveScroll.update();
+      }
+    });
 
-    if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT)
+    if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT && isSmoothRoute(initialRoute))
       $ScrollTrigger.defaults({ scroller: locomotiveScroll.el });
 
     return {
-      provide: { smoothScroll: makeLocomotiveScrollAdaptor(locomotiveScroll) },
+      provide: {
+        smoothScroll: makeLocomotiveScrollAdaptor(
+          locomotiveScroll,
+          scrollerEl,
+          nuxtApp,
+        ),
+      },
     };
   },
 });
 
-function makeLocomotiveScrollAdaptor(locomotiveScroll) {
+function makeLocomotiveScrollAdaptor(locomotiveScroll, scrollerEl, nuxtApp) {
   const scroll = { x: 0, y: 0 };
 
   locomotiveScroll.on('scroll', ({ scroll: { x, y } }) => {
@@ -62,16 +120,31 @@ function makeLocomotiveScrollAdaptor(locomotiveScroll) {
     scroll.y = y;
   });
 
+  function isSmoothActive() {
+    const route = nuxtApp.$router?.currentRoute?.value;
+    return isSmoothRoute(route);
+  }
+
+  function disableLocomotive() {
+    disableLocomotiveHelper(locomotiveScroll, scrollerEl);
+  }
+
   return {
     on: (evName, evCallback) =>
       locomotiveScroll.on(evName, evCallback.bind(null, { scroll })),
-    scrollY: () =>
-      window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT
-        ? scroll.y
-        : window.scrollY,
-    update: () => locomotiveScroll.update(),
+    scrollY: () => {
+      if (isSmoothActive() && window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+        return scroll.y;
+      }
+      return window.scrollY;
+    },
+    update: () => {
+      if (isSmoothActive()) {
+        locomotiveScroll.update();
+      }
+    },
     reset: () => {
-      if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+      if (isSmoothActive() && window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
         if (locomotiveScroll.scroll?.instance) {
           locomotiveScroll.scroll.instance.scroll.y = 0;
           locomotiveScroll.scroll.instance.scroll.x = 0;
@@ -83,22 +156,31 @@ function makeLocomotiveScrollAdaptor(locomotiveScroll) {
           locomotiveScroll.el.style.transform = '';
         }
       } else {
+        disableLocomotive();
         window.scrollTo(0, 0);
       }
     },
-    enable: () =>
-      window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT
-        ? locomotiveScroll.start()
-        : enable(),
-    disable: () =>
-      window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT
-        ? locomotiveScroll.stop()
-        : disable(),
+    enable: () => {
+      if (!isSmoothActive()) {
+        disableLocomotive();
+        return;
+      }
+      if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+        document.documentElement.classList.add('has-scroll-smooth');
+        locomotiveScroll.start();
+      } else {
+        enable();
+      }
+    },
+    disable: () => {
+      disableLocomotive();
+      enable();
+    },
     scrollTo: (
       selectorOrNumber,
       durationInSeconds = SCROLL_TO_DURATION_IN_SECONDS,
     ) => {
-      if (window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
+      if (isSmoothActive() && window.innerWidth >= LOCOMOTIVE_SCROLL_BREAK_POINT) {
         locomotiveScroll.scrollTo(selectorOrNumber, {
           duration: durationInSeconds * 1000,
           easing: [0.645, 0.045, 0.355, 1.0],
@@ -132,24 +214,6 @@ function makeLocomotiveScrollAdaptor(locomotiveScroll) {
         });
       }
     },
-  };
-}
-
-/** @param {import('@ashthornton/asscroll').default} asscroll */
-// eslint-disable-next-line
-function makeASScrollAdaptor(asscroll) {
-  return {
-    scrollY: () =>
-      asscroll.isScrollJacking ? asscroll.currentPos : window.scrollY,
-    update: () => asscroll.update(),
-    enable: () =>
-      asscroll.isScrollJacking
-        ? asscroll.enable()
-        : (document.body.style.overflow = 'auto'),
-    disable: () =>
-      asscroll.isScrollJacking
-        ? asscroll.disable()
-        : (document.body.style.overflow = 'hidden'),
   };
 }
 

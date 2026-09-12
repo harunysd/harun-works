@@ -110,9 +110,16 @@ async function enterPageAnim(pageEl, done) {
 
   tl.add(() => emitter.emit('overlay:hiding'), 0.04);
   tl.add(() => {
-    $smoothScroll.enable();
-    $smoothScroll.update();
-    ScrollTrigger.refresh();
+    const currentRoute = useRoute();
+    const isSmooth =
+      currentRoute?.name === 'index' || currentRoute?.name === 'project-slug';
+    if (isSmooth) {
+      $smoothScroll.enable();
+      $smoothScroll.update();
+      ScrollTrigger.refresh();
+    } else {
+      $smoothScroll.disable();
+    }
   }, 0.1);
 }
 </script>
