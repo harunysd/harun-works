@@ -1,6 +1,7 @@
 import { get } from '@vercel/blob';
 
-const MEDIA_PATH = /^cms-media\/(blog|projects)\/[a-z0-9][a-z0-9._-]*$/;
+// Blob appends a case-sensitive random suffix to otherwise normalized names.
+const MEDIA_PATH = /^cms-media\/(blog|projects)\/[A-Za-z0-9][A-Za-z0-9._-]*$/;
 
 export default defineEventHandler(async (event) => {
   const pathname = decodeURIComponent(event.context.params?.path || '');
