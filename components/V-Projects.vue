@@ -25,7 +25,7 @@ const visibleProjects = computed(() => {
 </script>
 
 <template>
-  <section class="projects" data-scroll-section>
+  <section class="projects">
     <VH2 class="projects__title">Çalışmalar</VH2>
 
     <ul class="projects__list">

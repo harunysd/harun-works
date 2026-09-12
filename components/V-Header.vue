@@ -60,6 +60,8 @@ emitter.on('loader:end', revealContent);
 emitter.on('overlay:hiding', revealContent);
 
 onBeforeUnmount(() => {
+  emitter.off('loader:end', revealContent);
+  emitter.off('overlay:hiding', revealContent);
   gsap.set('.header__container__title__line__content', {
     clearProps: 'all',
   });
@@ -67,7 +69,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <header ref="header" class="header" data-scroll-section>
+  <header ref="header" class="header">
     <VHeaderBackground class="header__canvas" />
 
     <div class="header__container">

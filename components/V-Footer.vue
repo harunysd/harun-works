@@ -30,7 +30,6 @@ onMounted(() => {
     id="footerTarget"
     ref="footerWrapper"
     class="footer__wrapper"
-    data-scroll-section
   >
     <footer
       ref="footer"

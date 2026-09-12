@@ -60,6 +60,7 @@ const blogForm = reactive({
   category: 'Notlar',
   publishedAt: new Date().toISOString().slice(0, 10),
   coverImage: '',
+  coverCaption: '',
   body: '',
 });
 
@@ -381,6 +382,7 @@ function resetBlogForm() {
     category: 'Notlar',
     publishedAt: new Date().toISOString().slice(0, 10),
     coverImage: '',
+    coverCaption: '',
     body: '',
   });
 }
@@ -412,6 +414,7 @@ async function saveBlogPost() {
       slug,
       title: blogForm.title.trim(),
       excerpt: blogForm.excerpt.trim(),
+      coverCaption: (blogForm.coverCaption || '').trim(),
       body: blogForm.body.trim(),
     });
     resetBlogForm();
@@ -665,6 +668,13 @@ onMounted(async () => {
                 >Önerilen: 1600 × 900 px (16:9), tercihen WebP veya JPG.</small
               >
             </div>
+            <label class="field">
+              <span>Kapak görseli alt yazısı (isteğe bağlı)</span>
+              <input
+                v-model="blogForm.coverCaption"
+                placeholder="Örn: Philips Ambilight TV ve Mi Stick ile çalışan akıllı TV ortamı"
+              />
+            </label>
             <label class="field field--wide">
               <span>Kısa açıklama</span>
               <textarea v-model="blogForm.excerpt" rows="3" />

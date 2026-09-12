@@ -44,7 +44,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section ref="contact" class="contact" data-scroll-section>
+  <section ref="contact" class="contact">
     <button
       ref="contactEmail"
       v-hoverable.mail

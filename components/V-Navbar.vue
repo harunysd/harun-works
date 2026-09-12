@@ -190,7 +190,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <nav ref="nav" class="nav" data-scroll-sticky>
+  <nav ref="nav" class="nav">
     <ul v-show="route.name === 'index'" ref="navList" class="nav__list">
       <li
         v-for="(link, key) in links"

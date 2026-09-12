@@ -75,7 +75,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="about-me" data-scroll-section>
+  <section class="about-me">
     <VH2 class="about-me__title">Hakkımda</VH2>
 
     <div ref="aboutMeContent" class="about-me__content">

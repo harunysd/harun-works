@@ -46,9 +46,17 @@ function formatDate(value) {
       <p v-if="post.excerpt" class="article-excerpt">{{ post.excerpt }}</p>
     </header>
 
-    <div v-if="post.coverImage" class="article-cover">
-      <img :src="post.coverImage" :alt="post.title" />
-    </div>
+    <figure v-if="post.coverImage" class="article-hero-cover">
+      <div class="article-hero-cover__frame">
+        <img :src="post.coverImage" :alt="post.title" />
+      </div>
+      <figcaption
+        v-if="post.coverCaption"
+        class="article-caption article-caption--italic-thin"
+      >
+        {{ post.coverCaption }}
+      </figcaption>
+    </figure>
 
     <article class="article-body">
       <template
@@ -175,7 +183,7 @@ function formatDate(value) {
 .article-page,
 .article-missing {
   min-height: 100vh;
-  padding: clamp(7rem, 14vw, 12rem) clamp(1.25rem, 7vw, 7rem) 5rem;
+  padding: clamp(6rem, 10vw, 9rem) clamp(1.25rem, 5vw, 4rem) 5rem;
   background: var(--surface-color);
   color: var(--ff-color);
 }
@@ -190,88 +198,104 @@ function formatDate(value) {
 .article-back,
 .article-footer a,
 .article-missing a {
+  display: inline-flex;
+  align-items: center;
   color: var(--primary-color);
   font-size: 0.78rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .article-meta {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin-top: 5rem;
-  padding: 1rem 0;
-  border-block: 1px solid rgba(247, 247, 247, 0.13);
-  color: rgba(247, 247, 247, 0.62);
-  font-size: 0.72rem;
+  margin-top: 2.5rem;
+  padding: 0.75rem 0;
+  border-block: 1px solid rgba(247, 247, 247, 0.12);
+  color: rgba(247, 247, 247, 0.58);
+  font-size: 0.74rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .article-header h1 {
-  margin: 2rem 0 1.5rem;
-  font-size: clamp(3rem, 8vw, 7rem);
-  font-weight: 500;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
+  margin: 1.75rem 0 1.25rem;
+  font-size: clamp(2rem, 3.8vw, 2.85rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  color: #ffffff;
 }
 
 .article-excerpt {
   max-width: 44rem;
   margin: 0;
-  color: rgba(247, 247, 247, 0.68);
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
-  line-height: 1.5;
+  color: rgba(247, 247, 247, 0.72);
+  font-size: clamp(1.05rem, 1.35vw, 1.22rem);
+  line-height: 1.65;
 }
 
-.article-cover {
-  width: min(1160px, 100%);
-  margin: clamp(4rem, 10vw, 8rem) auto;
-}
+.article-hero-cover {
+  width: min(920px, 100%);
+  margin: 2.5rem auto 3.5rem;
 
-.article-cover img {
-  display: block;
-  width: 100%;
-  max-height: 55vh;
-  object-fit: cover;
+  &__frame {
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    background: #0d0d0d;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      object-fit: contain;
+    }
+  }
 }
 
 .article-body {
-  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
-  line-height: 1.75;
-}
-
-.article-body p {
-  margin: 0 0 2rem;
+  font-size: clamp(1.02rem, 1.15vw, 1.12rem);
+  line-height: 1.82;
+  color: rgba(247, 247, 247, 0.88);
 }
 
 .article-inline-image {
-  width: min(1040px, calc(100vw - 2.5rem));
-  margin: clamp(3rem, 7vw, 5rem) 50%;
-  transform: translateX(-50%);
-}
-
-.article-inline-image img {
-  display: block;
   width: 100%;
-  height: auto;
-  max-height: 75vh;
-  object-fit: contain;
+  max-width: 820px;
+  margin: 2.75rem auto;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 65vh;
+    object-fit: contain;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0d0d0d;
+  }
 }
 
 .article-caption {
   display: block;
   width: 100%;
-  margin-top: 0.9rem;
+  margin-top: 0.85rem;
   color: rgba(247, 247, 247, 0.65);
-  font-size: clamp(0.84rem, 1.15vw, 0.96rem);
+  font-size: 0.88rem;
   line-height: 1.55;
   letter-spacing: 0.02em;
   text-align: center;
-
-  /* "Yatay ince" (italic + light weight 300) */
   font-style: italic;
   font-weight: 300;
 
@@ -310,10 +334,10 @@ function formatDate(value) {
 }
 
 .article-p {
-  margin: 0 0 2rem;
-  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
-  line-height: 1.8;
-  color: rgba(247, 247, 247, 0.92);
+  margin: 0 0 1.65rem;
+  font-size: clamp(1.02rem, 1.15vw, 1.12rem);
+  line-height: 1.82;
+  color: rgba(247, 247, 247, 0.88);
 }
 
 .article-link {
@@ -337,26 +361,26 @@ function formatDate(value) {
 }
 
 .article-blockquote {
-  margin: 2.75rem 0;
-  padding: 1.25rem 2rem;
+  margin: 2rem 0;
+  padding: 1rem 1.6rem;
   border-left: 3px solid var(--primary-color);
   background: rgba(255, 230, 237, 0.035);
   color: rgba(247, 247, 247, 0.88);
-  font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+  font-size: 1.05rem;
   font-style: italic;
   font-weight: 300;
-  line-height: 1.65;
+  line-height: 1.7;
 }
 
 .article-list {
-  margin: 0 0 2rem;
-  padding-left: 1.75rem;
-  font-size: clamp(1.05rem, 1.7vw, 1.32rem);
-  line-height: 1.8;
-  color: rgba(247, 247, 247, 0.92);
+  margin: 0 0 1.75rem;
+  padding-left: 1.5rem;
+  font-size: clamp(1.02rem, 1.15vw, 1.12rem);
+  line-height: 1.82;
+  color: rgba(247, 247, 247, 0.88);
 
   li {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
 
     &::marker {
       color: var(--primary-color);
@@ -371,85 +395,87 @@ function formatDate(value) {
 .article-divider {
   border: 0;
   height: 1px;
-  background: rgba(247, 247, 247, 0.12);
-  margin: 3.5rem auto;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 3rem auto;
   width: 60%;
 }
 
 .article-video {
-  width: min(1040px, calc(100vw - 2.5rem));
-  margin: clamp(3rem, 7vw, 5rem) 50%;
-  transform: translateX(-50%);
-}
-
-.article-video iframe,
-.article-video video {
-  display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  border: 0;
-  background: #000000;
-}
+  max-width: 820px;
+  margin: 2.75rem auto;
 
-.article-video figcaption {
-  margin-top: 0.75rem;
-  color: rgba(247, 247, 247, 0.55);
-  font-size: 0.78rem;
+  iframe,
+  video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    border-radius: 6px;
+    background: #000000;
+  }
+
+  figcaption {
+    margin-top: 0.75rem;
+    color: rgba(247, 247, 247, 0.55);
+    font-size: 0.78rem;
+  }
 }
 
 .article-heading-2 {
-  margin: 3.5rem 0 1.25rem;
-  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  color: var(--ff-color);
+  margin: 3.25rem 0 1.15rem;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.5rem;
 }
 
 .article-heading-3 {
-  margin: 2.5rem 0 1rem;
-  font-size: clamp(1.25rem, 2.5vw, 1.8rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
-  color: var(--ff-color);
+  margin: 2.25rem 0 0.85rem;
+  font-size: clamp(1.15rem, 1.6vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.35;
+  color: #ffffff;
 }
 
 .article-table-wrapper {
-  width: min(1040px, calc(100vw - 2.5rem));
-  margin: clamp(2.5rem, 6vw, 4.5rem) 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  margin: 2.25rem 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  border: 1px solid rgba(247, 247, 247, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.02);
 }
 
 .article-table {
   width: 100%;
-  min-width: 480px;
   border-collapse: collapse;
-  font-size: clamp(0.85rem, 1.2vw, 1.05rem);
-  line-height: 1.5;
+  font-size: 0.92rem;
+  line-height: 1.6;
 
   th,
   td {
-    padding: 0.9rem 1.25rem;
-    border-bottom: 1px solid rgba(247, 247, 247, 0.08);
+    padding: 0.85rem 1.15rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   th {
-    background: #101010;
+    background: rgba(255, 255, 255, 0.04);
     color: var(--primary-color);
-    font-size: 0.76rem;
+    font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     border-bottom: 2px solid rgba(255, 230, 237, 0.25);
   }
 
-  tr:last-child td {
-    border-bottom: 0;
+  td {
+    color: rgba(247, 247, 247, 0.88);
   }
 
   tbody tr:nth-child(even) {
@@ -457,7 +483,11 @@ function formatDate(value) {
   }
 
   tbody tr:hover {
-    background: rgba(255, 230, 237, 0.04);
+    background: rgba(255, 230, 237, 0.035);
+  }
+
+  tr:last-child td {
+    border-bottom: 0;
   }
 }
 
@@ -466,7 +496,7 @@ function formatDate(value) {
   justify-content: space-between;
   gap: 1rem;
   margin-top: 5rem;
-  padding-top: 1rem;
+  padding-top: 1.5rem;
   border-top: 1px solid rgba(247, 247, 247, 0.13);
 }
 
