@@ -175,7 +175,7 @@ onMounted(() => {
   &__image {
     display: block;
     width: min(1200px, 100%);
-    max-height: 70vh;
+    aspect-ratio: 16 / 9;
     margin: clamp(4rem, 10vw, 8rem) auto;
     object-fit: cover;
   }

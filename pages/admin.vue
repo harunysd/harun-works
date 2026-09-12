@@ -1,5 +1,11 @@
 <script setup>
+import { parseVideoSource } from '~/lib/article-body.js';
 import { slugifyContent } from '~/lib/site-content-defaults.js';
+import {
+  ADMIN_IMAGE_TYPES,
+  ADMIN_VIDEO_TYPES,
+  readImageDimensions,
+} from '~/composables/use-admin-media.js';
 
 const {
   settings,
@@ -25,6 +31,11 @@ const passwordInput = ref('');
 const loginError = ref('');
 const activeTab = ref('blog');
 const notice = ref('');
+const blogBodyInput = ref(null);
+const { uploadState, uploadProgress, uploadMedia, uploadImage } =
+  useAdminMedia();
+const imageTypes = ADMIN_IMAGE_TYPES;
+const videoTypes = ADMIN_VIDEO_TYPES;
 
 const settingsForm = reactive({
   email: '',
@@ -52,7 +63,6 @@ const projectForm = reactive({
   slug: '',
   description: '',
   tagsText: '',
-  previewImage: '',
   image: '',
   bodyText: '',
   live: '',
@@ -89,6 +99,127 @@ function showNotice(message) {
   window.setTimeout(() => {
     if (notice.value === message) notice.value = '';
   }, 2500);
+}
+
+function insertBlogBlock(marker, cursor) {
+  const before = blogForm.body.slice(0, cursor);
+  const after = blogForm.body.slice(cursor);
+  const leadingBreak =
+    before && !before.endsWith('\n\n')
+      ? before.endsWith('\n')
+        ? '\n'
+        : '\n\n'
+      : '';
+  const trailingBreak =
+    after && !after.startsWith('\n\n')
+      ? after.startsWith('\n')
+        ? '\n'
+        : '\n\n'
+      : '';
+  const insertion = `${leadingBreak}${marker}${trailingBreak}`;
+  blogForm.body = `${before}${insertion}${after}`;
+  return cursor + insertion.length;
+}
+
+async function focusBlogCursor(cursor) {
+  await nextTick();
+  blogBodyInput.value?.focus();
+  blogBodyInput.value?.setSelectionRange(cursor, cursor);
+}
+
+async function uploadBlogCover(event) {
+  const file = event.target.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+
+  try {
+    blogForm.coverImage = await uploadImage(file, 'blog', 'cover');
+    showNotice('Kapak görseli yüklendi. Yazıyı kaydetmeyi unutmayın.');
+  } catch (error) {
+    showNotice(error instanceof Error ? error.message : 'Görsel yüklenemedi.');
+  }
+}
+
+async function insertBlogImage(event) {
+  const file = event.target.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+
+  const cursor = blogBodyInput.value?.selectionStart ?? blogForm.body.length;
+  try {
+    const url = await uploadImage(file, 'blog', 'inline');
+    const alt = file.name
+      .replace(/\.[^.]+$/, '')
+      .replace(/[-_]+/g, ' ')
+      .trim();
+    const nextCursor = insertBlogBlock(`![${alt}](${url})`, cursor);
+    await focusBlogCursor(nextCursor);
+    showNotice('Görsel yazı metnine eklendi.');
+  } catch (error) {
+    showNotice(error instanceof Error ? error.message : 'Görsel yüklenemedi.');
+  }
+}
+
+async function insertUploadedVideo(event) {
+  const file = event.target.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+
+  const cursor = blogBodyInput.value?.selectionStart ?? blogForm.body.length;
+  try {
+    const url = await uploadMedia(file, {
+      folder: 'blog',
+      stateKey: 'video',
+      allowedTypes: videoTypes,
+      maxSize: 250 * 1024 * 1024,
+    });
+    const title = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ');
+    const nextCursor = insertBlogBlock(`@[${title}](${url})`, cursor);
+    await focusBlogCursor(nextCursor);
+    showNotice('Video yazı metnine eklendi.');
+  } catch (error) {
+    showNotice(error instanceof Error ? error.message : 'Video yüklenemedi.');
+  }
+}
+
+async function insertVideoLink() {
+  const value = window.prompt(
+    'YouTube veya Google Drive video bağlantısını yapıştırın:',
+  );
+  if (!value) return;
+
+  const source = parseVideoSource(value.trim());
+  if (!source || source.type === 'video') {
+    showNotice('Geçerli bir YouTube veya Google Drive bağlantısı girin.');
+    return;
+  }
+
+  const cursor = blogBodyInput.value?.selectionStart ?? blogForm.body.length;
+  const nextCursor = insertBlogBlock(
+    `@[${source.provider} videosu](${value.trim()})`,
+    cursor,
+  );
+  await focusBlogCursor(nextCursor);
+  showNotice(`${source.provider} videosu yazıya eklendi.`);
+}
+
+async function uploadProjectImage(event) {
+  const file = event.target.files?.[0];
+  event.target.value = '';
+  if (!file) return;
+
+  try {
+    const dimensions = await readImageDimensions(file);
+    projectForm.image = await uploadImage(file, 'projects', 'project');
+    const ratio = dimensions.width / dimensions.height;
+    showNotice(
+      Math.abs(ratio - 16 / 9) < 0.04
+        ? '16:9 görsel yüklendi. Kart ve banner otomatik hazır.'
+        : 'Görsel yüklendi; kart ve banner 16:9 alana ortalanarak kırpılacak.',
+    );
+  } catch (error) {
+    showNotice(error instanceof Error ? error.message : 'Görsel yüklenemedi.');
+  }
 }
 
 async function unlock() {
@@ -178,7 +309,6 @@ function resetProjectForm() {
     slug: '',
     description: '',
     tagsText: '',
-    previewImage: '',
     image: '',
     bodyText: '',
     live: '',
@@ -194,8 +324,7 @@ function editProject(project) {
     slug: project._path?.split('/').pop() || '',
     description: project.description || '',
     tagsText: (project.tags || []).join(', '),
-    previewImage: project.previewImage || '',
-    image: project.image || '',
+    image: project.image || project.previewImage || '',
     bodyText: project.bodyText || project.description || '',
     live: project.live || '',
     hidden: Boolean(project.hidden),
@@ -221,11 +350,8 @@ async function saveProject() {
         .split(',')
         .map((tag) => tag.trim())
         .filter(Boolean),
-      previewImage: projectForm.previewImage.trim() || '/logo.png',
-      image:
-        projectForm.image.trim() ||
-        projectForm.previewImage.trim() ||
-        '/logo.png',
+      previewImage: projectForm.image.trim() || '/logo.png',
+      image: projectForm.image.trim() || '/logo.png',
       bodyText: projectForm.bodyText.trim() || projectForm.description.trim(),
       live: projectForm.live.trim(),
       hidden: projectForm.hidden,
@@ -355,21 +481,104 @@ onMounted(async () => {
               <span>Yayın tarihi</span>
               <input v-model="blogForm.publishedAt" type="date" />
             </label>
-            <label class="field">
-              <span>Kapak görseli adresi</span>
+            <div class="field">
+              <label for="blog-cover-url">Kapak görseli</label>
+              <div
+                v-if="blogForm.coverImage"
+                class="upload-preview upload-preview--cover"
+              >
+                <img
+                  :src="blogForm.coverImage"
+                  alt="Seçili blog kapak görseli"
+                />
+              </div>
               <input
+                id="blog-cover-url"
                 v-model="blogForm.coverImage"
-                placeholder="/img/... veya https://..."
+                placeholder="Görsel yükleyin veya adres girin"
               />
-            </label>
+              <input
+                id="blog-cover-file"
+                class="visually-hidden"
+                type="file"
+                :accept="imageTypes"
+                :disabled="uploadState.cover"
+                @change="uploadBlogCover"
+              />
+              <label class="upload-button" for="blog-cover-file">
+                {{
+                  uploadState.cover
+                    ? `Yükleniyor · %${uploadProgress.cover}`
+                    : 'Kapak görseli yükle'
+                }}
+              </label>
+              <small
+                >Önerilen: 1600 × 900 px (16:9), tercihen WebP veya JPG.</small
+              >
+            </div>
             <label class="field field--wide">
               <span>Kısa açıklama</span>
               <textarea v-model="blogForm.excerpt" rows="3" />
             </label>
-            <label class="field field--wide">
-              <span>Yazı metni</span>
-              <textarea v-model="blogForm.body" rows="14" required />
-            </label>
+            <div class="field field--wide">
+              <label for="blog-body">Yazı metni</label>
+              <div class="field-toolbar">
+                <input
+                  id="blog-inline-file"
+                  class="visually-hidden"
+                  type="file"
+                  :accept="imageTypes"
+                  :disabled="uploadState.inline"
+                  @change="insertBlogImage"
+                />
+                <label
+                  class="upload-button upload-button--compact"
+                  for="blog-inline-file"
+                >
+                  {{
+                    uploadState.inline
+                      ? `Yükleniyor · %${uploadProgress.inline}`
+                      : '+ İmlecin olduğu yere görsel ekle'
+                  }}
+                </label>
+                <input
+                  id="blog-video-file"
+                  class="visually-hidden"
+                  type="file"
+                  :accept="videoTypes"
+                  :disabled="uploadState.video"
+                  @change="insertUploadedVideo"
+                />
+                <label
+                  class="upload-button upload-button--compact"
+                  for="blog-video-file"
+                >
+                  {{
+                    uploadState.video
+                      ? `Yükleniyor · %${uploadProgress.video}`
+                      : '+ Video yükle'
+                  }}
+                </label>
+                <button
+                  type="button"
+                  class="upload-button upload-button--compact"
+                  @click="insertVideoLink"
+                >
+                  + YouTube / Drive
+                </button>
+                <small>
+                  Önce metinde eklemek istediğiniz yere tıklayın. Büyük videolar
+                  için YouTube veya Drive kullanın.
+                </small>
+              </div>
+              <textarea
+                id="blog-body"
+                ref="blogBodyInput"
+                v-model="blogForm.body"
+                rows="14"
+                required
+              />
+            </div>
           </div>
 
           <button class="primary-button" type="submit">Yazıyı kaydet</button>
@@ -442,17 +651,36 @@ onMounted(async () => {
                 placeholder="CBS, Planlama, Afet"
               />
             </label>
-            <label class="field">
-              <span>Kart görseli</span>
+            <div class="field field--wide">
+              <label for="project-image-url">Çalışma görseli</label>
+              <div v-if="projectForm.image" class="upload-preview">
+                <img :src="projectForm.image" alt="Seçili çalışma görseli" />
+              </div>
               <input
-                v-model="projectForm.previewImage"
-                placeholder="/img/..."
+                id="project-image-url"
+                v-model="projectForm.image"
+                placeholder="Görsel yükleyin veya adres girin"
               />
-            </label>
-            <label class="field">
-              <span>Detay görseli</span>
-              <input v-model="projectForm.image" placeholder="/img/..." />
-            </label>
+              <input
+                id="project-image-file"
+                class="visually-hidden"
+                type="file"
+                :accept="imageTypes"
+                :disabled="uploadState.project"
+                @change="uploadProjectImage"
+              />
+              <label class="upload-button" for="project-image-file">
+                {{
+                  uploadState.project
+                    ? `Yükleniyor · %${uploadProgress.project}`
+                    : 'Tek görsel yükle'
+                }}
+              </label>
+              <small>
+                1600 × 900 px (16:9) önerilir. Aynı görsel kartta ve detay
+                banner’ında otomatik kullanılır.
+              </small>
+            </div>
             <label class="field field--wide">
               <span>Kısa açıklama</span>
               <textarea v-model="projectForm.description" rows="4" />
@@ -701,11 +929,18 @@ onMounted(async () => {
 }
 
 .field span,
+.field > label,
 .check-field span {
   color: var(--muted);
   font-size: 0.72rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
+}
+
+.field small {
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
 }
 
 .field input,
@@ -731,6 +966,76 @@ onMounted(async () => {
 
 .field input:disabled {
   opacity: 0.5;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.upload-preview {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+}
+
+.upload-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-preview--cover {
+  max-width: 22rem;
+}
+
+.upload-button {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 0.95rem;
+  border: 1px solid rgba(255, 230, 237, 0.42);
+  color: var(--ff-color) !important;
+  background: rgba(255, 230, 237, 0.07);
+  cursor: pointer;
+  font-size: 0.72rem !important;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.upload-button:hover {
+  background: rgba(255, 230, 237, 0.13);
+}
+
+.visually-hidden:focus-visible + .upload-button {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.upload-button--compact {
+  min-height: 2.35rem;
+  padding: 0.55rem 0.75rem;
+}
+
+.field-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .check-field {

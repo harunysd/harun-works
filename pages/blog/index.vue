@@ -1,4 +1,6 @@
 <script setup>
+import { stripArticleImages } from '~/lib/article-body.js';
+
 const { blogPosts, settings } = useSiteContent();
 
 useHead({
@@ -28,7 +30,7 @@ function formatDate(value) {
 }
 
 function excerpt(post) {
-  return post.excerpt || post.body?.replace(/\s+/g, ' ').slice(0, 180) || '';
+  return post.excerpt || stripArticleImages(post.body).slice(0, 180);
 }
 </script>
 

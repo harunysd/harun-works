@@ -1,10 +1,13 @@
 <script setup>
+import { parseArticleBody } from '~/lib/article-body.js';
+
 const route = useRoute();
 const { blogPosts, settings } = useSiteContent();
 
 const post = computed(() =>
   blogPosts.value.find((item) => item.slug === route.params.slug),
 );
+const articleBlocks = computed(() => parseArticleBody(post.value?.body));
 
 useHead(() => ({
   title: post.value?.title || 'Blog',
@@ -45,9 +48,44 @@ function formatDate(value) {
     </div>
 
     <article class="article-body">
-      <p v-for="(paragraph, index) in post.body.split(/\n+/)" :key="index">
-        {{ paragraph }}
-      </p>
+      <template
+        v-for="(block, index) in articleBlocks"
+        :key="`${block.type}-${index}`"
+      >
+        <figure v-if="block.type === 'image'" class="article-inline-image">
+          <img
+            :src="block.src"
+            :alt="block.alt"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption v-if="block.alt">{{ block.alt }}</figcaption>
+        </figure>
+        <figure v-else-if="block.type === 'embed'" class="article-video">
+          <iframe
+            :src="block.src"
+            :title="`${block.provider}: ${block.title}`"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          />
+          <figcaption>{{ block.title }}</figcaption>
+        </figure>
+        <figure v-else-if="block.type === 'video'" class="article-video">
+          <video
+            :aria-label="block.title"
+            controls
+            preload="metadata"
+            playsinline
+          >
+            <source :src="block.src" />
+            Tarayıcınız video oynatmayı desteklemiyor.
+          </video>
+          <figcaption>{{ block.title }}</figcaption>
+        </figure>
+        <p v-else>{{ block.text }}</p>
+      </template>
     </article>
 
     <footer class="article-footer">
@@ -136,6 +174,48 @@ function formatDate(value) {
 
 .article-body p {
   margin: 0 0 2rem;
+}
+
+.article-inline-image {
+  width: min(1040px, calc(100vw - 2.5rem));
+  margin: clamp(3rem, 7vw, 5rem) 50%;
+  transform: translateX(-50%);
+}
+
+.article-inline-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 75vh;
+  object-fit: contain;
+}
+
+.article-inline-image figcaption {
+  margin-top: 0.75rem;
+  color: rgba(247, 247, 247, 0.55);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.article-video {
+  width: min(1040px, calc(100vw - 2.5rem));
+  margin: clamp(3rem, 7vw, 5rem) 50%;
+  transform: translateX(-50%);
+}
+
+.article-video iframe,
+.article-video video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  background: #000000;
+}
+
+.article-video figcaption {
+  margin-top: 0.75rem;
+  color: rgba(247, 247, 247, 0.55);
+  font-size: 0.78rem;
 }
 
 .article-footer {
