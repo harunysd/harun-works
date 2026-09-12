@@ -8,7 +8,18 @@ const route = useRoute();
 const { blogPosts, settings } = useSiteContent();
 
 const post = computed(() =>
-  blogPosts.value.find((item) => item.slug === route.params.slug),
+  blogPosts.value.find(
+    (item) =>
+      item.slug === route.params.slug ||
+      (route.params.slug ===
+        'yapay-zeka-ile-eski-tv-mi-yenilikci-bir-akilli-tv-sistemine-donusturdum' &&
+        item.slug ===
+          'yapay-zeka-ile-eski-tv-mi-akilli-bir-tv-sistemine-donusturdum') ||
+      (route.params.slug ===
+        'yapay-zeka-ile-eski-tv-mi-akilli-bir-tv-sistemine-donusturdum' &&
+        item.slug ===
+          'yapay-zeka-ile-eski-tv-mi-yenilikci-bir-akilli-tv-sistemine-donusturdum'),
+  ),
 );
 const articleBlocks = computed(() => parseArticleBody(post.value?.body));
 
@@ -52,7 +63,7 @@ function formatDate(value) {
       </div>
       <figcaption
         v-if="post.coverCaption"
-        class="article-caption article-caption--italic-thin"
+        class="article-caption article-caption--italic-thin article-caption--center"
       >
         {{ post.coverCaption }}
       </figcaption>
@@ -104,7 +115,7 @@ function formatDate(value) {
           <figcaption v-if="block.title" class="article-caption article-caption--italic-thin">{{ block.title }}</figcaption>
         </figure>
         <h2
-          v-else-if="block.type === 'heading' && block.level === 2"
+          v-else-if="block.type === 'heading' && (block.level === 1 || block.level === 2)"
           class="article-heading-2"
           v-html="renderInlineMarkdown(block.text)"
         />
