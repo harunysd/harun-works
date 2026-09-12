@@ -400,7 +400,9 @@ onMounted(() => {
     pointer-events: all;
     opacity: 1;
     cursor: pointer !important;
-    transition: background-color 0.75s var(--easing);
+    transition:
+      background-color 0.35s var(--easing),
+      transform 0.35s var(--easing);
 
     svg {
       width: 40%;
@@ -410,15 +412,22 @@ onMounted(() => {
 
       color: var(--preferred-color);
 
-      transition: color 0.75s var(--easing);
+      transition:
+        color 0.35s var(--easing),
+        transform 0.35s var(--easing);
     }
 
     &:is(:focus-visible, :hover) {
       background-color: var(--preferred-color);
+      transform: translateX(-3px);
 
       svg {
         color: var(--inverted-color);
       }
+    }
+
+    &:active {
+      transform: translateX(-5px) scale(0.95);
     }
   }
 }

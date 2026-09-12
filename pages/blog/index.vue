@@ -37,12 +37,7 @@ function excerpt(post) {
 <template>
   <main class="blog-page">
     <header class="blog-hero">
-      <p class="eyebrow">ÇALIŞMA NOTLARI / BLOG</p>
-      <h1>Üretim günlüğü.</h1>
-      <p class="blog-hero__intro">
-        Şehir, afet yönetimi, mekânsal veri ve dijital sistemler üzerine notlar;
-        devam eden çalışmaların arka planı ve öğrendiklerim.
-      </p>
+      <h1 class="blog-hero__title">Çalışma Notları / Blog</h1>
       <div class="blog-hero__meta">
         <span>{{ sortedPosts.length }} yazı</span>
         <a :href="`mailto:${settings.email}`">{{ settings.email }}</a>
@@ -129,29 +124,13 @@ function excerpt(post) {
   margin: 0 auto;
 }
 
-.eyebrow {
-  margin: 0 0 1.5rem;
-  color: var(--primary-color);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  font-weight: 700;
-}
-
-.blog-hero h1 {
-  max-width: 9ch;
-  margin: 0;
-  font-size: clamp(3.5rem, 10vw, 9rem);
+.blog-hero__title {
+  margin: 0 0 2.2rem;
+  font-size: clamp(2.4rem, 6vw, 5.2rem);
   font-weight: 500;
-  letter-spacing: -0.06em;
-  line-height: 0.9;
-}
-
-.blog-hero__intro {
-  max-width: 38rem;
-  margin: clamp(2.5rem, 6vw, 5rem) 0 2rem;
-  color: var(--blog-muted);
-  font-size: clamp(1rem, 1.6vw, 1.4rem);
-  line-height: 1.5;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: #ffffff;
 }
 
 .blog-hero__meta,
@@ -177,7 +156,7 @@ function excerpt(post) {
 }
 
 .blog-list {
-  margin-top: clamp(6rem, 14vw, 12rem);
+  margin-top: clamp(3.5rem, 8vw, 6.5rem);
 }
 
 .blog-list__heading {

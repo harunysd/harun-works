@@ -28,19 +28,18 @@ function leavePageAnim(pageEl, done) {
     defaults: { ease: 'power3.inOut' },
   });
 
-  tl.to(pageEl, { opacity: 0, duration: 0.15, ease: 'power2.in' }, 0);
+  tl.to(pageEl, { opacity: 0, y: -15, duration: 0.22, ease: 'power2.inOut' }, 0);
   tl.fromTo(
     '.page-overlay__slide',
     {
       autoAlpha: 1,
       yPercent: 100,
-      scaleY: 0.6,
     },
     {
       yPercent: 0,
-      scaleY: 1,
-      stagger: { each: 0.015 },
-      duration: 0.18,
+      stagger: { each: 0.03 },
+      duration: 0.32,
+      ease: 'power3.inOut',
       onComplete: () => {
         window.scrollTo(0, 0);
         $smoothScroll.scrollTo(0, 0);
@@ -103,22 +102,21 @@ async function enterPageAnim(pageEl, done) {
       gsap.set('.page-overlay__slide', {
         autoAlpha: 0,
         yPercent: 0,
-        scaleY: 1,
         clearProps: 'all',
       });
       if (pageEl) {
         pageEl.style.transform = '';
       }
       done();
-      gsap.to('.nav', { autoAlpha: 1, duration: 0.15 });
+      gsap.to('.nav', { autoAlpha: 1, duration: 0.2 });
     },
   });
 
   tl.fromTo(
     pageEl,
-    { opacity: 0 },
-    { opacity: 1, duration: 0.2, ease: 'power2.out', clearProps: 'all' },
-    0,
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.36, ease: 'power2.out', clearProps: 'all' },
+    0.06,
   );
 
   tl.fromTo(
@@ -126,25 +124,23 @@ async function enterPageAnim(pageEl, done) {
     {
       autoAlpha: 1,
       yPercent: 0,
-      scaleY: 1,
     },
     {
-      yPercent: -105,
-      scaleY: 0.6,
-      autoAlpha: 0,
-      stagger: { each: 0.015, from: 'end' },
-      duration: 0.22,
-      ease: 'power3.in',
+      yPercent: -100,
+      autoAlpha: 1,
+      stagger: { each: 0.035, from: 'end' },
+      duration: 0.36,
+      ease: 'power3.out',
     },
     0,
   );
 
-  tl.add(() => emitter.emit('overlay:hiding'), 0.04);
+  tl.add(() => emitter.emit('overlay:hiding'), 0.12);
   tl.add(() => {
     window.scrollTo(0, 0);
     $smoothScroll.enable();
     $smoothScroll.update();
-  }, 0.1);
+  }, 0.15);
 }
 </script>
 
