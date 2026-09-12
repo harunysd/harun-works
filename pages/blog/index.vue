@@ -55,8 +55,17 @@ function excerpt(post) {
         <span aria-hidden="true">↘</span>
       </div>
 
-      <div v-if="sortedPosts.length" class="blog-list__grid">
-        <article v-for="post in sortedPosts" :key="post.id" class="post-card">
+      <div
+        v-if="sortedPosts.length"
+        class="blog-list__grid"
+        :class="{ 'blog-list__grid--single': sortedPosts.length === 1 }"
+      >
+        <article
+          v-for="post in sortedPosts"
+          :key="post.id"
+          class="post-card"
+          :class="{ 'post-card--featured': sortedPosts.length === 1 }"
+        >
           <NuxtLink :to="`/blog/${post.slug}`" class="post-card__link">
             <div v-if="post.coverImage" class="post-card__image-wrap">
               <img
@@ -193,14 +202,72 @@ function excerpt(post) {
 .blog-list__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
-  margin-top: 1px;
-  background: var(--blog-border);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: 2rem;
+  background: transparent;
+
+  &--single {
+    grid-template-columns: 1fr;
+  }
 }
 
 .post-card {
   min-height: 22rem;
-  background: var(--surface-color);
+  border: 1px solid var(--blog-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.015);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  &--featured {
+    .post-card__link {
+      @media (min-width: 800px) {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        align-items: stretch;
+      }
+    }
+
+    .post-card__image-wrap {
+      aspect-ratio: 16 / 10;
+      height: 100%;
+
+      @media (min-width: 800px) {
+        border-right: 1px solid var(--blog-border);
+      }
+    }
+
+    .post-card__body {
+      padding: clamp(1.75rem, 3.5vw, 3rem);
+      justify-content: center;
+    }
+
+    h3 {
+      max-width: 26ch;
+      margin: 1.5rem 0 1rem;
+      font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+      font-weight: 600;
+      line-height: 1.22;
+    }
+
+    p {
+      max-width: 44ch;
+      font-size: 1.02rem;
+      line-height: 1.6;
+    }
+
+    .post-card__read {
+      margin-top: 2rem;
+      padding-top: 0;
+    }
+  }
 }
 
 .post-card__link {
@@ -209,17 +276,12 @@ function excerpt(post) {
   height: 100%;
   color: inherit;
   text-decoration: none;
-  transition: background-color 220ms ease;
-}
-
-.post-card__link:hover,
-.post-card__link:focus-visible {
-  background: rgba(255, 230, 237, 0.07);
 }
 
 .post-card__image-wrap {
-  aspect-ratio: 16 / 8;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
+  background: #0d0d0d;
 }
 
 .post-card__image {
@@ -227,45 +289,58 @@ function excerpt(post) {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: saturate(0.8);
+  transition: transform 0.4s ease;
+}
+
+.post-card:hover .post-card__image {
+  transform: scale(1.025);
 }
 
 .post-card__body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: clamp(1.25rem, 3vw, 2.25rem);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
 }
 
 .post-card__meta {
   color: var(--blog-muted);
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .post-card h3 {
-  max-width: 18ch;
-  margin: 2.2rem 0 1rem;
-  font-size: clamp(1.6rem, 2.8vw, 2.8rem);
-  font-weight: 500;
-  line-height: 1.05;
+  margin: 1.25rem 0 0.85rem;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: #ffffff;
 }
 
 .post-card p {
-  max-width: 42ch;
   margin: 0;
   color: var(--blog-muted);
-  line-height: 1.55;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 .post-card__read {
   margin-top: auto;
-  padding-top: 2.5rem;
+  padding-top: 1.75rem;
   color: var(--primary-color);
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: gap 0.2s ease;
+}
+
+.post-card:hover .post-card__read {
+  gap: 0.55rem;
 }
 
 .blog-empty {

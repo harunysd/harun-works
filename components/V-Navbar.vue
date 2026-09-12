@@ -380,7 +380,7 @@ onMounted(() => {
 
   &__back-link {
     --easing: cubic-bezier(0.19, 1, 0.22, 1);
-    --size: calc(var(--step-5) * 1.5);
+    --size: clamp(3rem, 4.5vw, 4rem);
     --preferred-color: #ebebeb;
     --inverted-color: #030303;
 
@@ -403,10 +403,10 @@ onMounted(() => {
     transition: background-color 0.75s var(--easing);
 
     svg {
-      width: 35%;
+      width: 40%;
       height: auto;
 
-      min-width: 22px;
+      min-width: 18px;
 
       color: var(--preferred-color);
 
