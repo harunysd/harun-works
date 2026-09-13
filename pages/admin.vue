@@ -412,100 +412,15 @@ async function initGoogleAuth() {
     const config = await $fetch('/api/admin/auth-config');
     googleClientId.value = config.googleClientId || '';
     maskedEmail.value = config.maskedEmail || 'harunysd@gmail.com';
-
-    if (googleClientId.value) {
-      loadGoogleScript();
-    }
   } catch (e) {
     console.warn('Failed to load auth config:', e);
-  }
-}
-
-function loadGoogleScript() {
-  if (typeof window === 'undefined') return;
-  if (window.google?.accounts?.id) {
-    renderGoogleButton();
-    return;
-  }
-
-  const existingScript = document.getElementById('google-gsi-script');
-  if (existingScript) return;
-
-  const script = document.createElement('script');
-  script.id = 'google-gsi-script';
-  script.src = 'https://accounts.google.com/gsi/client';
-  script.async = true;
-  script.defer = true;
-  script.onload = () => {
-    renderGoogleButton();
-  };
-  document.head.appendChild(script);
-}
-
-function renderGoogleButton() {
-  if (!window.google?.accounts?.id || !googleClientId.value) return;
-
-  try {
-    window.google.accounts.id.initialize({
-      client_id: googleClientId.value,
-      callback: handleGoogleCredentialResponse,
-      auto_select: false,
-      cancel_on_tap_outside: true,
-    });
-
-    const targetEl = document.getElementById('google-btn-target');
-    if (targetEl) {
-      targetEl.innerHTML = '';
-      window.google.accounts.id.renderButton(targetEl, {
-        theme: 'filled_black',
-        size: 'large',
-        shape: 'rectangular',
-        text: 'signin_with',
-        locale: 'tr',
-        width: 320,
-      });
-      googleButtonRendered.value = true;
-    }
-  } catch (err) {
-    console.error('Google button render error:', err);
-  }
-}
-
-async function handleGoogleCredentialResponse(response) {
-  isGoogleLoading.value = true;
-  googleError.value = '';
-  try {
-    const res = await $fetch('/api/admin/auth-google', {
-      method: 'POST',
-      body: { credential: response.credential },
-    });
-    if (res.ok) {
-      isUnlocked.value = true;
-      loginError.value = '';
-      showNotice(`Hoş geldiniz, ${res.name || res.email}!`);
-    }
-  } catch (err) {
-    googleError.value =
-      err.data?.statusMessage ||
-      err.message ||
-      'Google ile giriş yapılamadı. Hesabınız yetkili olmayabilir.';
-  } finally {
-    isGoogleLoading.value = false;
   }
 }
 
 function handleGoogleClick() {
   googleError.value = '';
   isGoogleLoading.value = true;
-  if (googleClientId.value && window.google?.accounts?.id) {
-    window.google.accounts.id.prompt((notification) => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        window.location.href = '/api/admin/auth/google/login';
-      }
-    });
-  } else {
-    window.location.href = '/api/admin/auth/google/login';
-  }
+  window.location.href = '/api/admin/auth/google/login';
 }
 
 async function startRecovery() {
@@ -872,6 +787,12 @@ onMounted(async () => {
     await initGoogleAuth();
   }
 });
+
+onBeforeUnmount(() => {
+  const { $smoothScroll } = useNuxtApp();
+  $smoothScroll?.enable?.();
+  $smoothScroll?.update?.();
+});
 </script>
 
 <template>
@@ -888,36 +809,43 @@ onMounted(async () => {
         Blog yazılarını, ana sayfadaki çalışmaları ve iletişim metinlerini
         düzenlemek için giriş yapın.
       </p>
-      <!-- Google Sign-In Only -->
+      <!-- Google Sign-In Primary Action -->
       <div class="google-auth-box">
-        <div id="google-btn-target" class="google-btn-target"></div>
         <button
-          v-if="!googleButtonRendered"
           type="button"
           class="google-auth-button"
           :disabled="isGoogleLoading"
           @click="handleGoogleClick"
         >
-          <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-            <path
-              fill="#4285F4"
-              d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-            />
-            <path
-              fill="#34A853"
-              d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-            />
-            <path
-              fill="#FBBC05"
-              d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-            />
-            <path
-              fill="#EA4335"
-              d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-            />
-          </svg>
-          <span>{{ isGoogleLoading ? 'Giriş yapılıyor...' : 'Google ile Giriş Yap' }}</span>
+          <div class="google-auth-button__inner">
+            <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+              />
+            </svg>
+            <span class="google-auth-button__text">
+              {{ isGoogleLoading ? 'Google\'a yönlendiriliyor...' : 'Google ile Giriş Yap' }}
+            </span>
+          </div>
+          <span class="google-auth-button__arrow" aria-hidden="true">→</span>
         </button>
+
+        <p class="google-auth-hint">
+          Yetkili hesap: <code>harunysd@gmail.com</code>
+        </p>
 
         <p v-if="googleError" class="form-error" role="alert">
           {{ googleError }}
@@ -1033,13 +961,6 @@ onMounted(async () => {
                     : 'Kapak görseli yükle'
                 }}
               </label>
-              <button
-                type="button"
-                class="btn-prompt-trigger"
-                @click="openPromptModal('blog')"
-              >
-                ✨ 16:9 Kapak Promptu Al / Düzenle
-              </button>
               <small
                 >Önerilen: 1600 × 900 px (16:9), tercihen WebP veya JPG.</small
               >
@@ -1167,14 +1088,6 @@ onMounted(async () => {
                 </div>
                 <div class="github-toolbar__divider" />
                 <div class="github-toolbar__group">
-                  <button
-                    type="button"
-                    class="toolbar-btn toolbar-btn--action toolbar-btn--prompt"
-                    title="Kapak Görseli İçin Master Prompt Üret / Düzenle"
-                    @click="openPromptModal('blog')"
-                  >
-                    ✨ Görsel Promptu
-                  </button>
                   <button
                     type="button"
                     class="toolbar-btn toolbar-btn--action"
@@ -1462,13 +1375,6 @@ onMounted(async () => {
                     : 'Tek görsel yükle'
                 }}
               </label>
-              <button
-                type="button"
-                class="btn-prompt-trigger"
-                @click="openPromptModal('project')"
-              >
-                ✨ 16:9 Çalışma Görsel Promptu Al / Düzenle
-              </button>
               <small>
                 1600 × 900 px (16:9) önerilir. Aynı görsel kartta ve detay
                 banner’ında otomatik kullanılır.
@@ -1589,13 +1495,6 @@ onMounted(async () => {
                 @click="resetMasterPromptToDefault"
               >
                 ↺ Varsayılana Sıfırla
-              </button>
-              <button
-                class="secondary-button"
-                type="button"
-                @click="openPromptModal('general')"
-              >
-                ✨ Hızlı Üreticiyi Aç
               </button>
             </div>
           </div>
@@ -2614,49 +2513,96 @@ onMounted(async () => {
 .google-auth-box {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   width: 100%;
-}
-
-.google-btn-target {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-
-  iframe {
-    margin: 0 auto !important;
-  }
+  max-width: 420px;
+  margin-top: 0.5rem;
 }
 
 .google-auth-button {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
+  justify-content: space-between;
   width: 100%;
-  padding: 0.85rem 1.25rem;
-  background: #181818;
+  height: 54px;
+  padding: 0 1.35rem;
+  background: #141416;
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 8px;
-  color: #ffffff;
-  font-size: 0.95rem;
+  color: #f7f7f7;
+  font-family: inherit;
+  font-size: 0.96rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
-  &:hover {
-    background: #242424;
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
   }
 
-  &:active {
+  &__text {
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  &__arrow {
+    color: var(--muted, #8a8a8e);
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  &:hover:not(:disabled) {
+    background: #1c1c20;
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+
+    .google-auth-button__arrow {
+      color: #ffffff;
+      transform: translateX(3px);
+    }
+  }
+
+  &:active:not(:disabled) {
     transform: translateY(0);
+    background: #111113;
+  }
+
+  &:disabled {
+    opacity: 0.65;
+    cursor: wait;
+    transform: none;
   }
 }
 
 .google-icon {
   flex-shrink: 0;
+  display: block;
+}
+
+.google-auth-hint {
+  margin: 0.15rem 0 0;
+  color: var(--muted, #8a8a8e);
+  font-size: 0.8rem;
+  line-height: 1.4;
+
+  code {
+    color: #e0e0e0;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.76rem;
+  }
 }
 
 

@@ -39,6 +39,11 @@ const currentSection = useCurrentSection();
 const indexPage = ref(null);
 
 onMounted(() => {
+  nextTick(() => {
+    $smoothScroll?.enable?.();
+    $smoothScroll?.update?.();
+  });
+
   // website parts, heading, sections and footer
   const parts = gsap.utils.toArray('header, section');
 

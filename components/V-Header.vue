@@ -15,7 +15,18 @@ const nameParts = computed(() => {
 
 const header = ref(null);
 
+let isRevealed = false;
+
 function revealContent() {
+  if (isRevealed) {
+    gsap.set('.header__container__title__line__content', { opacity: 1, yPercent: 0 });
+    gsap.set('.header__container__subtitle__char', { opacity: 1 });
+    gsap.set('.scroll-down', { opacity: 1 });
+    gsap.set(window.innerWidth < 768 ? '.nav__menu-button' : '.nav__list__item', { opacity: 1 });
+    return;
+  }
+  isRevealed = true;
+
   const mainTl = gsap.timeline({
     defaults: { ease: 'expo.out', duration: 1.25 },
     onStart: () => {
@@ -58,6 +69,19 @@ function revealContent() {
 
 emitter.on('loader:end', revealContent);
 emitter.on('overlay:hiding', revealContent);
+
+onMounted(() => {
+  nextTick(() => {
+    const loaderEl = document.querySelector('.loader');
+    const isLoaderActive =
+      loaderEl &&
+      getComputedStyle(loaderEl).visibility !== 'hidden' &&
+      getComputedStyle(loaderEl).opacity !== '0';
+    if (!isLoaderActive) {
+      revealContent();
+    }
+  });
+});
 
 onBeforeUnmount(() => {
   emitter.off('loader:end', revealContent);
