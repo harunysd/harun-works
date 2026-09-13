@@ -41,6 +41,7 @@ const notice = ref('');
 
 const googleClientId = ref('');
 const isGoogleLoading = ref(false);
+const googleButtonRendered = ref(false);
 const googleError = ref('');
 
 const recoveryMode = ref(false);
@@ -463,6 +464,7 @@ function renderGoogleButton() {
         locale: 'tr',
         width: 320,
       });
+      googleButtonRendered.value = true;
     }
   } catch (err) {
     console.error('Google button render error:', err);
@@ -494,15 +496,15 @@ async function handleGoogleCredentialResponse(response) {
 
 function handleGoogleClick() {
   googleError.value = '';
-  if (googleClientId.value) {
-    if (window.google?.accounts?.id) {
-      window.google.accounts.id.prompt();
-    } else {
-      window.location.href = '/api/admin/auth/google/login';
-    }
+  isGoogleLoading.value = true;
+  if (googleClientId.value && window.google?.accounts?.id) {
+    window.google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        window.location.href = '/api/admin/auth/google/login';
+      }
+    });
   } else {
-    googleError.value =
-      'Google ile giriş henüz etkinleştirilmedi. Parola veya kurtarma koduyla giriş yapabilirsiniz.';
+    window.location.href = '/api/admin/auth/google/login';
   }
 }
 
@@ -886,11 +888,11 @@ onMounted(async () => {
         Blog yazılarını, ana sayfadaki çalışmaları ve iletişim metinlerini
         düzenlemek için giriş yapın.
       </p>
-      <!-- Google Sign-In Primary Action -->
+      <!-- Google Sign-In Only -->
       <div class="google-auth-box">
         <div id="google-btn-target" class="google-btn-target"></div>
         <button
-          v-if="!googleClientId"
+          v-if="!googleButtonRendered"
           type="button"
           class="google-auth-button"
           :disabled="isGoogleLoading"
@@ -921,88 +923,6 @@ onMounted(async () => {
           {{ googleError }}
         </p>
       </div>
-
-      <div class="auth-divider">
-        <span>veya parola ile girin</span>
-      </div>
-
-      <!-- Recovery Mode (OTP Code Input) -->
-      <div v-if="recoveryMode" class="recovery-box">
-        <h3 class="recovery-title">E-posta ile Giriş</h3>
-        <p class="recovery-desc">
-          {{ recoveryMessage || `${maskedEmail} adresinize tek kullanımlık 6 haneli kod gönderiliyor...` }}
-        </p>
-
-        <form class="login-form" @submit.prevent="submitRecoveryCode">
-          <label for="recovery-code">6 Haneli Doğrulama Kodu</label>
-          <input
-            id="recovery-code"
-            v-model="recoveryCode"
-            type="text"
-            inputmode="numeric"
-            maxlength="6"
-            placeholder="000000"
-            class="recovery-code-input"
-            autocomplete="one-time-code"
-            required
-          />
-          <p v-if="recoveryError" class="form-error" role="alert">
-            {{ recoveryError }}
-          </p>
-          <button type="submit" :disabled="isVerifyingRecovery">
-            {{ isVerifyingRecovery ? 'Doğrulanıyor...' : 'Kodu Onayla ve Giriş Yap' }}
-          </button>
-
-          <div class="recovery-actions">
-            <button
-              type="button"
-              class="text-link-btn"
-              :disabled="isRequestingRecovery"
-              @click="startRecovery"
-            >
-              {{ isRequestingRecovery ? 'Gönderiliyor...' : 'Tekrar Kod Gönder' }}
-            </button>
-            <button
-              type="button"
-              class="text-link-btn"
-              @click="recoveryMode = false"
-            >
-              ← Parola ile Girişe Dön
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Regular Password Form -->
-      <form v-else class="login-form" autocomplete="off" @submit.prevent="unlock">
-        <label for="admin-password">Parola</label>
-        <input
-          id="admin-password"
-          name="admin_secret_key"
-          v-model="passwordInput"
-          type="password"
-          autocomplete="new-password"
-          data-bwignore="true"
-          data-lpignore="true"
-          data-1p-ignore="true"
-          spellcheck="false"
-        />
-        <p v-if="loginError" class="form-error" role="alert">
-          {{ loginError }}
-        </p>
-        <button type="submit">Panele gir</button>
-
-        <div class="login-forgot-row">
-          <button
-            type="button"
-            class="text-link-btn"
-            :disabled="isRequestingRecovery"
-            @click="startRecovery"
-          >
-            {{ isRequestingRecovery ? 'Kod gönderiliyor...' : 'Şifremi unuttum / Giriş kodu gönder' }}
-          </button>
-        </div>
-      </form>
     </section>
 
     <template v-else>
@@ -2739,68 +2659,7 @@ onMounted(async () => {
   flex-shrink: 0;
 }
 
-.auth-divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: 1.5rem 0;
-  color: var(--muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid var(--border);
-  }
-
-  span {
-    padding: 0 1rem;
-  }
-}
-
-
-.recovery-box {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  .recovery-title {
-    margin: 0;
-    font-size: 1.2rem;
-    font-weight: 500;
-  }
-
-  .recovery-desc {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.88rem;
-    line-height: 1.5;
-  }
-
-  .recovery-code-input {
-    letter-spacing: 0.5rem;
-    font-size: 1.5rem;
-    text-align: center;
-    font-family: monospace;
-    font-weight: 700;
-  }
-
-  .recovery-actions {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.5rem;
-  }
-}
-
-.login-forgot-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 0.4rem;
-}
 
 .text-link-btn {
   background: none;
