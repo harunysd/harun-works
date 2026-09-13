@@ -62,6 +62,14 @@ onMounted(() => {
 </script>
 
 <template>
+  <NuxtLink
+    v-if="$route.path !== '/admin'"
+    to="/admin"
+    class="secret-admin-trigger"
+    aria-hidden="true"
+    tabindex="-1"
+  />
+
   <VNavbar />
 
   <Transition
@@ -81,3 +89,19 @@ onMounted(() => {
   <VOverlay ref="overlay" />
   <VEmailModal />
 </template>
+
+<style>
+.secret-admin-trigger {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 54px;
+  height: 54px;
+  z-index: 99;
+  opacity: 0;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+</style>
