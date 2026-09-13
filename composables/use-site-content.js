@@ -1,3 +1,4 @@
+import { toRaw } from 'vue';
 import {
   defaultSiteContent,
   normalizeSiteContent,
@@ -23,16 +24,21 @@ export function useSiteContent() {
     return siteContent.value;
   }
 
+  function safeClone(obj) {
+    return JSON.parse(JSON.stringify(toRaw(obj) || obj));
+  }
+
   async function persist() {
+    const payload = safeClone(siteContent.value);
     const value = await $fetch('/api/admin/site-content', {
       method: 'PUT',
-      body: siteContent.value,
+      body: payload,
     });
     siteContent.value = normalizeSiteContent(value);
   }
 
   async function mutateAndPersist(mutator) {
-    const previous = structuredClone(siteContent.value);
+    const previous = safeClone(siteContent.value);
     mutator();
     try {
       await persist();

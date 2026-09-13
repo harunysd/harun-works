@@ -548,8 +548,11 @@ function editBlogPost(post) {
 }
 
 async function saveBlogPost() {
-  const slug = slugify(blogForm.slug || blogForm.title);
-  if (!blogForm.title.trim() || !slug || !blogForm.body.trim()) {
+  const title = (blogForm.title || '').trim();
+  const slug = slugify(blogForm.slug || title);
+  const body = (blogForm.body || '').trim();
+
+  if (!title || !slug || !body) {
     showNotice('Başlık ve yazı metni zorunlu.');
     return;
   }
@@ -567,15 +570,24 @@ async function saveBlogPost() {
       ...blogForm,
       id: blogForm.id || `post-${Date.now()}`,
       slug,
-      title: blogForm.title.trim(),
-      excerpt: blogForm.excerpt.trim(),
+      title,
+      excerpt: (blogForm.excerpt || '').trim(),
+      category: (blogForm.category || 'Notlar').trim(),
+      publishedAt:
+        blogForm.publishedAt || new Date().toISOString().slice(0, 10),
+      coverImage: (blogForm.coverImage || '').trim(),
       coverCaption: (blogForm.coverCaption || '').trim(),
-      body: blogForm.body.trim(),
+      body,
     });
     resetBlogForm();
-    showNotice('Blog yazısı kaydedildi.');
+    showNotice('Blog yazısı başarıyla kaydedildi.');
   } catch (error) {
-    showNotice('Yazı kaydedilemedi. Lütfen yeniden deneyin.');
+    console.error('Save blog post error:', error);
+    const msg =
+      error?.data?.statusMessage ||
+      error?.message ||
+      'Yazı kaydedilemedi. Lütfen yeniden deneyin.';
+    showNotice(msg);
   }
 }
 
