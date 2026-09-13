@@ -42,7 +42,6 @@ const notice = ref('');
 const googleClientId = ref('');
 const isGoogleLoading = ref(false);
 const googleError = ref('');
-const showGoogleHelp = ref(false);
 
 const recoveryMode = ref(false);
 const recoveryCode = ref('');
@@ -502,7 +501,8 @@ function handleGoogleClick() {
       window.location.href = '/api/admin/auth/google/login';
     }
   } else {
-    showGoogleHelp.value = !showGoogleHelp.value;
+    googleError.value =
+      'Google ile giriş henüz etkinleştirilmedi. Parola veya kurtarma koduyla giriş yapabilirsiniz.';
   }
 }
 
@@ -920,26 +920,6 @@ onMounted(async () => {
         <p v-if="googleError" class="form-error" role="alert">
           {{ googleError }}
         </p>
-
-        <!-- Google Client ID setup guide if clicked before configuring env var -->
-        <div v-if="showGoogleHelp" class="google-help-box">
-          <div class="google-help-box__header">
-            <h4>Google ile Giriş Yap</h4>
-            <button type="button" @click="showGoogleHelp = false">✕</button>
-          </div>
-          <p>
-            Gmail (<strong>harunysd@gmail.com</strong>) hesabınızla doğrudan tek tıkla giriş yapabilmek için:
-          </p>
-          <ol>
-            <li><strong>console.cloud.google.com</strong> adresine gidin.</li>
-            <li><strong>APIs &amp; Services &gt; Credentials</strong> sayfasından <em>Create Credentials &gt; OAuth client ID</em> (Web application) seçin.</li>
-            <li>Yetkili JavaScript kaynaklarına <code>https://harun.works</code> ekleyin.</li>
-            <li>Oluşan Client ID'yi Vercel Environment Variables'a <code>GOOGLE_CLIENT_ID</code> olarak kaydedin.</li>
-          </ol>
-          <p class="google-help-box__note">
-            💡 Kurulumu tamamlayana kadar aşağıdaki parola veya e-posta kurtarma koduyla anında giriş yapabilirsiniz.
-          </p>
-        </div>
       </div>
 
       <div class="auth-divider">
@@ -2781,61 +2761,6 @@ onMounted(async () => {
   }
 }
 
-.google-help-box {
-  margin-top: 0.5rem;
-  padding: 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  font-size: 0.85rem;
-  line-height: 1.5;
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.75rem;
-
-    h4 {
-      margin: 0;
-      color: #fff;
-      font-size: 0.92rem;
-    }
-
-    button {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 1rem;
-      padding: 0.2rem 0.5rem;
-    }
-  }
-
-  ol {
-    margin: 0.5rem 0;
-    padding-left: 1.2rem;
-    color: var(--muted);
-
-    li {
-      margin-bottom: 0.35rem;
-    }
-  }
-
-  code {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.1rem 0.35rem;
-    border-radius: 3px;
-    color: #ffe6ed;
-    font-size: 0.82rem;
-  }
-
-  &__note {
-    margin: 0.75rem 0 0;
-    color: #ffd699;
-    font-size: 0.8rem;
-  }
-}
 
 .recovery-box {
   display: flex;
