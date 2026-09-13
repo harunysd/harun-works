@@ -11,5 +11,11 @@ export default defineEventHandler((event) => {
 \tCache-Control: private, must-revalidate, max-age=0
 
 /_nuxt/*
-\tCache-Control: public, immutable, max-age=604800, stale-while-revalidate=16070400`;
+\tCache-Control: public, immutable, max-age=604800, stale-while-revalidate=16070400
+
+/img/*
+\tCache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/fonts/*
+\tCache-Control: public, immutable, max-age=31536000`;
 });

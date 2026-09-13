@@ -8,7 +8,7 @@ tags:
   - 'Gelibolu'
   - 'Kamusal Alan'
 image: '/img/14-gelibolu-banner.png'
-previewImage: '/img/14-gelibolu-preview.png'
+previewImage: '/img/14-gelibolu-preview.webp'
 createdAt: '2018-06-01T00:00:00+03:00'
 ---
 

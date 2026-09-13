@@ -8,7 +8,7 @@ tags:
   - 'Kentsel Dönüşüm'
   - 'Etaplama'
 image: '/img/08-gunesli-banner.png'
-previewImage: '/img/08-gunesli-preview.png'
+previewImage: '/img/08-gunesli-preview.webp'
 createdAt: '2021-05-01T00:00:00+03:00'
 ---
 

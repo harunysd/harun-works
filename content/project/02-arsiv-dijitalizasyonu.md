@@ -8,7 +8,7 @@ tags:
   - 'ArcGIS Dashboard'
   - 'Yapay Zekâ'
 image: '/img/02-arsiv-banner.png'
-previewImage: '/img/02-arsiv-preview.png'
+previewImage: '/img/02-arsiv-preview.webp'
 createdAt: '2026-02-01T00:00:00+03:00'
 ---
 

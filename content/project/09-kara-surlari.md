@@ -8,7 +8,7 @@ tags:
   - 'Rehabilitasyon'
   - 'Kamusal Alan'
 image: '/img/09-surlar-banner.png'
-previewImage: '/img/09-surlar-preview.png'
+previewImage: '/img/09-surlar-preview.webp'
 createdAt: '2020-11-01T00:00:00+03:00'
 ---
 

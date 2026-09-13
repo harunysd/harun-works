@@ -8,7 +8,7 @@ tags:
   - 'Fikirtepe'
   - 'Arazi Kullanımı'
 image: '/img/07-fikirtepe-banner.png'
-previewImage: '/img/07-fikirtepe-preview.png'
+previewImage: '/img/07-fikirtepe-preview.webp'
 createdAt: '2022-06-01T00:00:00+03:00'
 ---
 

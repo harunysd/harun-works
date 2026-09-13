@@ -8,7 +8,7 @@ tags:
   - 'CBS & Dashboard'
   - 'Operasyon'
 image: '/img/03-akom-banner.png'
-previewImage: '/img/03-akom-preview.png'
+previewImage: '/img/03-akom-preview.webp'
 createdAt: '2026-01-15T00:00:00+03:00'
 ---
 

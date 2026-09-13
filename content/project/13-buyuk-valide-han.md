@@ -8,7 +8,7 @@ tags:
   - 'Büyük Valide Han'
   - 'Mekânsal Analiz'
 image: '/img/13-validehan-banner.png'
-previewImage: '/img/13-validehan-preview.png'
+previewImage: '/img/13-validehan-preview.webp'
 createdAt: '2018-12-01T00:00:00+03:00'
 ---
 

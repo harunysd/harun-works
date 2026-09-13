@@ -8,7 +8,7 @@ tags:
   - 'Tarihi Çevre'
   - 'Kentsel Tasarım'
 image: '/img/10-yedikule-banner.png'
-previewImage: '/img/10-yedikule-preview.png'
+previewImage: '/img/10-yedikule-preview.webp'
 createdAt: '2020-04-01T00:00:00+03:00'
 ---
 

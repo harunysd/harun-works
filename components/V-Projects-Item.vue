@@ -80,6 +80,8 @@ onMounted(() => {
           :src="project.previewImage"
           :alt="project.title"
           class="project__image"
+          loading="lazy"
+          decoding="async"
         />
       </div>
 

@@ -8,7 +8,7 @@ tags:
   - 'Eylem Planı'
   - 'Ekoturizm'
 image: '/img/15-beykoz-banner.png'
-previewImage: '/img/15-beykoz-preview.png'
+previewImage: '/img/15-beykoz-preview.webp'
 createdAt: '2018-03-01T00:00:00+03:00'
 ---
 

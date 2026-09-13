@@ -8,7 +8,7 @@ tags:
   - 'Millet Bahçeleri'
   - 'Görselleştirme'
 image: '/img/06-tasarim-banner.png'
-previewImage: '/img/06-tasarim-preview.png'
+previewImage: '/img/06-tasarim-preview.webp'
 createdAt: '2023-08-01T00:00:00+03:00'
 ---
 

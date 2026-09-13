@@ -8,7 +8,7 @@ tags:
   - 'Berlin'
   - 'Mekânsal Analiz'
 image: '/img/17-berlin-banner.png'
-previewImage: '/img/17-berlin-preview.png'
+previewImage: '/img/17-berlin-preview.webp'
 createdAt: '2017-06-01T00:00:00+03:00'
 ---
 

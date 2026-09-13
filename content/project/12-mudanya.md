@@ -8,7 +8,7 @@ tags:
   - 'Gini Katsayısı'
   - 'İstatistik & Veri'
 image: '/img/12-mudanya-banner.png'
-previewImage: '/img/12-mudanya-preview.png'
+previewImage: '/img/12-mudanya-preview.webp'
 createdAt: '2019-06-01T00:00:00+03:00'
 ---
 

@@ -8,7 +8,7 @@ tags:
   - 'Saha Analizi'
   - 'Uzlaşma'
 image: '/img/05-donusum-banner.png'
-previewImage: '/img/05-donusum-preview.png'
+previewImage: '/img/05-donusum-preview.webp'
 createdAt: '2024-05-01T00:00:00+03:00'
 ---
 

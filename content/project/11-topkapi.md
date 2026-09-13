@@ -8,7 +8,7 @@ tags:
   - 'Yaya Erişimi'
   - 'Afet Toplanma Alanı'
 image: '/img/11-topkapi-banner.png'
-previewImage: '/img/11-topkapi-preview.png'
+previewImage: '/img/11-topkapi-preview.webp'
 createdAt: '2019-12-01T00:00:00+03:00'
 ---
 

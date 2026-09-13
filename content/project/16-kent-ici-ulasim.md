@@ -8,7 +8,7 @@ tags:
   - 'Hizmet Düzeyi'
   - 'Hareketlilik'
 image: '/img/16-ulasim-banner.png'
-previewImage: '/img/16-ulasim-preview.png'
+previewImage: '/img/16-ulasim-preview.webp'
 createdAt: '2017-12-01T00:00:00+03:00'
 ---
 

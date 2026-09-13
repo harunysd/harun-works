@@ -8,7 +8,7 @@ tags:
   - 'Afet Yönetimi'
   - 'Erken Uyarı & USAR'
 image: '/img/04-ivlp-banner.png'
-previewImage: '/img/04-ivlp-preview.png'
+previewImage: '/img/04-ivlp-preview.webp'
 createdAt: '2025-02-01T00:00:00+03:00'
 ---
 
