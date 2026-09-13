@@ -1,5 +1,5 @@
 export default defineEventHandler((event) => {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientId = (process.env.GOOGLE_CLIENT_ID || '').trim();
   if (!clientId) {
     return sendRedirect(
       event,
@@ -9,10 +9,13 @@ export default defineEventHandler((event) => {
   }
 
   const reqUrl = getRequestURL(event);
-  const callbackUrl = `${reqUrl.protocol}//${reqUrl.host}/api/admin/auth/google/callback`;
+  const host = reqUrl.host || 'harun.works';
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const protocol = isLocal ? 'http:' : 'https:';
+  const callbackUrl = `${protocol}//${host}/api/admin/auth/google/callback`;
 
   const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
-  authUrl.searchParams.set('client_id', clientId.trim());
+  authUrl.searchParams.set('client_id', clientId);
   authUrl.searchParams.set('redirect_uri', callbackUrl);
   authUrl.searchParams.set('response_type', 'code');
   authUrl.searchParams.set('scope', 'openid email profile');

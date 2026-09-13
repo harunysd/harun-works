@@ -843,10 +843,6 @@ onBeforeUnmount(() => {
           <span class="google-auth-button__arrow" aria-hidden="true">→</span>
         </button>
 
-        <p class="google-auth-hint">
-          Yetkili hesap: <code>harunysd@gmail.com</code>
-        </p>
-
         <p v-if="googleError" class="form-error" role="alert">
           {{ googleError }}
         </p>
@@ -2588,21 +2584,6 @@ onBeforeUnmount(() => {
 .google-icon {
   flex-shrink: 0;
   display: block;
-}
-
-.google-auth-hint {
-  margin: 0.15rem 0 0;
-  color: var(--muted, #8a8a8e);
-  font-size: 0.8rem;
-  line-height: 1.4;
-
-  code {
-    color: #e0e0e0;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 0.15rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.76rem;
-  }
 }
 
 

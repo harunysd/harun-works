@@ -273,10 +273,13 @@ export async function verifyGoogleIdToken(idToken) {
 export function setAdminSession(event) {
   const expiresAt = Math.floor(Date.now() / 1000) + SESSION_LENGTH_SECONDS;
   const value = `${expiresAt}.${sign(String(expiresAt))}`;
+  const reqUrl = getRequestURL(event);
+  const isHttps =
+    reqUrl.protocol === 'https:' || process.env.NODE_ENV === 'production';
   setCookie(event, COOKIE_NAME, value, {
     httpOnly: true,
-    secure: getRequestURL(event).protocol === 'https:',
-    sameSite: 'strict',
+    secure: isHttps,
+    sameSite: 'lax',
     path: '/',
     maxAge: SESSION_LENGTH_SECONDS,
   });

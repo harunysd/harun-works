@@ -16,10 +16,13 @@ export default defineEventHandler(async (event) => {
     );
   }
 
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const clientId = (process.env.GOOGLE_CLIENT_ID || '').trim();
+  const clientSecret = (process.env.GOOGLE_CLIENT_SECRET || '').trim();
   const reqUrl = getRequestURL(event);
-  const callbackUrl = `${reqUrl.protocol}//${reqUrl.host}/api/admin/auth/google/callback`;
+  const host = reqUrl.host || 'harun.works';
+  const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+  const protocol = isLocal ? 'http:' : 'https:';
+  const callbackUrl = `${protocol}//${host}/api/admin/auth/google/callback`;
 
   try {
     const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -27,8 +30,8 @@ export default defineEventHandler(async (event) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         code,
-        client_id: clientId || '',
-        client_secret: clientSecret || '',
+        client_id: clientId,
+        client_secret: clientSecret,
         redirect_uri: callbackUrl,
         grant_type: 'authorization_code',
       }),
@@ -37,9 +40,13 @@ export default defineEventHandler(async (event) => {
     const tokenData = await tokenRes.json();
     if (!tokenRes.ok || !tokenData.id_token) {
       console.error('Google token exchange error:', tokenData);
+      const errDetail =
+        tokenData.error_description ||
+        tokenData.error ||
+        'Google doğrulama belirteci alınamadı.';
       return sendRedirect(
         event,
-        `/admin?error=${encodeURIComponent('Google doğrulama belirteci alınamadı.')}`,
+        `/admin?error=${encodeURIComponent(errDetail)}`,
         302,
       );
     }
