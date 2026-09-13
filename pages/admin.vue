@@ -802,50 +802,54 @@ onBeforeUnmount(() => {
       class="login-panel"
       aria-labelledby="login-title"
     >
-      <NuxtLink to="/" class="admin-back">← Siteye dön</NuxtLink>
-      <p class="admin-eyebrow">HARUN WORKS / YÖNETİM</p>
-      <h1 id="login-title">İçerik yönetimi</h1>
-      <p class="login-panel__intro">
-        Blog yazılarını, ana sayfadaki çalışmaları ve iletişim metinlerini
-        düzenlemek için giriş yapın.
-      </p>
-      <!-- Google Sign-In Primary Action -->
-      <div class="google-auth-box">
-        <button
-          type="button"
-          class="google-auth-button"
-          :disabled="isGoogleLoading"
-          @click="handleGoogleClick"
-        >
-          <div class="google-auth-button__inner">
-            <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-              />
-            </svg>
-            <span class="google-auth-button__text">
-              {{ isGoogleLoading ? 'Google\'a yönlendiriliyor...' : 'Google ile Giriş Yap' }}
-            </span>
-          </div>
-          <span class="google-auth-button__arrow" aria-hidden="true">→</span>
-        </button>
-
-        <p v-if="googleError" class="form-error" role="alert">
-          {{ googleError }}
+      <VHeaderBackground class="login-panel__canvas" />
+      <div class="login-panel__overlay" aria-hidden="true"></div>
+      <div class="login-panel__content">
+        <NuxtLink to="/" class="admin-back">← Siteye dön</NuxtLink>
+        <p class="admin-eyebrow">HARUN WORKS / YÖNETİM</p>
+        <h1 id="login-title">İçerik yönetimi</h1>
+        <p class="login-panel__intro">
+          Blog yazılarını, ana sayfadaki çalışmaları ve iletişim metinlerini
+          düzenlemek için giriş yapın.
         </p>
+        <!-- Google Sign-In Primary Action -->
+        <div class="google-auth-box">
+          <button
+            type="button"
+            class="google-auth-button"
+            :disabled="isGoogleLoading"
+            @click="handleGoogleClick"
+          >
+            <div class="google-auth-button__inner">
+              <svg class="google-icon" viewBox="0 0 24 24" width="22" height="22">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
+                />
+              </svg>
+              <span class="google-auth-button__text">
+                {{ isGoogleLoading ? 'Google\'a yönlendiriliyor...' : 'Google ile Giriş Yap' }}
+              </span>
+            </div>
+            <span class="google-auth-button__arrow" aria-hidden="true">→</span>
+          </button>
+
+          <p v-if="googleError" class="form-error" role="alert">
+            {{ googleError }}
+          </p>
+        </div>
       </div>
     </section>
 
@@ -1842,8 +1846,7 @@ onBeforeUnmount(() => {
 
 .editor-card,
 .content-list,
-.settings-card,
-.login-panel {
+.settings-card {
   border: 1px solid var(--border);
   background: var(--panel);
 }
@@ -2396,21 +2399,85 @@ onBeforeUnmount(() => {
 
 .login-panel {
   width: min(560px, 100%);
-  margin: 6vh auto 0;
-  padding: clamp(1.5rem, 5vw, 3rem);
-  overflow-x: hidden;
+  margin: 4vh auto 0;
+  padding: clamp(2.2rem, 5vw, 3.5rem);
   position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #08080a;
+  box-shadow:
+    0 32px 80px -20px rgba(0, 0, 0, 0.85),
+    0 0 50px rgba(255, 255, 255, 0.03);
+}
+
+.login-panel__canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0.92;
+}
+
+.login-panel__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 11, 0.65) 0%,
+    rgba(9, 9, 11, 0.82) 50%,
+    rgba(9, 9, 11, 0.94) 100%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.login-panel__content {
+  position: relative;
+  z-index: 2;
 }
 
 .login-panel .admin-back {
-  display: inline-block;
-  margin-bottom: 4rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 3.5rem;
+  color: var(--muted, rgba(247, 247, 247, 0.6));
+  font-size: 0.88rem;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: #ffffff;
+    transform: translateX(-3px);
+  }
+}
+
+.login-panel h1 {
+  color: #ffffff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.login-panel .admin-eyebrow {
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 600;
 }
 
 .login-panel__intro {
-  margin: 1.5rem 0 2.5rem;
-  color: var(--muted);
+  margin: 1.25rem 0 2.25rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.98rem;
   line-height: 1.6;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .login-form {
@@ -2522,16 +2589,18 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 54px;
   padding: 0 1.35rem;
-  background: #141416;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 8px;
+  background: rgba(18, 18, 22, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
   color: #f7f7f7;
   font-family: inherit;
   font-size: 0.96rem;
   font-weight: 500;
   cursor: pointer;
   outline: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
@@ -2558,10 +2627,10 @@ onBeforeUnmount(() => {
   }
 
   &:hover:not(:disabled) {
-    background: #1c1c20;
-    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(28, 28, 34, 0.95);
+    border-color: rgba(255, 255, 255, 0.45);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
 
     .google-auth-button__arrow {
       color: #ffffff;
