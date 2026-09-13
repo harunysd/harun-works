@@ -142,3 +142,8 @@ dist
 !.yarn/sdks
 !.yarn/versions
 .env*
+
+package-lock.json
+site-content-backup.json
+add-blog-posts.cjs
+convert-images.cjs
